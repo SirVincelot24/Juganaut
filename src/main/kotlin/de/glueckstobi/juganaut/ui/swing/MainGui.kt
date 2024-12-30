@@ -222,7 +222,9 @@ class MainGui {
     fun showMenu(playerX: Int, playerY: Int, diamondsInGame: Int) {
         val quitActionEvent = ActionListener { _ -> window.dispose() }
         val startActionEvent = ActionListener { _ -> startPlaying(playerX, playerY, diamondsInGame) }
-        val menuGui = MenuGui(quitActionEvent, startActionEvent)
+        val returnActonEvent = ActionListener { _ -> window.contentPane = MenuGui(quitActionEvent, startActionEvent) { } }
+        val settingsActionEvent = ActionListener { _ -> window.contentPane = SettingsMenuGui(returnActonEvent) }
+        val menuGui = MenuGui(quitActionEvent, startActionEvent, settingsActionEvent)
         menuGui.quitButton.addActionListener { window.dispose() }
         menuGui.startButton.addActionListener { startPlaying(playerX, playerY, diamondsInGame) }
         window.contentPane = menuGui.contentPane
@@ -242,6 +244,29 @@ class MainGui {
         })
 
     }
+//    fun showSettingsMenu(playerX: Int, playerY: Int, diamondsInGame: Int) {
+//        val quitActionEvent = ActionListener { _ -> window.dispose() }
+//        val startActionEvent = ActionListener { _ -> startPlaying(playerX, playerY, diamondsInGame) }
+//        val menuGui = MenuGui(quitActionEvent, startActionEvent)
+//        menuGui.quitButton.addActionListener { window.dispose() }
+//        menuGui.startButton.addActionListener { startPlaying(playerX, playerY, diamondsInGame) }
+//        window.contentPane = menuGui.contentPane
+//        window.iconImage = ImageIO.read(this.javaClass.getResource("/textures/monster.png"))
+//        window.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE)
+//        window.setSize(1024, 1000)
+//
+//        window.isVisible = true
+//
+//        window.contentPane.requestFocus()
+//
+//        window.addWindowListener(object : WindowAdapter() {
+//            override fun windowClosed(e: WindowEvent?) {
+//                super.windowClosed(e)
+//                window.dispose()
+//            }
+//        })
+//
+//    }
 
     /**
      * Baut das Fenster auf und zeigt es an.

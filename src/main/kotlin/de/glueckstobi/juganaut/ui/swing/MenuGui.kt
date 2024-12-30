@@ -9,6 +9,7 @@ import java.awt.Color
 import java.awt.Dimension
 import java.awt.Font
 import java.awt.Insets
+import java.awt.event.ActionEvent
 import java.awt.event.ActionListener
 import javax.swing.JButton
 import javax.swing.JLabel
@@ -19,159 +20,190 @@ import javax.swing.text.StyleContext
 
 
 @Suppress("UNUSED_EXPRESSION")
-class MenuGui(quitEvent: ActionListener, startEvent: ActionListener) : JPanel() {
+class MenuGui(quitEvent: ActionListener, startEvent: ActionListener, settingsEvent: ActionListener) : JPanel() {
     var contentPane: JPanelWithBackground = JPanelWithBackground(this.javaClass.getResource("/textures/menu-background.png"))
-    var nameLabel: JLabel = JLabel("Juganaut", SwingConstants.CENTER)
+    private var nameLabel: JLabel = JLabel("Juganaut", SwingConstants.CENTER)
+    private var buttonPane: JPanel = JPanel()
     var quitButton: JButton = JButton("QUIT")
-    var buttonPane: JPanel = JPanel()
     var startButton: JButton = JButton("START")
+    private var settingsButton: JButton = JButton("SETTINGS")
 
 
     init {
         setupUI()
         quitButton.addActionListener { quitEvent }
         startButton.addActionListener { startEvent }
+        settingsButton.addActionListener { settingsEvent }
     }
-private fun setupUI() {
-    contentPane.layout = GridLayoutManager(4, 1, Insets(100, 100, 100, 100), -1, -1)
-    contentPane.background = Color(-13618892)
-    contentPane.foreground = Color(-12535550)
-    contentPane.preferredSize = Dimension(1024, 700)
-    nameLabel = JLabel()
-    val nameLabelFont = this.getFont("Comic Sans MS", Font.ITALIC, 80, nameLabel.font)
-    if (nameLabelFont != null) nameLabel.font = nameLabelFont
-    nameLabel.foreground = Color(-13618892)
-    nameLabel.horizontalAlignment = 0
-    nameLabel.text = "Juganaut"
-    nameLabel.isVisible = true
-    contentPane.add(
-        nameLabel,
-        GridConstraints(
-            0,
-            0,
-            1,
-            1,
-            GridConstraints.ANCHOR_CENTER,
-            GridConstraints.FILL_BOTH,
-            GridConstraints.SIZEPOLICY_FIXED,
-            GridConstraints.SIZEPOLICY_FIXED,
-            null,
-            null,
-            null,
-            0,
-            false
+
+    private fun setupUI() {
+        contentPane.layout = GridLayoutManager(4, 2, Insets(100, 100, 100, 100), -1, -1)
+        contentPane.background = Color(-13618892)
+        contentPane.foreground = Color(-12535550)
+        contentPane.preferredSize = Dimension(1024, 700)
+        nameLabel = JLabel()
+        val nameLabelFont = this.getFont("Comic Sans MS", Font.ITALIC, 80, nameLabel.font)
+        if (nameLabelFont != null) nameLabel.font = nameLabelFont
+        nameLabel.foreground = Color(-13618892)
+        nameLabel.horizontalAlignment = 0
+        nameLabel.text = "Juganaut"
+        nameLabel.isVisible = true
+        contentPane.add(
+            nameLabel,
+            GridConstraints(
+                0,
+                0,
+                1,
+                2,
+                GridConstraints.ANCHOR_CENTER,
+                GridConstraints.FILL_BOTH,
+                GridConstraints.SIZEPOLICY_FIXED,
+                GridConstraints.SIZEPOLICY_FIXED,
+                null,
+                null,
+                null,
+                0,
+                false
+            )
         )
-    )
-    buttonPane = JPanel()
-    buttonPane.layout = GridLayoutManager(1, 2, Insets(0, 0, 0, 0), -1, -1)
-    buttonPane.background = Color(-13618892)
-    buttonPane.isOpaque = false
-    contentPane.add(
-        buttonPane,
-        GridConstraints(
-            2,
-            0,
-            1,
-            1,
-            GridConstraints.ANCHOR_CENTER,
-            GridConstraints.FILL_BOTH,
-            GridConstraints.SIZEPOLICY_CAN_SHRINK or GridConstraints.SIZEPOLICY_CAN_GROW,
-            GridConstraints.SIZEPOLICY_CAN_SHRINK or GridConstraints.SIZEPOLICY_CAN_GROW,
-            null,
-            null,
-            null,
-            0,
-            false
+        buttonPane = JPanel()
+        buttonPane.layout = GridLayoutManager(2, 2, Insets(0, 0, 0, 0), -1, -1)
+        buttonPane.background = Color(-13618892)
+        buttonPane.isOpaque = false
+        contentPane.add(
+            buttonPane,
+            GridConstraints(
+                2,
+                0,
+                1,
+                2,
+                GridConstraints.ANCHOR_CENTER,
+                GridConstraints.FILL_BOTH,
+                GridConstraints.SIZEPOLICY_CAN_SHRINK or GridConstraints.SIZEPOLICY_CAN_GROW,
+                GridConstraints.SIZEPOLICY_CAN_SHRINK or GridConstraints.SIZEPOLICY_CAN_GROW,
+                null,
+                null,
+                null,
+                0,
+                false
+            )
         )
-    )
-    startButton = JButton()
-    startButton.background = Color(-12535550)
-    startButton.isEnabled = true
-    val startButtonFont = this.getFont("JetBrains Mono", Font.BOLD, 20, startButton.font)
-    if (startButtonFont != null) startButton.font = startButtonFont
-    startButton.foreground = Color(-13618892)
-    startButton.text = "START"
-    buttonPane.add(
-        startButton,
-        GridConstraints(
-            0,
-            0,
-            1,
-            1,
-            GridConstraints.ANCHOR_NORTH,
-            GridConstraints.FILL_HORIZONTAL,
-            GridConstraints.SIZEPOLICY_CAN_SHRINK or GridConstraints.SIZEPOLICY_CAN_GROW,
-            GridConstraints.SIZEPOLICY_FIXED,
-            null,
-            null,
-            null,
-            0,
-            false
+        startButton = JButton()
+        startButton.background = Color(-12535550)
+        startButton.isEnabled = true
+        val startButtonFont = this.getFont("JetBrains Mono", Font.BOLD, 20, startButton.font)
+        if (startButtonFont != null) startButton.font = startButtonFont
+        startButton.foreground = Color(-13618892)
+        startButton.text = "START"
+        buttonPane.add(
+            startButton,
+            GridConstraints(
+                0,
+                0,
+                1,
+                1,
+                GridConstraints.ANCHOR_NORTH,
+                GridConstraints.FILL_HORIZONTAL,
+                GridConstraints.SIZEPOLICY_CAN_SHRINK or GridConstraints.SIZEPOLICY_CAN_GROW,
+                GridConstraints.SIZEPOLICY_FIXED,
+                null,
+                null,
+                null,
+                0,
+                false
+            )
         )
-    )
-    quitButton = JButton()
-    quitButton.background = Color(-65469)
-    val quitButtonFont = this.getFont("JetBrains Mono", Font.BOLD, 20, quitButton.font)
-    if (quitButtonFont != null) quitButton.font = quitButtonFont
-    quitButton.foreground = Color(-13618892)
-    quitButton.text = "QUIT"
-    buttonPane.add(
-        quitButton,
-        GridConstraints(
-            0,
-            1,
-            1,
-            1,
-            GridConstraints.ANCHOR_NORTH,
-            GridConstraints.FILL_HORIZONTAL,
-            GridConstraints.SIZEPOLICY_CAN_SHRINK or GridConstraints.SIZEPOLICY_CAN_GROW,
-            GridConstraints.SIZEPOLICY_FIXED,
-            null,
-            null,
-            null,
-            0,
-            false
+        settingsButton = JButton()
+        settingsButton!!.setBackground(Color(-16763905))
+        val settingsButtonFont =
+            this.getFont("JetBrains Mono", Font.BOLD, 20, settingsButton!!.getFont())
+        if (settingsButtonFont != null) settingsButton!!.setFont(settingsButtonFont)
+        settingsButton!!.setForeground(Color(-13618892))
+        settingsButton!!.setHideActionText(false)
+        settingsButton!!.setText("SETTINGS")
+        buttonPane.add(
+            settingsButton,
+            GridConstraints(
+                0,
+                1,
+                1,
+                1,
+                GridConstraints.ANCHOR_CENTER,
+                GridConstraints.FILL_BOTH,
+                GridConstraints.SIZEPOLICY_CAN_SHRINK or GridConstraints.SIZEPOLICY_CAN_GROW,
+                GridConstraints.SIZEPOLICY_FIXED,
+                null,
+                null,
+                null,
+                0,
+                false
+            )
         )
-    )
-    val spacer1 = Spacer()
-    contentPane.add(
-        spacer1,
-        GridConstraints(
-            1,
-            0,
-            1,
-            1,
-            GridConstraints.ANCHOR_CENTER,
-            GridConstraints.FILL_VERTICAL,
-            1,
-            GridConstraints.SIZEPOLICY_WANT_GROW,
-            null,
-            null,
-            null,
-            0,
-            false
+        quitButton = JButton()
+        quitButton.background = Color(-65469)
+        val quitButtonFont = this.getFont("JetBrains Mono", Font.BOLD, 20, quitButton.font)
+        if (quitButtonFont != null) quitButton.font = quitButtonFont
+        quitButton.foreground = Color(-13618892)
+        quitButton.text = "QUIT"
+        buttonPane.add(
+            quitButton,
+            GridConstraints(
+                1,
+                0,
+                1,
+                2,
+                GridConstraints.ANCHOR_NORTH,
+                GridConstraints.FILL_HORIZONTAL,
+                GridConstraints.SIZEPOLICY_CAN_SHRINK or GridConstraints.SIZEPOLICY_CAN_GROW,
+                GridConstraints.SIZEPOLICY_FIXED,
+                null,
+                null,
+                null,
+                0,
+                false
+            )
         )
-    )
-    val spacer2 = Spacer()
-    contentPane.add(
-        spacer2,
-        GridConstraints(
-            3,
-            0,
-            1,
-            1,
-            GridConstraints.ANCHOR_CENTER,
-            GridConstraints.FILL_VERTICAL,
-            1,
-            GridConstraints.SIZEPOLICY_WANT_GROW,
-            null,
-            null,
-            null,
-            0,
-            false
+        val spacer1 = Spacer()
+        contentPane.add(
+            spacer1,
+            GridConstraints(
+                1,
+                0,
+                1,
+                1,
+                GridConstraints.ANCHOR_CENTER,
+                GridConstraints.FILL_VERTICAL,
+                1,
+                GridConstraints.SIZEPOLICY_WANT_GROW,
+                null,
+                null,
+                null,
+                0,
+                false
+            )
         )
-    )
-}
+        val spacer2 = Spacer()
+        contentPane.add(
+            spacer2,
+            GridConstraints(
+                3,
+                0,
+                1,
+                1,
+                GridConstraints.ANCHOR_CENTER,
+                GridConstraints.FILL_VERTICAL,
+                1,
+                GridConstraints.SIZEPOLICY_WANT_GROW,
+                null,
+                null,
+                null,
+                0,
+                false
+            )
+        )
+
+    }
+
 
     @Suppress("SameParameterValue")
     private fun getFont(fontName: String?, style: Int, size: Int, currentFont: Font?): Font? {
