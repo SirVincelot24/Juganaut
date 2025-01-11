@@ -1,9 +1,14 @@
 package de.glueckstobi.juganaut.bl.logic
 
+import com.adonax.audiocue.AudioCue
 import de.glueckstobi.juganaut.bl.Game
+import de.glueckstobi.juganaut.bl.space.Action
 import de.glueckstobi.juganaut.bl.space.Coord
 import de.glueckstobi.juganaut.bl.space.Direction
 import de.glueckstobi.juganaut.bl.worlditems.*
+import de.glueckstobi.juganaut.ui.swing.MainGui
+import kotlin.random.Random
+import kotlin.random.nextInt
 
 /**
  * Verarbeitet die Steuer-Kommandos des Spielers und
@@ -38,7 +43,7 @@ class PlayerController(val game: Game) {
     }
 
     /**
-     * Wird gedrückt, wenn der Spieler die Taste wieder loslässt.
+     * Wird aufgerufen, wenn der Spieler die Taste wieder loslässt.
      */
     fun playerInputReleased() {
         playerInputPressed = false
@@ -66,6 +71,23 @@ class PlayerController(val game: Game) {
         playerInputProcessed = true
         when (currentInput) {
             is PlayerMovement -> tryMovePlayer(currentInput.direction)
+            is PlayerActions -> return
+        }
+    }
+    fun applyPlayerActions() {
+        val currentInput = playerInput
+        if (currentInput == null) {
+            return
+        }
+        if (!playerInputPressed) {
+            // key is not pressed and the input is pressed at least once (or the last time),
+            // so reset the input to null
+            playerInput = null
+        }
+        playerInputProcessed = true
+        when (currentInput) {
+            is PlayerMovement -> return
+            is PlayerActions -> processAction(currentInput.action)
         }
     }
 
@@ -86,7 +108,8 @@ class PlayerController(val game: Game) {
         }
         val destinationItem = game.world.getField(destination)
         when (destinationItem) {
-            EmptyField, Dirt -> movePlayer(source, destination)
+            EmptyField -> movePlayer(source, destination)
+            is Dirt -> movePlayerIntoDirt(source, destination)
             is Monster -> moveIntoMonster(source, destination)
             is Rock -> tryMoveRock(destination, direction, source, destinationItem) // can not move, do nothing
             is Player -> {} // player moves to itself? should not happen
@@ -106,6 +129,12 @@ class PlayerController(val game: Game) {
         movePlayer(source, destination)
         val newCount = game.diamondCount + 1
         game.diamondCount = newCount
+
+        // Wenn der Spieler genauso viele Diamanten hat wie auf dem Spielfeld verteilt sind, dann ist das Spiel gewonnen
+        if (game.diamondCount >= game.diamondsInGame) {
+            game.win(AllDiamondsCollected(game.diamondCount))
+        }
+        MainGui.sfxAudioCue.play()
     }
 
     fun tryMoveRock(rockCoord: Coord, direction: Direction, playerCoord: Coord, rock: Rock) {
@@ -137,6 +166,22 @@ class PlayerController(val game: Game) {
         game.world.setField(next, rock)
         game.world.setField(rockCoord, player)
         game.world.setField(playerCoord, EmptyField)
+    }
+
+    private fun movePlayerIntoDirt(source: Coord, destination: Coord) {
+        movePlayer(source, destination)
+        val crispSounds: Array<String> =
+            arrayOf( "/sound/crisp1.wav", "/sound/crisp2.wav", "/sound/crisp3.wav", "/sound/crisp4.wav" )
+        val sfxAudioCue = AudioCue.makeStereoCue(this.javaClass.getResource(crispSounds[Random.nextInt(0..3)]), 4)
+        sfxAudioCue.open()
+        sfxAudioCue.play(0.65)
+    }
+
+    private fun processAction(action: Action) {
+        when (action) {
+            Action.Quit -> game.quit()
+            Action.Restart -> game.restart()
+        }
     }
 
     /**

@@ -11,27 +11,27 @@ import javax.swing.ImageIcon
  */
 object StaticImageRenderer : WorldItemRenderer {
 
-    private val playerImage = loadImage("/doggy.png")
-    private val dirtImage = loadImage("/dirt.png")
-    private val rockImage = loadImage("/rock.png")
-    private val monsterImage = loadImage("/monster.png")
-    private val monsterSleepImage = loadImage("/monster-sleeping.png")
-    private val diamondimage = loadImage("/diamond.png")
-    private val bombImage = loadImage("/bombe.png")
-    private val bombActiveImage = loadImage("/bombe-active.png")
+    private val playerImage = loadImage("/textures/cat.png")
+    private val dirtImage = loadImage("/textures/dirt.png")
+    private val rockImage = loadImage("/textures/rock.png")
+    private val monsterImage = loadImage("/textures/monster.png")
+    private val monsterSleepImage = loadImage("/textures/monster-sleeping.png")
+    private val diamondimage = loadImage("/textures/diamond.png")
+    private val bombImage = loadImage("/textures/bombe.png")
+    private val bombActiveImage = loadImage("/textures/bombe-active.png")
 
 
     /**
-     * Lädt das Bild mit dem angengen Datei-Namen.
+     * Lädt das Bild mit dem angegebenen Datei-Namen.
      */
-    private fun loadImage(filename: String): Image {
+    fun loadImage(filename: String): Image {
         val rawImage = ImageIcon(javaClass.getResource(filename)).image
         val scaledImage = rawImage.getScaledInstance(WorldRenderer.fieldRenderSize, WorldRenderer.fieldRenderSize, 0)
         return scaledImage
     }
 
     /**
-     * Malt das angegeben Element auf den Bildschirm, wenn möglich.
+     * Malt das angegebene Element auf den Bildschirm, wenn möglich.
      */
     override fun renderItem(
         item: WorldItem,
