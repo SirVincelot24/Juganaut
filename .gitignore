@@ -1,6 +1,6 @@
 ### IntelliJ IDEA ###
 out/
-!**/src/main/**/out/
+!app/src/commonMain/**/out/
 !**/src/test/**/out/
 
 ### Gradle ###
@@ -19,7 +19,7 @@ gradlew.bat
 .springBeans
 .sts4-cache
 bin/
-!**/src/main/**/bin/
+!app/src/commonMain/**/bin/
 !**/src/test/**/bin/
 
 ### NetBeans ###
@@ -34,3 +34,21 @@ bin/
 
 ### Mac OS ###
 .DS_Store
+
+*.iml
+.kotlin
+.gradle
+**/build/
+xcuserdata
+!src/**/build/
+local.properties
+captures
+.externalNativeBuild
+.cxx
+*.xcodeproj/*
+!*.xcodeproj/project.pbxproj
+!*.xcodeproj/xcshareddata/
+!*.xcodeproj/project.xcworkspace/
+!*.xcworkspace/contents.xcworkspacedata
+**/xcshareddata/WorkspaceSettings.xcsettings
+/.idea/
