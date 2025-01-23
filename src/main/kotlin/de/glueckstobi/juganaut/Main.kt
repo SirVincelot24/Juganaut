@@ -9,8 +9,13 @@ fun main(args: Array<String>) {
     val playerY = providedArgs[1].toInt()
     val diamondsInGame = providedArgs[2].toInt()
     checkArgs(args)
+    println("LOS")
     MainGui().showMenu(playerX, playerY, diamondsInGame)
-
+//    val frame = JFrame("GENOISCH")
+//    val listener = ActionListener { _ -> println("sdf sf sdf sd") }
+//    val settingsMenuGui = SettingsMenuGui(listener)
+//    frame.contentPane = settingsMenuGui
+//    frame.isVisible = true
 }
 
 /**

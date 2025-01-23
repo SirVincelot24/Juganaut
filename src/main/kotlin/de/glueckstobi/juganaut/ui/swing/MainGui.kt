@@ -9,6 +9,7 @@ import de.glueckstobi.juganaut.ui.swing.game.UserInputHandler
 import de.glueckstobi.juganaut.ui.swing.game.WorldRenderer
 import de.glueckstobi.juganaut.ui.swing.game.itemrenderer.StaticImageRenderer.loadImage
 import java.awt.BorderLayout
+import java.awt.CardLayout
 import java.awt.Color
 import java.awt.Font
 import java.awt.GridLayout
@@ -218,16 +219,31 @@ class MainGui {
 
     }
 
+    /**
+     * Ein Haupt-panel um alle Fenster gut wechseln zu können
+     */
+    val cardLayout = CardLayout()
+    val mainPanel = JPanel(cardLayout)
 
     fun showMenu(playerX: Int, playerY: Int, diamondsInGame: Int) {
         val quitActionEvent = ActionListener { _ -> window.dispose() }
         val startActionEvent = ActionListener { _ -> startPlaying(playerX, playerY, diamondsInGame) }
-        val returnActonEvent = ActionListener { _ -> window.contentPane = MenuGui(quitActionEvent, startActionEvent) { } }
-        val settingsActionEvent = ActionListener { _ -> window.contentPane = SettingsMenuGui(returnActonEvent) }
+        val settingsActionEvent = ActionListener { _ -> cardLayout.show(mainPanel, "settings") }
         val menuGui = MenuGui(quitActionEvent, startActionEvent, settingsActionEvent)
         menuGui.quitButton.addActionListener { window.dispose() }
+        println("LÖÜS")
         menuGui.startButton.addActionListener { startPlaying(playerX, playerY, diamondsInGame) }
-        window.contentPane = menuGui.contentPane
+        println("LÖÜÜS")
+        val returnActonEvent = ActionListener { _ -> cardLayout.show(mainPanel, "menu") }
+        println("LAÄÖÜUS")
+        val settingsMenuGui = SettingsMenuGui(returnActonEvent)
+
+        println("START")
+
+        mainPanel.add( "menu", menuGui.contentPane)
+        mainPanel.add("settings", settingsMenuGui.contentPane)
+
+        window.contentPane = mainPanel
         window.iconImage = ImageIO.read(this.javaClass.getResource("/textures/monster.png"))
         window.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE)
         window.setSize(1024, 1000)
@@ -243,30 +259,9 @@ class MainGui {
             }
         })
 
+        cardLayout.show(mainPanel, "menu")
+
     }
-//    fun showSettingsMenu(playerX: Int, playerY: Int, diamondsInGame: Int) {
-//        val quitActionEvent = ActionListener { _ -> window.dispose() }
-//        val startActionEvent = ActionListener { _ -> startPlaying(playerX, playerY, diamondsInGame) }
-//        val menuGui = MenuGui(quitActionEvent, startActionEvent)
-//        menuGui.quitButton.addActionListener { window.dispose() }
-//        menuGui.startButton.addActionListener { startPlaying(playerX, playerY, diamondsInGame) }
-//        window.contentPane = menuGui.contentPane
-//        window.iconImage = ImageIO.read(this.javaClass.getResource("/textures/monster.png"))
-//        window.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE)
-//        window.setSize(1024, 1000)
-//
-//        window.isVisible = true
-//
-//        window.contentPane.requestFocus()
-//
-//        window.addWindowListener(object : WindowAdapter() {
-//            override fun windowClosed(e: WindowEvent?) {
-//                super.windowClosed(e)
-//                window.dispose()
-//            }
-//        })
-//
-//    }
 
     /**
      * Baut das Fenster auf und zeigt es an.
@@ -291,7 +286,8 @@ class MainGui {
         diamondCountLabel.font = Font("Sans-Serif", Font.PLAIN, 30)
         diamondCountLabel.setHorizontalTextPosition(SwingConstants.LEFT)
 
-        window.contentPane = contentPane
+        mainPanel.add("game", contentPane)
+        cardLayout.show(mainPanel, "game")
 
         window.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE)
 

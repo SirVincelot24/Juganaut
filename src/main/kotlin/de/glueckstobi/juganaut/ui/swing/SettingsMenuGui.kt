@@ -7,7 +7,6 @@ import java.awt.Color
 import java.awt.Dimension
 import java.awt.Font
 import java.awt.Insets
-import java.awt.event.ActionEvent
 import java.awt.event.ActionListener
 import javax.swing.*
 import javax.swing.plaf.FontUIResource
@@ -15,20 +14,20 @@ import javax.swing.text.StyleContext
 
 @Suppress("UNUSED_EXPRESSION")
 class SettingsMenuGui(returnEvent: ActionListener) : JPanel() {
-    private var contentPane: JPanel? = null
+    var contentPane: JPanel? = null
     private var sfxVolumeSlider: JSlider? = null
     private var musicVolumeSlider: JSlider? = null
     private var sfxVolumeLabel: JLabel? = null
     private var musicVolumeLabel: JLabel? = null
     private var settingsLabel: JLabel? = null
-    private var returnButton: JButton? = null
+    var returnButton: JButton = JButton("RETURN")
     private var musicVolume: JLabel? = null
     private var SFXVolume: JLabel? = null
 
 
     init {
         setupUI()
-        returnButton!!.addActionListener { returnEvent}
+        returnButton.addActionListener { returnEvent}
         do {
             SFXVolume!!.text = sfxVolumeSlider!!.value.toString()
             musicVolume!!.text = musicVolumeSlider!!.value.toString()
@@ -168,11 +167,11 @@ class SettingsMenuGui(returnEvent: ActionListener) : JPanel() {
             )
         )
         returnButton = JButton()
-        returnButton!!.background = Color(-65468)
-        returnButton!!.isEnabled = true
-        val returnButtonFont = this.getFont("Comic Sans MS", -1, 28, returnButton!!.font)
-        if (returnButtonFont != null) returnButton!!.font = returnButtonFont
-        returnButton!!.text = "Return to Menu"
+        returnButton.background = Color(-65468)
+        returnButton.isEnabled = true
+        val returnButtonFont = this.getFont("Comic Sans MS", -1, 28, returnButton.font)
+        if (returnButtonFont != null) returnButton.font = returnButtonFont
+        returnButton.text = "Return to Menu"
         contentPane!!.add(
             returnButton,
             GridConstraints(

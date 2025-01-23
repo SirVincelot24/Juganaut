@@ -9,7 +9,6 @@ import java.awt.Color
 import java.awt.Dimension
 import java.awt.Font
 import java.awt.Insets
-import java.awt.event.ActionEvent
 import java.awt.event.ActionListener
 import javax.swing.JButton
 import javax.swing.JLabel
@@ -114,13 +113,13 @@ class MenuGui(quitEvent: ActionListener, startEvent: ActionListener, settingsEve
             )
         )
         settingsButton = JButton()
-        settingsButton!!.setBackground(Color(-16763905))
+        settingsButton.setBackground(Color(-16763905))
         val settingsButtonFont =
-            this.getFont("JetBrains Mono", Font.BOLD, 20, settingsButton!!.getFont())
-        if (settingsButtonFont != null) settingsButton!!.setFont(settingsButtonFont)
-        settingsButton!!.setForeground(Color(-13618892))
-        settingsButton!!.setHideActionText(false)
-        settingsButton!!.setText("SETTINGS")
+            this.getFont("JetBrains Mono", Font.BOLD, 20, settingsButton.getFont())
+        if (settingsButtonFont != null) settingsButton.setFont(settingsButtonFont)
+        settingsButton.setForeground(Color(-13618892))
+        settingsButton.setHideActionText(false)
+        settingsButton.setText("SETTINGS")
         buttonPane.add(
             settingsButton,
             GridConstraints(
