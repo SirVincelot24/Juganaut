@@ -9,7 +9,6 @@ import java.awt.Color
 import java.awt.Dimension
 import java.awt.Font
 import java.awt.Insets
-import java.awt.event.ActionListener
 import javax.swing.JButton
 import javax.swing.JLabel
 import javax.swing.JPanel
@@ -18,21 +17,18 @@ import javax.swing.plaf.FontUIResource
 import javax.swing.text.StyleContext
 
 
-@Suppress("UNUSED_EXPRESSION")
-class MenuGui(quitEvent: ActionListener, startEvent: ActionListener, settingsEvent: ActionListener) : JPanel() {
+class MenuGui() : JPanel() {
     var contentPane: JPanelWithBackground = JPanelWithBackground(this.javaClass.getResource("/textures/menu-background.png"))
     private var nameLabel: JLabel = JLabel("Juganaut", SwingConstants.CENTER)
     private var buttonPane: JPanel = JPanel()
     var quitButton: JButton = JButton("QUIT")
     var startButton: JButton = JButton("START")
-    private var settingsButton: JButton = JButton("SETTINGS")
+    var settingsButton: JButton = JButton("SETTINGS")
 
 
     init {
         setupUI()
-        quitButton.addActionListener { quitEvent }
-        startButton.addActionListener { startEvent }
-        settingsButton.addActionListener { settingsEvent }
+
     }
 
     private fun setupUI() {

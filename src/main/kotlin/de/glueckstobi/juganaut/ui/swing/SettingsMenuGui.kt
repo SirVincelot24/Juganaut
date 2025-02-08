@@ -7,13 +7,12 @@ import java.awt.Color
 import java.awt.Dimension
 import java.awt.Font
 import java.awt.Insets
-import java.awt.event.ActionListener
 import javax.swing.*
 import javax.swing.plaf.FontUIResource
 import javax.swing.text.StyleContext
 
-@Suppress("UNUSED_EXPRESSION")
-class SettingsMenuGui(returnEvent: ActionListener) : JPanel() {
+
+class SettingsMenuGui() : JPanel() {
     var contentPane: JPanel? = null
     private var sfxVolumeSlider: JSlider? = null
     private var musicVolumeSlider: JSlider? = null
@@ -21,17 +20,14 @@ class SettingsMenuGui(returnEvent: ActionListener) : JPanel() {
     private var musicVolumeLabel: JLabel? = null
     private var settingsLabel: JLabel? = null
     var returnButton: JButton = JButton("RETURN")
-    private var musicVolume: JLabel? = null
-    private var SFXVolume: JLabel? = null
+    var musicVolume: JLabel? = null
+    var sfxVolume: JLabel? = null
 
 
     init {
         setupUI()
-        returnButton.addActionListener { returnEvent}
-        do {
-            SFXVolume!!.text = sfxVolumeSlider!!.value.toString()
-            musicVolume!!.text = musicVolumeSlider!!.value.toString()
-        } while (isEnabled)
+    sfxVolumeSlider!!.addChangeListener { _ -> sfxVolume!!.text = sfxVolumeSlider!!.value.toString() }
+    musicVolumeSlider!!.addChangeListener { _ -> musicVolume!!.text = musicVolumeSlider!!.value.toString() }
     }
 
     private fun setupUI() {
@@ -209,14 +205,14 @@ class SettingsMenuGui(returnEvent: ActionListener) : JPanel() {
                 false
             )
         )
-        SFXVolume = JLabel()
-        val SFXVolumeFont = this.getFont("Comic Sans MS", -1, 28, SFXVolume!!.font)
-        if (SFXVolumeFont != null) SFXVolume!!.font = SFXVolumeFont
-        SFXVolume!!.foreground = Color(-2170653)
-        SFXVolume!!.isOpaque = false
-        SFXVolume!!.text = "100"
+        sfxVolume = JLabel()
+        val SFXVolumeFont = this.getFont("Comic Sans MS", -1, 28, sfxVolume!!.font)
+        if (SFXVolumeFont != null) sfxVolume!!.font = SFXVolumeFont
+        sfxVolume!!.foreground = Color(-2170653)
+        sfxVolume!!.isOpaque = false
+        sfxVolume!!.text = "100"
         contentPane!!.add(
-            SFXVolume,
+            sfxVolume,
             GridConstraints(
                 2,
                 1,

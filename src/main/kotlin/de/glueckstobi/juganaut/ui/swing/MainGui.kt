@@ -31,13 +31,29 @@ class MainGui {
          */
         val tickDurationMs = 350.toLong()
 
+        /**
+         * Musik
+         */
         private var collectDiamondSFX = Companion::class.java.getResource("/sound/collect_diamond.wav")
-
         private var mainMusic = Companion::class.java.getResource("/sound/main_loop.wav")
-
         var sfxAudioCue = AudioCue.makeStereoCue(collectDiamondSFX, 4)
-
         var musicAudioCue = AudioCue.makeStereoCue(mainMusic, 4)
+
+        /**
+         * Ein Haupt-panel um alle Fenster gut wechseln zu können
+         */
+        val cardLayout = CardLayout()
+        val mainPanel = JPanel(cardLayout)
+
+        /**
+         * Die Lautstärke der Musik
+         */
+        var musicVolume = 100
+
+        /**
+         * Die Lautstärke der Soundeffekte
+         */
+        var sfxVolume = 100
 
     }
 
@@ -104,17 +120,30 @@ class MainGui {
     /**
      * Startet das Spiel.
      */
-    private fun startPlaying(playerX: Int, playerY: Int, diamondsInGame: Int): JPanel {
+    fun startPlaying(playerX: Int, playerY: Int, diamondsInGame: Int): JPanel {
         val game = createGame(playerX, playerY, diamondsInGame)
         val renderer = WorldRenderer(game.world)
         inputController = UserInputHandler(game)
         startRenderCycle(game)
-        sfxAudioCue.open()
-        musicAudioCue.open()
-        musicAudioCue.play()
-        musicAudioCue.setVolume(musicAudioCue.obtainInstance(), 0.1)
-        musicAudioCue.setLooping(musicAudioCue.obtainInstance(), -1)
+        if (!(sfxAudioCue.getIsActive(sfxAudioCue.obtainInstance())) || !(musicAudioCue.getIsActive(musicAudioCue.obtainInstance()))) {
+            sfxAudioCue.open()
+            musicAudioCue.open()
+            musicAudioCue.play()
+            musicAudioCue.setVolume(musicAudioCue.obtainInstance(), musicVolume.toDouble())
+            musicAudioCue.setLooping(musicAudioCue.obtainInstance(), -1)
+        }
         return showWindow(renderer)
+    }
+
+    fun stopMusic() {
+        sfxAudioCue.close()
+        musicAudioCue.close()
+    }
+
+    fun resetAll() {
+        stopMusic()
+        renderCycle?.clockStopped = true
+
     }
 
     /**
@@ -219,24 +248,19 @@ class MainGui {
 
     }
 
-    /**
-     * Ein Haupt-panel um alle Fenster gut wechseln zu können
-     */
-    val cardLayout = CardLayout()
-    val mainPanel = JPanel(cardLayout)
+
 
     fun showMenu(playerX: Int, playerY: Int, diamondsInGame: Int) {
-        val quitActionEvent = ActionListener { _ -> window.dispose() }
-        val startActionEvent = ActionListener { _ -> startPlaying(playerX, playerY, diamondsInGame) }
-        val settingsActionEvent = ActionListener { _ -> cardLayout.show(mainPanel, "settings") }
-        val menuGui = MenuGui(quitActionEvent, startActionEvent, settingsActionEvent)
+        val menuGui = MenuGui()
         menuGui.quitButton.addActionListener { window.dispose() }
-        println("LÖÜS")
+        menuGui.settingsButton.addActionListener { cardLayout.show(mainPanel, "settings") }
         menuGui.startButton.addActionListener { startPlaying(playerX, playerY, diamondsInGame) }
-        println("LÖÜÜS")
-        val returnActonEvent = ActionListener { _ -> cardLayout.show(mainPanel, "menu") }
-        println("LAÄÖÜUS")
-        val settingsMenuGui = SettingsMenuGui(returnActonEvent)
+
+        val settingsMenuGui = SettingsMenuGui()
+        settingsMenuGui.returnButton.addActionListener { _ -> cardLayout.show(mainPanel, "menu")
+        musicVolume = settingsMenuGui.musicVolume!!.text.toInt()
+        sfxVolume = settingsMenuGui.sfxVolume!!.text.toInt()
+        }
 
         println("START")
 
