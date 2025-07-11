@@ -1,9 +1,9 @@
 package de.glueckstobi.juganaut.ui.swing
 
-import com.adonax.audiocue.AudioCue
 import de.glueckstobi.juganaut.bl.Game
 import de.glueckstobi.juganaut.bl.setup.WorldBuilder
 import de.glueckstobi.juganaut.bl.setup.WorldBuilderConfiguration
+import de.glueckstobi.juganaut.ui.audio.AudioPlayer
 import de.glueckstobi.juganaut.ui.swing.game.UserInputHandler
 import de.glueckstobi.juganaut.ui.swing.game.WorldRenderer
 import de.glueckstobi.juganaut.ui.swing.game.itemrenderer.StaticImageRenderer.loadImage
@@ -36,14 +36,6 @@ class MainGui {
          * Die Zeit einer Spiel-Runde (in Millisekunden)
          */
         val tickDurationMs = 350.toLong()
-
-        private var collectDiamondSFX = Companion::class.java.getResource("/sound/collect_diamond.wav")
-
-        private var mainMusic = Companion::class.java.getResource("/sound/main_loop.wav")
-
-        var sfxAudioCue = AudioCue.makeStereoCue(collectDiamondSFX, 4)
-
-        var musicAudioCue = AudioCue.makeStereoCue(mainMusic, 4)
 
     }
 
@@ -115,11 +107,7 @@ class MainGui {
         val renderer = WorldRenderer(game.world)
         inputController = UserInputHandler(game)
         startRenderCycle(game)
-        sfxAudioCue.open()
-        musicAudioCue.open()
-        musicAudioCue.play()
-        musicAudioCue.setVolume(musicAudioCue.obtainInstance(), 0.1)
-        musicAudioCue.setLooping(musicAudioCue.obtainInstance(), -1)
+        AudioPlayer.startMusic()
         return showWindow(renderer)
     }
 
@@ -249,12 +237,7 @@ class MainGui {
             override fun windowClosed(e: WindowEvent?) {
                 super.windowClosed(e)
                 renderCycle?.clockStopped = true
-                try {
-                    sfxAudioCue.close()
-                    musicAudioCue.close()
-                } catch (e: IllegalStateException) {
-                    System.err.println("Already closed AudioCue!")
-                }
+                AudioPlayer.stopAll()
                 window.dispose()
             }
         })

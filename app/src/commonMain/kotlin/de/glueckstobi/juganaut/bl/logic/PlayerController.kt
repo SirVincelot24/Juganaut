@@ -1,11 +1,11 @@
 package de.glueckstobi.juganaut.bl.logic
 
-import com.adonax.audiocue.AudioCue
 import de.glueckstobi.juganaut.bl.Game
 import de.glueckstobi.juganaut.bl.space.Coord
 import de.glueckstobi.juganaut.bl.space.Direction
 import de.glueckstobi.juganaut.bl.worlditems.*
-import de.glueckstobi.juganaut.ui.swing.MainGui
+import de.glueckstobi.juganaut.ui.audio.AudioPlayer
+import de.glueckstobi.juganaut.ui.audio.AudioSample
 import kotlin.random.Random
 import kotlin.random.nextInt
 
@@ -133,7 +133,7 @@ class PlayerController(val game: Game) {
         if (game.diamondCount >= game.diamondsInGame) {
             game.win(AllDiamondsCollected(game.diamondCount))
         }
-        MainGui.sfxAudioCue.play()
+        AudioPlayer.playSfx(AudioSample.CollectDiamond)
     }
 
     fun tryMoveRock(rockCoord: Coord, direction: Direction, playerCoord: Coord, rock: Rock) {
@@ -169,11 +169,10 @@ class PlayerController(val game: Game) {
 
     private fun movePlayerIntoDirt(source: Coord, destination: Coord) {
         movePlayer(source, destination)
-        val crispSounds: Array<String> =
-            arrayOf( "/sound/crisp1.wav", "/sound/crisp2.wav", "/sound/crisp3.wav", "/sound/crisp4.wav" )
-        val sfxAudioCue = AudioCue.makeStereoCue(this.javaClass.getResource(crispSounds[Random.nextInt(0..3)]), 4)
-        sfxAudioCue.open()
-        sfxAudioCue.play(0.65)
+        val crispSounds: Array<AudioSample> =
+            arrayOf( AudioSample.Crisp1, AudioSample.Crisp2, AudioSample.Crisp3, AudioSample.Crisp4 )
+        val sample = crispSounds[Random.nextInt(0..3)]
+        AudioPlayer.playSfx(sample, 0.65)
     }
 
     private fun processAction(action: Action) {
