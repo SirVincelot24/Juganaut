@@ -1,10 +1,10 @@
 package de.glueckstobi.juganaut.ui.swing.game
 
 import de.glueckstobi.juganaut.bl.Game
+import de.glueckstobi.juganaut.bl.logic.Action
 import de.glueckstobi.juganaut.bl.logic.PlayerActions
 import de.glueckstobi.juganaut.bl.logic.PlayerInput
 import de.glueckstobi.juganaut.bl.logic.PlayerMovement
-import de.glueckstobi.juganaut.bl.space.Action
 import de.glueckstobi.juganaut.bl.space.Direction
 import java.awt.event.KeyEvent
 

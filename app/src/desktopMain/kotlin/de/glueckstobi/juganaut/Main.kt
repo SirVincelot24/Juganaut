@@ -1,10 +1,7 @@
 package de.glueckstobi.juganaut
 
-import de.glueckstobi.juganaut.bl.Game
-import de.glueckstobi.juganaut.bl.World
+import de.glueckstobi.juganaut.bl.setup.WorldBuilderConfiguration
 import de.glueckstobi.juganaut.bl.space.Coord
-import de.glueckstobi.juganaut.bl.space.Direction
-import de.glueckstobi.juganaut.bl.worlditems.*
 import de.glueckstobi.juganaut.ui.swing.MainGui
 
 
@@ -13,7 +10,11 @@ fun main(args: Array<String>) {
     val playerX = providedArgs[0].toInt()
     val playerY = providedArgs[1].toInt()
     val diamondsInGame = providedArgs[2].toInt()
-    MainGui().showMenu(playerX, playerY, diamondsInGame)
+    val config = WorldBuilderConfiguration(
+        diamondsCountRange = (diamondsInGame..diamondsInGame),
+        playerCoord = Coord(playerX, playerY)
+    )
+    MainGui().showMenu(config)
 }
 
 /**
@@ -26,4 +27,3 @@ private fun checkArgs(args: Array<String>): Array<String> {
     }
     return arrayOf("10", "10", "10")
 }
-

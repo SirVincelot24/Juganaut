@@ -1,6 +1,5 @@
 package de.glueckstobi.juganaut.bl.logic
 
-import de.glueckstobi.juganaut.bl.space.Action
 import de.glueckstobi.juganaut.bl.space.Direction
 
 /**
@@ -18,3 +17,17 @@ data class  PlayerMovement(val direction: Direction) : PlayerInput
  * @param action die Aktion, die der Spieler ausführen will.
  */
 data class PlayerActions(val action: Action): PlayerInput
+
+/**
+ * Die möglichen Aktionen.
+ */
+enum class Action {
+    /**
+     * Verlassen
+     */
+    Quit,
+    /**
+     * Neustart
+     */
+    Restart
+}

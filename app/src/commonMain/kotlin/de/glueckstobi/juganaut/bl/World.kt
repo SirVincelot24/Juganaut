@@ -1,15 +1,15 @@
 package de.glueckstobi.juganaut.bl
 
 import de.glueckstobi.juganaut.bl.space.Coord
+import de.glueckstobi.juganaut.bl.space.Size
 import de.glueckstobi.juganaut.bl.worlditems.Dirt
 import de.glueckstobi.juganaut.bl.worlditems.WorldItem
 
 /**
  * Enthält das Spielfeld mit allen Elementen auf den einzelnen Feldern.
- * @param width die Breite des Spielfelds
- * @param height die Höhe des Spielfelds.
+ * @param size die Größe des Spielfelds
  */
-class World(val width: Int, val height: Int) {
+class World(val size: Size) {
 
     /**
      * Die einzelnen Felder.
@@ -29,6 +29,18 @@ class World(val width: Int, val height: Int) {
      * Der gültige Bereich der Y-Koordinaten
      */
     val validYRange = 0 until height
+
+    /**
+     * Die Breite der Welt.
+     */
+    val width: Int
+        get() = size.width
+
+    /**
+     * Die Höhe der Welt
+     */
+    val height: Int
+        get() = size.height
 
     /**
      * Gibt true zurück, wenn die angegebene Koordinate gültig ist, d.h. innerhalb des Spielfelds liegt.
@@ -84,5 +96,12 @@ class World(val width: Int, val height: Int) {
             }
         }
         return result
+    }
+
+    /**
+     * Zählt die Felder, die die angegebene Bedingung erfüllen.
+     */
+    fun count(condition: (WorldItem) -> Boolean): Int {
+        return findAll(condition).size
     }
 }

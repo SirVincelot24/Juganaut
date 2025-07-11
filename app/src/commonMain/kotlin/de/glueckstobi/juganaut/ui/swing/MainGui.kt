@@ -2,10 +2,8 @@ package de.glueckstobi.juganaut.ui.swing
 
 import com.adonax.audiocue.AudioCue
 import de.glueckstobi.juganaut.bl.Game
-import de.glueckstobi.juganaut.bl.World
-import de.glueckstobi.juganaut.bl.space.Coord
-import de.glueckstobi.juganaut.bl.space.Direction
-import de.glueckstobi.juganaut.bl.worlditems.*
+import de.glueckstobi.juganaut.bl.setup.WorldBuilder
+import de.glueckstobi.juganaut.bl.setup.WorldBuilderConfiguration
 import de.glueckstobi.juganaut.ui.swing.game.UserInputHandler
 import de.glueckstobi.juganaut.ui.swing.game.WorldRenderer
 import de.glueckstobi.juganaut.ui.swing.game.itemrenderer.StaticImageRenderer.loadImage
@@ -13,11 +11,19 @@ import java.awt.BorderLayout
 import java.awt.Color
 import java.awt.Font
 import java.awt.GridLayout
-import java.awt.event.*
+import java.awt.event.ActionListener
+import java.awt.event.KeyAdapter
+import java.awt.event.KeyEvent
+import java.awt.event.WindowAdapter
+import java.awt.event.WindowEvent
 import javax.imageio.ImageIO
-import javax.swing.*
-import kotlin.random.Random
-import kotlin.random.nextInt
+import javax.swing.ImageIcon
+import javax.swing.JFrame
+import javax.swing.JLabel
+import javax.swing.JPanel
+import javax.swing.SwingConstants
+import javax.swing.SwingUtilities
+import javax.swing.WindowConstants
 
 
 /**
@@ -104,8 +110,8 @@ class MainGui {
     /**
      * Startet das Spiel.
      */
-    private fun startPlaying(playerX: Int, playerY: Int, diamondsInGame: Int): JPanel {
-        val game = createGame(playerX, playerY, diamondsInGame)
+    private fun startPlaying(configuration: WorldBuilderConfiguration): JPanel {
+        val game = WorldBuilder().createGame(configuration)
         val renderer = WorldRenderer(game.world)
         inputController = UserInputHandler(game)
         startRenderCycle(game)
@@ -117,83 +123,9 @@ class MainGui {
         return showWindow(renderer)
     }
 
-    /**
-     * Erstellt ein neues Spiel
-     * @param playerX Die X-Koordinate wo der Spieler gespawnt wird
-     * @param playerY Die Y-Koordinate wo der Spieler gespawnt wird
-     * @param diamondsInGame wie viele Diamanten im Spiel sein sollen
-     */
-    private fun createGame(playerX : Int, playerY : Int, diamondsInGame : Int): Game {
-        val world = World(20, 20)
-        createItems(world, (20..50), playerX, playerY) { Rock() }
-        createItems(world, (20..50), playerX, playerY) { Monster() }
-        createItems(world, (diamondsInGame..diamondsInGame), playerX, playerY) { Diamond }
-        createItems(world, (10..20), playerX, playerY) { Bomb() }
 
-        val playerCoord = Coord(playerX, playerY)
-        world.setField(playerCoord, Player())
-        val oben = playerCoord.move(Direction.Up)
-        val links = playerCoord.move(Direction.Left)
-        val unten = playerCoord.move(Direction.Down)
-        val rechts = playerCoord.move(Direction.Right)
-        world.setField(oben, Dirt)
-        world.setField(links, Dirt)
-        world.setField(unten, Dirt)
-        world.setField(rechts, Dirt)
-        return Game(world, diamondsInGame)
-    }
 
-    /**
-     * erstellt die Items für ein Spiel
-     * @param world Die Welt, wo die Items gespawnt werden
-     * @param itemCountRange Wie viele Items gespawnt werden
-     * @param playerX Die X-Koordinate wo der Spieler steht
-     * @param playerY Die Y-Koordinate wo der Spieler steht
-     * @param itemFactory Welches Item gespawnt wird
-     */
-    private fun <T : WorldItem> createItems(world: World, itemCountRange: IntRange, playerX: Int, playerY: Int, itemFactory: () -> T) {
-        val itemCount = Random.nextInt(itemCountRange)
-        repeat((1..itemCount).count()) {
-            world.setField(
-                Coord(getValidXCoordinate(world, playerX), getValidYCoordinate(world, playerY)),
-                itemFactory()
-            )
-        }
-    }
 
-    /**
-     * findet eine gültige Y-Koordinate, wo Items spawnen können
-     * (gültig heißt: nicht neben dem Spieler)
-     * @param world die Welt, wo eine gültige Koordinate gesucht wird
-     * @param playerY Die Y-Koordinate wo der Spieler steht
-     */
-    private fun getValidYCoordinate(world: World, playerY: Int): Int {
-        while (true) {
-            val y = Random.nextInt(world.validYRange)
-            if (y in playerY-1..playerY+1) {
-                continue
-            } else {
-                return y
-            }
-        }
-    }
-
-    /**
-     * findet eine gültige X-Koordinate, wo Items spawnen können
-     * (gültig heißt: nicht neben dem Spieler)
-     * @param world die Welt, wo eine gültige Koordinate gesucht wird
-     * @param playerX Die X-Koordinate wo der Spieler steht
-     */
-    private fun getValidXCoordinate(world: World, playerX: Int): Int {
-        while (true) {
-            val x = Random.nextInt(world.validXRange)
-            if (x in playerX-1..playerX+1) {
-                continue
-            } else {
-                return x
-            }
-        }
-    }
 
     /**
      * Startet den die Uhr, die regelmäßig eine Spiel-Runde ausführt und den aktuellen Spiel-Zustand anzeigt.
@@ -231,14 +163,14 @@ class MainGui {
     }
 
 
-    fun showMenu(playerX: Int, playerY: Int, diamondsInGame: Int) {
+    fun showMenu(configuration: WorldBuilderConfiguration) {
         val quitActionEvent = ActionListener { _ -> window.dispose() }
-        val startActionEvent = ActionListener { _ -> startPlaying(playerX, playerY, diamondsInGame) }
+        val startActionEvent = ActionListener { _ -> startPlaying(configuration) }
         val returnActonEvent = ActionListener { _ -> window.contentPane = MenuGui(quitActionEvent, startActionEvent) { } }
         val settingsActionEvent = ActionListener { _ -> window.contentPane = SettingsMenuGui(returnActonEvent) }
         val menuGui = MenuGui(quitActionEvent, startActionEvent, settingsActionEvent)
         menuGui.quitButton.addActionListener { window.dispose() }
-        menuGui.startButton.addActionListener { startPlaying(playerX, playerY, diamondsInGame) }
+        menuGui.startButton.addActionListener { startPlaying(configuration) }
         window.contentPane = menuGui.contentPane
         window.iconImage = ImageIO.read(this.javaClass.getResource("/textures/monster.png"))
         window.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE)
