@@ -1,6 +1,9 @@
 package de.glueckstobi.juganaut.ui.audio
 
 import com.adonax.audiocue.AudioCue
+import juganaut.app.generated.resources.Res
+import org.jetbrains.compose.resources.ExperimentalResourceApi
+import java.net.URL
 
 /**
  * Audio-Player.
@@ -54,7 +57,9 @@ object AudioPlayer {
         }
     }
 
+    @OptIn(ExperimentalResourceApi::class)
     private fun makeStereoCue(sample: AudioSample): AudioCue {
-        return AudioCue.makeStereoCue(this.javaClass.getResource(sample.path), 4)
+        val url = URL(Res.getUri(sample.path))
+        return AudioCue.makeStereoCue(url, 4)
     }
 }

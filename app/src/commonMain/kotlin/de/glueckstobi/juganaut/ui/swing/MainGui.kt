@@ -160,7 +160,7 @@ class MainGui {
         menuGui.quitButton.addActionListener { window.dispose() }
         menuGui.startButton.addActionListener { startPlaying(configuration) }
         window.contentPane = menuGui.contentPane
-        window.iconImage = ImageIO.read(this.javaClass.getResource("/textures/monster.png"))
+        window.iconImage = ImageIO.read(this.javaClass.getResource("/drawables/monster.png"))
         window.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE)
         window.setSize(1024, 1000)
 

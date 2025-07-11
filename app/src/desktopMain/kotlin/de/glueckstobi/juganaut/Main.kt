@@ -2,6 +2,7 @@ package de.glueckstobi.juganaut
 
 import de.glueckstobi.juganaut.bl.setup.WorldBuilderConfiguration
 import de.glueckstobi.juganaut.bl.space.Coord
+import de.glueckstobi.juganaut.ui.compose.MainGuiCompose
 import de.glueckstobi.juganaut.ui.swing.MainGui
 
 
@@ -14,7 +15,9 @@ fun main(args: Array<String>) {
         diamondsCountRange = (diamondsInGame..diamondsInGame),
         playerCoord = Coord(playerX, playerY)
     )
-    MainGui().showMenu(config)
+//    MainGui().showMenu(config)
+
+    MainGuiCompose.startPlaying(config)
 }
 
 /**
