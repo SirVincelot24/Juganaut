@@ -10,6 +10,7 @@ import androidx.compose.ui.window.application
 import de.glueckstobi.juganaut.bl.Game
 import de.glueckstobi.juganaut.bl.setup.WorldBuilder
 import de.glueckstobi.juganaut.bl.setup.WorldBuilderConfiguration
+import de.glueckstobi.juganaut.ui.audio.AudioPlayer
 import de.glueckstobi.juganaut.ui.compose.game.GameScreen
 import de.glueckstobi.juganaut.ui.compose.game.RenderCycle
 import de.glueckstobi.juganaut.ui.compose.game.UserInputHandler
@@ -52,13 +53,18 @@ object MainGuiCompose {
         val currentScreen = remember { mutableStateOf(CurrentScreen.Init) }
         when (currentScreen.value) {
             CurrentScreen.Init -> InitScreen(
-                onClickStart = {currentScreen.value = CurrentScreen.Game},
+                onClickStart = {
+                    currentScreen.value = CurrentScreen.Game
+                    AudioPlayer.startMusic()
+                },
                 onClickSettings = { currentScreen.value = CurrentScreen.Settings },
-                onClickQuit = {System.exit(0)}
+                onClickQuit = { System.exit(0) }
             )
+
             CurrentScreen.Settings -> SettingsScreen(
-                onClickBack = {currentScreen.value = CurrentScreen.Init},
+                onClickBack = { currentScreen.value = CurrentScreen.Init },
             )
+
             CurrentScreen.Game -> GameScreen(game, tickCount)
         }
     }

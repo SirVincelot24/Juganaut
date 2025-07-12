@@ -11,7 +11,7 @@ import java.net.URL
 object AudioPlayer {
 
     var sfxVolume = 1.0
-    var musicVolume = 0.1
+    var musicVolume = 0.5
 
     private var musicAudioCue = makeStereoCue(AudioSample.MainLoop)
 
@@ -20,8 +20,7 @@ object AudioPlayer {
      */
     fun startMusic() {
         musicAudioCue.open()
-        musicAudioCue.setVolume(musicAudioCue.obtainInstance(), musicVolume)
-        musicAudioCue.play()
+        musicAudioCue.play(musicVolume)
         musicAudioCue.setLooping(musicAudioCue.obtainInstance(), -1)
     }
 
