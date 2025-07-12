@@ -1,4 +1,4 @@
-package de.glueckstobi.juganaut.ui.compose
+package de.glueckstobi.juganaut.ui.compose.game
 
 import androidx.compose.ui.input.key.Key
 import androidx.compose.ui.input.key.KeyEvent

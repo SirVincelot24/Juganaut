@@ -1,4 +1,4 @@
-package de.glueckstobi.juganaut.ui.compose
+package de.glueckstobi.juganaut.ui.compose.game
 
 import de.glueckstobi.juganaut.bl.Game
 import kotlinx.coroutines.Dispatchers
