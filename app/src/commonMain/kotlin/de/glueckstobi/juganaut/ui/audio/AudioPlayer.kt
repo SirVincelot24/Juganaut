@@ -10,6 +10,9 @@ import java.net.URL
  */
 object AudioPlayer {
 
+    var sfxVolume = 1.0
+    var musicVolume = 0.1
+
     private var musicAudioCue = makeStereoCue(AudioSample.MainLoop)
 
     /**
@@ -17,7 +20,7 @@ object AudioPlayer {
      */
     fun startMusic() {
         musicAudioCue.open()
-        musicAudioCue.setVolume(musicAudioCue.obtainInstance(), 0.1)
+        musicAudioCue.setVolume(musicAudioCue.obtainInstance(), musicVolume)
         musicAudioCue.play()
         musicAudioCue.setLooping(musicAudioCue.obtainInstance(), -1)
     }
@@ -30,7 +33,7 @@ object AudioPlayer {
     fun playSfx(sample: AudioSample, volume: Double = 1.0) {
         val sfxAudioCue = makeStereoCue(sample)
         sfxAudioCue.open()
-        sfxAudioCue.play(volume)
+        sfxAudioCue.play(volume * sfxVolume)
     }
 
     /**
