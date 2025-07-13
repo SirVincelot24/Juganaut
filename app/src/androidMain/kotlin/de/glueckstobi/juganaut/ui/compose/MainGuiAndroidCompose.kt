@@ -42,9 +42,5 @@ object MainGuiAndroidCompose {
 @Composable
 fun MainGuiRoot(game: Game, tickCount: MutableIntState) {
     val inputHandler = remember { TouchInputHandler(game) }
-
-    val screenWidth = LocalWindowInfo.current.containerSize.width
-    val screenHeight = LocalWindowInfo.current.containerSize.height
-    inputHandler.setDisplaySize(screenWidth, screenHeight)
     MainGuiCommon(game, tickCount, inputHandler)
 }

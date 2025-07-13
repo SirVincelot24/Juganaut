@@ -7,6 +7,7 @@ import de.glueckstobi.juganaut.bl.Game
 import de.glueckstobi.juganaut.bl.logic.PlayerInput
 import de.glueckstobi.juganaut.bl.logic.PlayerMovement
 import de.glueckstobi.juganaut.bl.space.Direction
+import kotlin.math.abs
 
 /**
  * Verwaltet die Benutzer-Eingaben und leitet sie an die Spiel-Logik weiter.
@@ -78,21 +79,24 @@ class TouchInputHandler(val game: Game) {
      * @param position Die Position des Fingers auf dem Display.
      */
     private fun getDirection(position: Offset): Direction? {
-        val distanceToTop = position.y
-        val distanceToLeft = position.x
-        val distanceToBottom = screenHeight - position.y
-        val distanceToRight = screenWidth - position.x
-        val distances = listOf(distanceToTop, distanceToLeft, distanceToBottom, distanceToRight)
+        val centerX = screenWidth / 2
+        val centerY = screenHeight / 2
+        val distVertical = position.y - centerY
+        val distanceHoriz = position.x - centerX
+        val vertical = abs(distVertical) > abs(distanceHoriz)
+        return if (vertical) {
+            if (distVertical < 0) {
+                Direction.Up
+            }else {
+                Direction.Down
+            }
+        }else {
+            if (distanceHoriz < 0) {
+                Direction.Left
+            }else {
+                Direction.Right
+            }
 
-        println("tobi; position: $position, screen: $screenWidth / $screenHeight    => distances: ${distances.joinToString()}")
-
-        val minDist = distances.min()
-        return when (minDist) {
-            distanceToTop -> Direction.Up
-            distanceToLeft -> Direction.Left
-            distanceToBottom -> Direction.Down
-            distanceToRight -> Direction.Right
-            else -> null
         }
     }
 

@@ -11,19 +11,20 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableIntState
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.drawBehind
+import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.input.pointer.pointerInput
+import androidx.compose.ui.platform.LocalWindowInfo
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import de.glueckstobi.juganaut.bl.Game
 
 @Composable
 fun GameScreen(game: Game, tickCount: MutableIntState, inputHandler: TouchInputHandler?, onClickBack: () -> Unit) {
-
-    Column(
-        modifier = Modifier.fillMaxWidth()
+    Box(
+        modifier = Modifier.fillMaxSize()
             .pointerInput(keys = emptyArray<Any>()) {
                 awaitPointerEventScope {
                     while (true) {
@@ -32,14 +33,32 @@ fun GameScreen(game: Game, tickCount: MutableIntState, inputHandler: TouchInputH
                     }
                 }
             },
-        horizontalAlignment = Alignment.CenterHorizontally
     ) {
         Column(modifier = Modifier.fillMaxSize()) {
-            Row(modifier = Modifier.fillMaxWidth()){
+            Row(modifier = Modifier.fillMaxWidth()) {
                 TitleBar(onClickBack)
             }
 
             WorldRenderer(game.world, tickCount)
+        }
+        if (inputHandler != null) {
+            val screenWidth = LocalWindowInfo.current.containerSize.width
+            val screenHeight = LocalWindowInfo.current.containerSize.height
+            inputHandler.setDisplaySize(screenWidth, screenHeight)
+
+            Box(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .drawBehind() {
+                        val color = Color.LightGray
+                        val crossLength = 200f
+                        val touchCenter = Offset(screenWidth / 2f, screenHeight / 2f)
+                        drawLine(color, start = touchCenter, end = touchCenter - Offset(crossLength, crossLength))
+                        drawLine(color, start = touchCenter, end = touchCenter + Offset(crossLength, crossLength))
+                        drawLine(color, start = touchCenter, end = touchCenter - Offset(-crossLength, crossLength))
+                        drawLine(color, start = touchCenter, end = touchCenter + Offset(-crossLength, crossLength))
+                    }
+            )
         }
     }
 }
