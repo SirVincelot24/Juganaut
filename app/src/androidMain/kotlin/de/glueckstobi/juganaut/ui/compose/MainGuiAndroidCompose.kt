@@ -5,7 +5,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableIntState
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalWindowInfo
 import de.glueckstobi.juganaut.MainActivity
 import de.glueckstobi.juganaut.bl.Game
@@ -42,11 +41,10 @@ object MainGuiAndroidCompose {
 
 @Composable
 fun MainGuiRoot(game: Game, tickCount: MutableIntState) {
-    val inputHandler = remember {  TouchInputHandler(game) }
+    val inputHandler = remember { TouchInputHandler(game) }
 
     val screenWidth = LocalWindowInfo.current.containerSize.width
     val screenHeight = LocalWindowInfo.current.containerSize.height
     inputHandler.setDisplaySize(screenWidth, screenHeight)
-
     MainGuiCommon(game, tickCount, inputHandler)
 }
