@@ -6,8 +6,8 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import de.glueckstobi.juganaut.bl.Game
 import de.glueckstobi.juganaut.getPlatform
-import de.glueckstobi.juganaut.ui.audio.AudioPlayer
 import de.glueckstobi.juganaut.ui.compose.game.GameScreen
+import de.glueckstobi.juganaut.ui.compose.game.TouchInputHandler
 import de.glueckstobi.juganaut.ui.compose.settings.SettingsScreen
 
 enum class CurrentScreen {
@@ -17,9 +17,10 @@ enum class CurrentScreen {
 }
 
 @Composable
-fun MainGuiRoot(game: Game, tickCount: MutableIntState) {
+fun MainGuiCommon(game: Game, tickCount: MutableIntState, touchInputHandler: TouchInputHandler?) {
     val currentScreen = remember { mutableStateOf(CurrentScreen.Init) }
     when (currentScreen.value) {
+
         CurrentScreen.Init -> InitScreen(
             onClickStart = {
                 currentScreen.value = CurrentScreen.Game
@@ -33,6 +34,6 @@ fun MainGuiRoot(game: Game, tickCount: MutableIntState) {
             onClickBack = { currentScreen.value = CurrentScreen.Init },
         )
 
-        CurrentScreen.Game -> GameScreen(game, tickCount)
+        CurrentScreen.Game -> GameScreen(game, tickCount, touchInputHandler)
     }
 }

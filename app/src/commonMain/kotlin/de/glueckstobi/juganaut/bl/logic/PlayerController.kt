@@ -43,6 +43,15 @@ class PlayerController(val game: Game) {
     }
 
     /**
+     * Wird aufgerufen, wenn der Spieler die Eingabe verändert hat.
+     * @param input das Steuer-Kommando der gedrückten Taste
+     */
+    fun playerInputChanged(input: PlayerInput) {
+        playerInput = input
+        playerInputPressed = true
+    }
+
+    /**
      * Wird aufgerufen, wenn der Spieler die Taste wieder loslässt.
      */
     fun playerInputReleased() {

@@ -5,14 +5,14 @@ import androidx.compose.ui.window.Window
 import androidx.compose.ui.window.application
 import de.glueckstobi.juganaut.bl.setup.WorldBuilder
 import de.glueckstobi.juganaut.bl.setup.WorldBuilderConfiguration
+import de.glueckstobi.juganaut.ui.compose.game.KeyInputHandler
 import de.glueckstobi.juganaut.ui.compose.game.RenderCycle
-import de.glueckstobi.juganaut.ui.compose.game.UserInputHandler
 
 
 object MainGuiDesktopCompose {
     fun startPlaying(configuration: WorldBuilderConfiguration) {
         val game = WorldBuilder().createGame(configuration)
-        val inputHandler = UserInputHandler(game)
+        val keyInputHandler = KeyInputHandler(game)
         val renderCycle = RenderCycle(game)
 
         val tickCount = mutableIntStateOf(1)
@@ -28,9 +28,9 @@ object MainGuiDesktopCompose {
                     renderCycle.stopRenderCycle()
                     exitApplication()
                 },
-                onKeyEvent = inputHandler::onKeyEvent
+                onKeyEvent = keyInputHandler::onKeyEvent
             ) {
-                MainGuiRoot(game, tickCount)
+                MainGuiCommon(game, tickCount, null)
             }
         }
     }
