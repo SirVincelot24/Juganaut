@@ -35,5 +35,5 @@ data class WorldBuilderConfiguration(
     /**
      * Die Koordinate wo der Spieler gespawnt wird
      */
-    val playerCoord: Coord,
+    val playerCoord: Coord = Coord(10, 10),
 )
