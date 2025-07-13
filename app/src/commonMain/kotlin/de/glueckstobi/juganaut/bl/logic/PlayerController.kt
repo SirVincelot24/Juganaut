@@ -4,6 +4,7 @@ import de.glueckstobi.juganaut.bl.Game
 import de.glueckstobi.juganaut.bl.space.Coord
 import de.glueckstobi.juganaut.bl.space.Direction
 import de.glueckstobi.juganaut.bl.worlditems.*
+import de.glueckstobi.juganaut.getPlatform
 import de.glueckstobi.juganaut.ui.audio.AudioPlayer
 import de.glueckstobi.juganaut.ui.audio.AudioSample
 import kotlin.random.Random
@@ -133,7 +134,7 @@ class PlayerController(val game: Game) {
         if (game.diamondCount >= game.diamondsInGame) {
             game.win(AllDiamondsCollected(game.diamondCount))
         }
-        AudioPlayer.playSfx(AudioSample.CollectDiamond)
+        getPlatform().audioPlayer.playSfx(AudioSample.CollectDiamond)
     }
 
     fun tryMoveRock(rockCoord: Coord, direction: Direction, playerCoord: Coord, rock: Rock) {
@@ -172,7 +173,7 @@ class PlayerController(val game: Game) {
         val crispSounds: Array<AudioSample> =
             arrayOf( AudioSample.Crisp1, AudioSample.Crisp2, AudioSample.Crisp3, AudioSample.Crisp4 )
         val sample = crispSounds[Random.nextInt(0..3)]
-        AudioPlayer.playSfx(sample, 0.65)
+        getPlatform().audioPlayer.playSfx(sample, 0.65f)
     }
 
     private fun processAction(action: Action) {

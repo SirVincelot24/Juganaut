@@ -8,7 +8,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableFloatStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
-import de.glueckstobi.juganaut.ui.audio.AudioPlayer
+import de.glueckstobi.juganaut.getPlatform
 
 /**
  * Enthält die Daten für die Audio-Einstellungen.
@@ -18,12 +18,12 @@ class AudioSettingsData() {
     /**
      * Interner State für die Musik-Lautstärke
      */
-    private var musicVolumeState = mutableFloatStateOf(AudioPlayer.musicVolume.toFloat())
+    private var musicVolumeState = mutableFloatStateOf(getPlatform().audioPlayer.musicVolume.toFloat())
 
     /**
      * Interner State für die Effekt-Lautstärke
      */
-    private var sfxVolumeState = mutableFloatStateOf(AudioPlayer.sfxVolume.toFloat())
+    private var sfxVolumeState = mutableFloatStateOf(getPlatform().audioPlayer.sfxVolume.toFloat())
 
     /**
      * Musik-Lautstärke.
@@ -32,7 +32,7 @@ class AudioSettingsData() {
         get() = musicVolumeState.value
         set(value) {
             musicVolumeState.value = value
-            AudioPlayer.musicVolume = value.toDouble()
+            getPlatform().audioPlayer.musicVolume = value
         }
 
     /**
@@ -42,7 +42,7 @@ class AudioSettingsData() {
         get() = sfxVolumeState.value
         set(value) {
             sfxVolumeState.value = value
-            AudioPlayer.sfxVolume = value.toDouble()
+            getPlatform().audioPlayer.sfxVolume = value
         }
 }
 
