@@ -9,14 +9,13 @@ import androidx.compose.foundation.layout.displayCutout
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.MutableIntState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalLayoutDirection
-import de.glueckstobi.juganaut.bl.Game
 import de.glueckstobi.juganaut.getPlatform
 import de.glueckstobi.juganaut.ui.compose.game.GameScreen
+import de.glueckstobi.juganaut.ui.compose.game.GameState
 import de.glueckstobi.juganaut.ui.compose.game.TouchInputHandler
 import de.glueckstobi.juganaut.ui.compose.settings.SettingsScreen
 
@@ -27,12 +26,13 @@ enum class CurrentScreen {
 }
 
 @Composable
-fun MainGuiCommon(game: Game, tickCount: MutableIntState, touchInputHandler: TouchInputHandler?) {
+fun MainGuiCommon(gameState: GameState, touchInputHandler: TouchInputHandler?) {
     val currentScreen = remember { mutableStateOf(CurrentScreen.Init) }
     when (currentScreen.value) {
 
         CurrentScreen.Init -> InitScreen(
             onClickStart = {
+                gameState.startNewGame()
                 currentScreen.value = CurrentScreen.Game
                 getPlatform().audioPlayer.startMusic()
             },
@@ -47,8 +47,7 @@ fun MainGuiCommon(game: Game, tickCount: MutableIntState, touchInputHandler: Tou
         }
 
         CurrentScreen.Game -> WithInsetPadding() {
-            GameScreen(
-                game, tickCount, touchInputHandler,
+            GameScreen(gameState, touchInputHandler,
                 onClickBack = { currentScreen.value = CurrentScreen.Init },
             )
         }

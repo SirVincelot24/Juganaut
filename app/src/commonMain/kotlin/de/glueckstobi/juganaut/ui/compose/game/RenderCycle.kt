@@ -4,7 +4,7 @@ import de.glueckstobi.juganaut.bl.Game
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.asExecutor
 
-class RenderCycle(val game: Game) : Runnable {
+class RenderCycle() : Runnable {
 
     companion object {
         /**
@@ -61,7 +61,6 @@ class RenderCycle(val game: Game) : Runnable {
      * Führt die Spiel-Logik aus und zeichnet danach das Ergebnis neu.
      */
     private fun tickRenderCycle() {
-        game.turnController.tick()
         tickCallback()
     }
 }

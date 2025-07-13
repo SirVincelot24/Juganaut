@@ -1,27 +1,32 @@
 package de.glueckstobi.juganaut.ui.compose
 
-import androidx.compose.runtime.mutableIntStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.window.Window
 import androidx.compose.ui.window.application
-import de.glueckstobi.juganaut.bl.setup.WorldBuilder
 import de.glueckstobi.juganaut.bl.setup.WorldBuilderConfiguration
+import de.glueckstobi.juganaut.ui.compose.game.GameState
 import de.glueckstobi.juganaut.ui.compose.game.KeyInputHandler
 import de.glueckstobi.juganaut.ui.compose.game.RenderCycle
 
 
 object MainGuiDesktopCompose {
     fun startPlaying(configuration: WorldBuilderConfiguration) {
-        val game = WorldBuilder().createGame(configuration)
-        val keyInputHandler = KeyInputHandler(game)
-        val renderCycle = RenderCycle(game)
-
-        val tickCount = mutableIntStateOf(1)
-
-        renderCycle.startRenderCycle() {
-            tickCount.value = tickCount.value + 1
-        }
-
         application {
+            val gameState = remember {
+                GameState().also { state ->
+                    state.configuration.value = configuration
+                }
+            }
+            val renderCycle = remember {
+                RenderCycle().also {
+                    it.startRenderCycle(gameState::tick)
+                }
+            }
+            val keyInputHandler = remember() {
+                KeyInputHandler(gameState.game)
+            }
+            keyInputHandler.game = gameState.game
+
             Window(
                 title = "Juganaut",
                 onCloseRequest = {
@@ -30,7 +35,7 @@ object MainGuiDesktopCompose {
                 },
                 onKeyEvent = keyInputHandler::onKeyEvent
             ) {
-                MainGuiCommon(game, tickCount, null)
+                MainGuiCommon(gameState, null)
             }
         }
     }

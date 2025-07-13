@@ -10,7 +10,6 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.MutableIntState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.drawBehind
 import androidx.compose.ui.geometry.Offset
@@ -19,17 +18,16 @@ import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.platform.LocalWindowInfo
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import de.glueckstobi.juganaut.bl.Game
 
 @Composable
-fun GameScreen(game: Game, tickCount: MutableIntState, inputHandler: TouchInputHandler?, onClickBack: () -> Unit) {
+fun GameScreen(gameState: GameState, touchInputHandler: TouchInputHandler?, onClickBack: () -> Unit) {
     Box(
         modifier = Modifier.fillMaxSize()
             .pointerInput(keys = emptyArray<Any>()) {
                 awaitPointerEventScope {
                     while (true) {
                         val event = awaitPointerEvent()
-                        inputHandler?.onTouchEvent(event)
+                        touchInputHandler?.onTouchEvent(event)
                     }
                 }
             },
@@ -39,12 +37,12 @@ fun GameScreen(game: Game, tickCount: MutableIntState, inputHandler: TouchInputH
                 TitleBar(onClickBack)
             }
 
-            WorldRenderer(game.world, tickCount)
+            WorldRenderer(gameState.game.world, gameState.accessTickCount())
         }
-        if (inputHandler != null) {
+        if (touchInputHandler != null) {
             val screenWidth = LocalWindowInfo.current.containerSize.width
             val screenHeight = LocalWindowInfo.current.containerSize.height
-            inputHandler.setDisplaySize(screenWidth, screenHeight)
+            touchInputHandler.setDisplaySize(screenWidth, screenHeight)
 
             Box(
                 modifier = Modifier
