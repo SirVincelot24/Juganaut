@@ -2,8 +2,7 @@ package de.glueckstobi.juganaut
 
 import de.glueckstobi.juganaut.bl.setup.WorldBuilderConfiguration
 import de.glueckstobi.juganaut.bl.space.Coord
-import de.glueckstobi.juganaut.ui.compose.MainGuiCompose
-import de.glueckstobi.juganaut.ui.swing.MainGui
+import de.glueckstobi.juganaut.ui.compose.MainGuiDesktopCompose
 
 
 fun main(args: Array<String>) {
@@ -17,7 +16,7 @@ fun main(args: Array<String>) {
     )
 //    MainGui().showMenu(config)
 
-    MainGuiCompose.startPlaying(config)
+    MainGuiDesktopCompose.startPlaying(config)
 }
 
 /**

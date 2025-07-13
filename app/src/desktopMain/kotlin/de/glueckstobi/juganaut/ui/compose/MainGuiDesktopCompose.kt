@@ -22,7 +22,7 @@ enum class CurrentScreen {
     Settings
 }
 
-object MainGuiCompose {
+object MainGuiDesktopCompose {
     fun startPlaying(configuration: WorldBuilderConfiguration) {
         val game = WorldBuilder().createGame(configuration)
         val inputHandler = UserInputHandler(game)
