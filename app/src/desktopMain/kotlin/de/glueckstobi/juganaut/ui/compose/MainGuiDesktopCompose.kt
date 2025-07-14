@@ -6,7 +6,6 @@ import androidx.compose.ui.window.application
 import de.glueckstobi.juganaut.bl.setup.WorldBuilderConfiguration
 import de.glueckstobi.juganaut.ui.compose.game.GameState
 import de.glueckstobi.juganaut.ui.compose.game.KeyInputHandler
-import de.glueckstobi.juganaut.ui.compose.game.RenderCycle
 
 
 object MainGuiDesktopCompose {
@@ -17,23 +16,21 @@ object MainGuiDesktopCompose {
                     state.configuration.value = configuration
                 }
             }
-            val renderCycle = remember {
-                RenderCycle().also {
-                    it.startRenderCycle(gameState::tick)
+            val keyInputHandler = remember(gameState.game) {
+                gameState.game?.let { game ->
+                    KeyInputHandler(game)
                 }
             }
-            val keyInputHandler = remember() {
-                KeyInputHandler(gameState.game)
-            }
-            keyInputHandler.game = gameState.game
 
             Window(
                 title = "Juganaut",
                 onCloseRequest = {
-                    renderCycle.stopRenderCycle()
+                    gameState.stopGame()
                     exitApplication()
                 },
-                onKeyEvent = keyInputHandler::onKeyEvent
+                onKeyEvent = { event ->
+                    keyInputHandler?.onKeyEvent(event) ?: false
+                }
             ) {
                 MainGuiCommon(gameState, null)
             }

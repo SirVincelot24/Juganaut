@@ -13,7 +13,7 @@ import de.glueckstobi.juganaut.bl.space.Direction
 /**
  * Verwaltet die Benutzer-Eingaben und leitet sie an die Spiel-Logik weiter.
  */
-class KeyInputHandler(var game: Game) {
+class KeyInputHandler(val game: Game) {
 
     /**
      * Wird aufgerufen, wenn eine Taste gedrückt oder losgelassen wird.

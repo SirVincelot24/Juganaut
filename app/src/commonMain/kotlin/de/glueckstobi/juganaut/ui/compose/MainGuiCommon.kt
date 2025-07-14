@@ -33,8 +33,8 @@ fun MainGuiCommon(gameState: GameState, touchInputHandler: TouchInputHandler?) {
         CurrentScreen.Init -> InitScreen(
             onClickStart = {
                 gameState.startNewGame()
-                currentScreen.value = CurrentScreen.Game
                 getPlatform().audioPlayer.startMusic()
+                currentScreen.value = CurrentScreen.Game
             },
             onClickSettings = { currentScreen.value = CurrentScreen.Settings },
             onClickQuit = { System.exit(0) }
@@ -47,8 +47,13 @@ fun MainGuiCommon(gameState: GameState, touchInputHandler: TouchInputHandler?) {
         }
 
         CurrentScreen.Game -> WithInsetPadding() {
-            GameScreen(gameState, touchInputHandler,
-                onClickBack = { currentScreen.value = CurrentScreen.Init },
+            GameScreen(
+                gameState, touchInputHandler,
+                onClickBack = {
+                    gameState.stopGame()
+                    getPlatform().audioPlayer.stopMusic()
+                    currentScreen.value = CurrentScreen.Init
+                },
             )
         }
     }

@@ -8,7 +8,7 @@ import de.glueckstobi.juganaut.bl.setup.WorldBuilder
 import de.glueckstobi.juganaut.bl.setup.WorldBuilderConfiguration
 
 /**
- * Enthalt den Zustand des Spiels für die Compose UI.
+ * Enthält den Zustand des Spiels für die Compose UI.
  */
 class GameState() {
 
@@ -20,7 +20,9 @@ class GameState() {
     /**
      * Das aktuelle Spiel.
      */
-    private val gameInternal = mutableStateOf(WorldBuilder().createGame(configuration.value))
+    private val gameInternal = mutableStateOf<Game?>(null)
+
+    private var renderCycle: RenderCycle? = null
 
     /**
      * Interner Zähler, der bei jedem Zug hochgezählt wird.
@@ -30,22 +32,31 @@ class GameState() {
     /**
      * Zugriff von der UI auf das aktuelle Spiel.
      */
-    val game: Game
+    val game: Game?
         get() = gameInternal.value
 
     /**
      * Erzeugt ein neues Spiel.
      */
     fun startNewGame() {
-        gameInternal.value = WorldBuilder().createGame(configuration.value)
+        val game = WorldBuilder().createGame(configuration.value)
+        gameInternal.value = game
+
+        val renderCycle = RenderCycle()
+        renderCycle.startRenderCycle(::tick)
+        this.renderCycle = renderCycle
+    }
+
+    fun stopGame() {
+        renderCycle?.stopRenderCycle()
     }
 
     /**
      * Schaltet den Spielzustand einen Zug weiter.
      */
     fun tick() {
-        game.turnController.tick()
-        tickCountInternal.value = tickCountInternal.value + 1
+        game?.turnController?.tick()
+        tickCountInternal.intValue = tickCountInternal.intValue + 1
     }
 
     /**

@@ -37,7 +37,9 @@ fun GameScreen(gameState: GameState, touchInputHandler: TouchInputHandler?, onCl
                 TitleBar(onClickBack)
             }
 
-            WorldRenderer(gameState.game.world, gameState.accessTickCount())
+            gameState.game?.let { game ->
+                WorldRenderer(game.world, gameState.accessTickCount())
+            }
         }
         if (touchInputHandler != null) {
             val screenWidth = LocalWindowInfo.current.containerSize.width

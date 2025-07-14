@@ -30,7 +30,9 @@ class RenderCycle() : Runnable {
             val now = nanoToMilli(System.nanoTime())
             val nextTick = previousTickMs + tickDurationMs
             val sleepTime = nextTick - now
-            Thread.sleep(sleepTime)
+            if (sleepTime > 0) {
+                Thread.sleep(sleepTime)
+            }
             previousTickMs = nextTick
             tickRenderCycleAsync()
         }
