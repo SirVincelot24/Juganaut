@@ -6,9 +6,12 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableIntState
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.geometry.Offset
+import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ImageBitmap
 import androidx.compose.ui.graphics.drawscope.DrawScope
+import androidx.compose.ui.graphics.drawscope.scale
 import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.IntSize
 import de.glueckstobi.juganaut.bl.World
@@ -31,6 +34,7 @@ import juganaut.app.generated.resources.monster
 import juganaut.app.generated.resources.monster_sleeping
 import juganaut.app.generated.resources.rock
 import org.jetbrains.compose.resources.imageResource
+import kotlin.math.min
 
 /**
  * Größe eines Feldes auf dem Bildschirm
@@ -98,17 +102,28 @@ fun WorldRenderer(world: World, tickCount: MutableIntState) {
     )
 
     Canvas(modifier = Modifier.fillMaxSize().background(Color.Black)) {
-        tickCount.value // tickCount triggers a repaint
-        world.validYRange.forEach { y ->
-            world.validXRange.forEach { x ->
-                val item = world.getField(Coord(x, y))
-                val image = getImageForItem(item, images)
-                if (image != null) {
-                    renderItem(image, x, y)
+        val scaleFactor = calculateScaleFactor(size, world.size, fieldRenderSize)
+        scale(scaleFactor, pivot = Offset(0f, 0f)) {
+            tickCount.value // tickCount triggers a repaint
+            world.validYRange.forEach { y ->
+                world.validXRange.forEach { x ->
+                    val item = world.getField(Coord(x, y))
+                    val image = getImageForItem(item, images)
+                    if (image != null) {
+                        renderItem(image, x, y)
+                    }
                 }
             }
         }
     }
+}
+
+private fun calculateScaleFactor(canvasSize: Size, worldSize: de.glueckstobi.juganaut.bl.space.Size, fieldSize: Int): Float {
+    val worldWidthPx = worldSize.width * fieldSize
+    val worldHeightPx = worldSize.height * fieldSize
+    val scaleX = canvasSize.width / worldWidthPx
+    val scaleY = canvasSize.height / worldHeightPx
+    return min(scaleX, scaleY)
 }
 
 /**
