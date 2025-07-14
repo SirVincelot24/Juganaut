@@ -8,20 +8,22 @@ import java.net.URL
 /**
  * Audio-Player.
  */
-object AudioPlayerAudioCue: AudioPlayer {
+object AudioPlayerAudioCue : AudioPlayer {
 
     override var sfxVolume = 1f
     override var musicVolume = 0.5f
 
-    private var musicAudioCue = makeStereoCue(AudioSample.MainLoop)
+    private var musicAudioCue: AudioCue? = null
 
     /**
      * Startet die Spiel-Musik.
      */
     override fun startMusic() {
-        musicAudioCue.open()
-        musicAudioCue.play(musicVolume.toDouble())
-        musicAudioCue.setLooping(musicAudioCue.obtainInstance(), -1)
+        val audioCue = makeStereoCue(AudioSample.MainLoop)
+        audioCue.open()
+        audioCue.play(musicVolume.toDouble())
+        audioCue.setLooping(audioCue.obtainInstance(), -1)
+        musicAudioCue = audioCue
     }
 
     /**
@@ -39,11 +41,13 @@ object AudioPlayerAudioCue: AudioPlayer {
      * Stoppt die Spiel-Musik
      */
     override fun stopMusic() {
-        if (musicAudioCue.getIsActive(musicAudioCue.obtainInstance())) {
-            try {
-                musicAudioCue.close()
-            } catch (e: IllegalStateException) {
-                System.err.println("Already closed AudioCue!")
+        musicAudioCue?.let { audioCue ->
+            if (audioCue.getIsActive(audioCue.obtainInstance())) {
+                try {
+                    audioCue.close()
+                } catch (e: IllegalStateException) {
+                    System.err.println("Already closed AudioCue!")
+                }
             }
         }
     }
@@ -53,7 +57,7 @@ object AudioPlayerAudioCue: AudioPlayer {
      */
     override fun stopAll() {
         try {
-            musicAudioCue.close()
+            musicAudioCue?.close()
         } catch (e: IllegalStateException) {
             System.err.println("Already closed AudioCue!")
         }
