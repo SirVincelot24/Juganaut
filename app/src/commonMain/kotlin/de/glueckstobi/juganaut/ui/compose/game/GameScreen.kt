@@ -10,6 +10,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.drawBehind
 import androidx.compose.ui.geometry.Offset
@@ -18,19 +19,24 @@ import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.platform.LocalWindowInfo
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import de.glueckstobi.juganaut.ui.compose.states.GameStateHolder
+import de.glueckstobi.juganaut.ui.compose.states.WorldRendererConfigHolder
 
 @Composable
-fun GameScreen(gameState: GameState, touchInputHandler: TouchInputHandler?, onClickBack: () -> Unit) {
+fun GameScreen(
+    gameState: GameStateHolder,
+    worldRendererConfig: WorldRendererConfigHolder,
+    supportTouchInput: Boolean,
+    onClickBack: () -> Unit
+) {
+    val touchInputHandler = remember(gameState.game) {
+        createTouchInputHandler(supportTouchInput, gameState)
+    }
+
     Box(
-        modifier = Modifier.fillMaxSize()
-            .pointerInput(keys = emptyArray<Any>()) {
-                awaitPointerEventScope {
-                    while (true) {
-                        val event = awaitPointerEvent()
-                        touchInputHandler?.onTouchEvent(event)
-                    }
-                }
-            },
+        modifier = Modifier
+            .fillMaxSize()
+            .configureTouchInput(touchInputHandler)
     ) {
         Column(modifier = Modifier.fillMaxSize()) {
             Row(modifier = Modifier.fillMaxWidth()) {
@@ -38,27 +44,33 @@ fun GameScreen(gameState: GameState, touchInputHandler: TouchInputHandler?, onCl
             }
 
             gameState.game?.let { game ->
-                WorldRenderer(game.world, gameState.accessTickCount())
+                WorldRenderer(game.world, worldRendererConfig, gameState.accessTickCount())
             }
         }
-        if (touchInputHandler != null) {
-            val screenWidth = LocalWindowInfo.current.containerSize.width
-            val screenHeight = LocalWindowInfo.current.containerSize.height
-            touchInputHandler.setDisplaySize(screenWidth, screenHeight)
+        TouchHandlerCross(touchInputHandler)
+    }
+}
 
-            Box(
-                modifier = Modifier
-                    .fillMaxSize()
-                    .drawBehind() {
-                        val color = Color.LightGray
-                        val crossLength = 200f
-                        val touchCenter = Offset(screenWidth / 2f, screenHeight / 2f)
-                        drawLine(color, start = touchCenter, end = touchCenter - Offset(crossLength, crossLength))
-                        drawLine(color, start = touchCenter, end = touchCenter + Offset(crossLength, crossLength))
-                        drawLine(color, start = touchCenter, end = touchCenter - Offset(-crossLength, crossLength))
-                        drawLine(color, start = touchCenter, end = touchCenter + Offset(-crossLength, crossLength))
-                    }
-            )
+private fun createTouchInputHandler(supportTouchInput: Boolean, gameState: GameStateHolder): TouchInputHandler? =
+    if (supportTouchInput) {
+        gameState.game?.let { game ->
+            TouchInputHandler(game)
+        }
+    } else {
+        null
+    }
+
+private fun Modifier.configureTouchInput(touchInputHandler: TouchInputHandler?): Modifier {
+    return if (touchInputHandler == null) {
+        this
+    } else {
+        this.pointerInput(keys = emptyArray<Any>()) {
+            awaitPointerEventScope {
+                while (true) {
+                    val event = awaitPointerEvent()
+                    touchInputHandler?.onTouchEvent(event)
+                }
+            }
         }
     }
 }
@@ -77,4 +89,29 @@ fun TitleBar(onClickBack: () -> Unit) {
             fontSize = 20.sp,
         )
     }
+}
+
+@Composable
+private fun TouchHandlerCross(touchInputHandler: TouchInputHandler?) {
+    if (touchInputHandler == null) {
+        return
+    }
+
+    val screenWidth = LocalWindowInfo.current.containerSize.width
+    val screenHeight = LocalWindowInfo.current.containerSize.height
+    touchInputHandler.setDisplaySize(screenWidth, screenHeight)
+
+    Box(
+        modifier = Modifier
+            .fillMaxSize()
+            .drawBehind() {
+                val color = Color.LightGray
+                val crossLength = 200f
+                val touchCenter = Offset(screenWidth / 2f, screenHeight / 2f)
+                drawLine(color, start = touchCenter, end = touchCenter - Offset(crossLength, crossLength))
+                drawLine(color, start = touchCenter, end = touchCenter + Offset(crossLength, crossLength))
+                drawLine(color, start = touchCenter, end = touchCenter - Offset(-crossLength, crossLength))
+                drawLine(color, start = touchCenter, end = touchCenter + Offset(-crossLength, crossLength))
+            }
+    )
 }

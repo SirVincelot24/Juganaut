@@ -13,11 +13,13 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalLayoutDirection
+import de.glueckstobi.juganaut.bl.Game
 import de.glueckstobi.juganaut.getPlatform
 import de.glueckstobi.juganaut.ui.compose.game.GameScreen
-import de.glueckstobi.juganaut.ui.compose.game.GameState
-import de.glueckstobi.juganaut.ui.compose.game.TouchInputHandler
+import de.glueckstobi.juganaut.ui.compose.states.GameStateHolder
 import de.glueckstobi.juganaut.ui.compose.settings.SettingsScreen
+import de.glueckstobi.juganaut.ui.compose.states.WorldBuilderConfigHolder
+import de.glueckstobi.juganaut.ui.compose.states.WorldRendererConfigHolder
 
 enum class CurrentScreen {
     Init,
@@ -26,14 +28,24 @@ enum class CurrentScreen {
 }
 
 @Composable
-fun MainGuiCommon(gameState: GameState, touchInputHandler: TouchInputHandler?) {
+fun MainGuiCommon(
+    supportTouchInput: Boolean,
+    onGameStart: (game: Game) -> Unit = {},
+    onGameStop: () -> Unit = {}
+) {
     val currentScreen = remember { mutableStateOf(CurrentScreen.Init) }
+
+    val gameState = remember { GameStateHolder() }
+    val worldBuilderConfig = remember { WorldBuilderConfigHolder() }
+    val worldRendererConfig = remember { WorldRendererConfigHolder() }
+
     when (currentScreen.value) {
 
         CurrentScreen.Init -> InitScreen(
             onClickStart = {
-                gameState.startNewGame()
-                getPlatform().audioPlayer.startMusic()
+                gameState.startNewGame(worldBuilderConfig.worldBuilderConfig.value)
+                getPlatform().audioPlayer?.startMusic()
+                onGameStart(gameState.game!!)
                 currentScreen.value = CurrentScreen.Game
             },
             onClickSettings = { currentScreen.value = CurrentScreen.Settings },
@@ -48,12 +60,15 @@ fun MainGuiCommon(gameState: GameState, touchInputHandler: TouchInputHandler?) {
 
         CurrentScreen.Game -> WithSystemBarsPadding() {
             GameScreen(
-                gameState, touchInputHandler,
+                gameState,
+                worldRendererConfig,
+                supportTouchInput,
                 onClickBack = {
+                    onGameStop()
                     gameState.stopGame()
-                    getPlatform().audioPlayer.stopMusic()
+                    getPlatform().audioPlayer?.stopMusic()
                     currentScreen.value = CurrentScreen.Init
-                },
+                }
             )
         }
     }

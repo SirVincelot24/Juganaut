@@ -1,4 +1,4 @@
-package de.glueckstobi.juganaut.ui.compose.game
+package de.glueckstobi.juganaut.ui.compose.states
 
 import androidx.compose.runtime.MutableIntState
 import androidx.compose.runtime.mutableIntStateOf
@@ -6,16 +6,12 @@ import androidx.compose.runtime.mutableStateOf
 import de.glueckstobi.juganaut.bl.Game
 import de.glueckstobi.juganaut.bl.setup.WorldBuilder
 import de.glueckstobi.juganaut.bl.setup.WorldBuilderConfiguration
+import de.glueckstobi.juganaut.ui.compose.game.RenderCycle
 
 /**
  * Enthält den Zustand des Spiels für die Compose UI.
  */
-class GameState() {
-
-    /**
-     * Die Konfiguration, wenn ein neues Spiel gestartet wird.
-     */
-    val configuration = mutableStateOf(WorldBuilderConfiguration())
+class GameStateHolder() {
 
     /**
      * Das aktuelle Spiel.
@@ -38,8 +34,8 @@ class GameState() {
     /**
      * Erzeugt ein neues Spiel.
      */
-    fun startNewGame() {
-        val game = WorldBuilder().createGame(configuration.value)
+    fun startNewGame(worldBuilderConfig: WorldBuilderConfiguration) {
+        val game = WorldBuilder().createGame(worldBuilderConfig)
         gameInternal.value = game
 
         val renderCycle = RenderCycle()

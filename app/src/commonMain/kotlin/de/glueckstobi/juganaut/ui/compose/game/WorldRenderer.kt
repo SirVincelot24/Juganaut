@@ -27,6 +27,7 @@ import de.glueckstobi.juganaut.bl.worlditems.Monster
 import de.glueckstobi.juganaut.bl.worlditems.Player
 import de.glueckstobi.juganaut.bl.worlditems.Rock
 import de.glueckstobi.juganaut.bl.worlditems.WorldItem
+import de.glueckstobi.juganaut.ui.compose.states.WorldRendererConfigHolder
 import juganaut.app.generated.resources.Res
 import juganaut.app.generated.resources.bombe
 import juganaut.app.generated.resources.bombe_active
@@ -43,9 +44,7 @@ import kotlin.math.min
 /**
  * Größe eines Feldes auf dem Bildschirm
  */
-private val fieldRenderSize = 45
-
-private val translationMinVisibleFields = 3
+private val fieldRenderSize = 100
 
 private val translationEmptyBorder = 10f
 
@@ -97,7 +96,7 @@ fun getImageForItem(item: WorldItem, images: Images): ImageBitmap? {
  * Malt das ganze Spielfeld auf den Bildschirm.
  */
 @Composable
-fun WorldRenderer(world: World, tickCount: MutableIntState) {
+fun WorldRenderer(world: World, worldRendererConfig: WorldRendererConfigHolder, tickCount: MutableIntState) {
     val images = Images(
         player = imageResource(Res.drawable.cat),
         dirt = imageResource(Res.drawable.dirt),
@@ -112,11 +111,20 @@ fun WorldRenderer(world: World, tickCount: MutableIntState) {
     var translation = remember { Offset(0f, 0f) }
 
     Canvas(modifier = Modifier.fillMaxSize().clipToBounds().background(Color.Black)) {
-        val scaleFactor = 2f //calculateScaleFactor(size, world.size)
+        val scaleFactor = if (worldRendererConfig.autoScale.value) {
+            calculateScaleFactor(size, world.size)
+        } else {
+            worldRendererConfig.scaleFactor.floatValue
+        }
         scale(scaleFactor, pivot = Offset(0f, 0f)) {
-            val newTranslation = calculateTranslation(size, world, scaleFactor, translation)
-            translation = newTranslation
-            translate(left = newTranslation.x, top = newTranslation.y) {
+            translation = calculateTranslation(
+                canvasSize = size,
+                world = world,
+                scaleFactor = scaleFactor,
+                minVisibleEdgeFields = worldRendererConfig.edgeDistanceForScroll.intValue,
+                currentTranslation = translation
+            )
+            translate(left = translation.x, top = translation.y) {
                 drawWorld(world, images, tickCount)
             }
         }
@@ -162,7 +170,13 @@ private fun calculateScaleFactor(canvasSize: Size, worldSize: de.glueckstobi.jug
  * @param currentTranslation die bisherige Translation
  * @return Gibt die neue Translation zurück
  */
-private fun calculateTranslation(canvasSize: Size, world: World, scaleFactor: Float, currentTranslation: Offset): Offset {
+private fun calculateTranslation(
+    canvasSize: Size,
+    world: World,
+    scaleFactor: Float,
+    minVisibleEdgeFields: Int,
+    currentTranslation: Offset
+): Offset {
     val playerFieldPos = world.find { it is Player }
     if (playerFieldPos != null) {
         val translateX = calculateTranslationSingleDimension(
@@ -170,6 +184,7 @@ private fun calculateTranslation(canvasSize: Size, world: World, scaleFactor: Fl
             worldSize = world.width,
             playerPos = playerFieldPos.x,
             scaleFactor = scaleFactor,
+            minVisibleEdgeFields = minVisibleEdgeFields,
             currentTranslation = currentTranslation.x
         )
         val translateY = calculateTranslationSingleDimension(
@@ -177,6 +192,7 @@ private fun calculateTranslation(canvasSize: Size, world: World, scaleFactor: Fl
             worldSize = world.height,
             playerPos = playerFieldPos.y,
             scaleFactor = scaleFactor,
+            minVisibleEdgeFields = minVisibleEdgeFields,
             currentTranslation = currentTranslation.y
         )
         return Offset(translateX, translateY)
@@ -195,11 +211,18 @@ private fun calculateTranslation(canvasSize: Size, world: World, scaleFactor: Fl
  * @param currentTranslation die bisherige Translation
  * @return Gibt die neue Translation zurück
  */
-private fun calculateTranslationSingleDimension(canvasSize: Float, worldSize: Int, playerPos: Int, scaleFactor: Float, currentTranslation: Float): Float {
+private fun calculateTranslationSingleDimension(
+    canvasSize: Float,
+    worldSize: Int,
+    playerPos: Int,
+    scaleFactor: Float,
+    minVisibleEdgeFields: Int,
+    currentTranslation: Float
+): Float {
     var translate = currentTranslation
     val playerPosPx = playerPos * fieldRenderSize * scaleFactor + (translate * scaleFactor)
-    val minPlayerPosPx = translationMinVisibleFields * fieldRenderSize * scaleFactor
-    val maxPlayerPosPx = canvasSize - (translationMinVisibleFields + 1) * fieldRenderSize * scaleFactor
+    val minPlayerPosPx = minVisibleEdgeFields * fieldRenderSize * scaleFactor
+    val maxPlayerPosPx = canvasSize - (minVisibleEdgeFields + 1) * fieldRenderSize * scaleFactor
     val minTranslate = -(worldSize * fieldRenderSize * scaleFactor - canvasSize) / scaleFactor
 
     if (playerPosPx < minPlayerPosPx) {

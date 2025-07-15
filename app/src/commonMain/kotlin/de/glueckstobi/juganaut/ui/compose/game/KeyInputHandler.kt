@@ -13,7 +13,9 @@ import de.glueckstobi.juganaut.bl.space.Direction
 /**
  * Verwaltet die Benutzer-Eingaben und leitet sie an die Spiel-Logik weiter.
  */
-class KeyInputHandler(val game: Game) {
+class KeyInputHandler() {
+
+    var game: Game? = null
 
     /**
      * Wird aufgerufen, wenn eine Taste gedrückt oder losgelassen wird.
@@ -34,7 +36,7 @@ class KeyInputHandler(val game: Game) {
     fun onKeyPress(e: KeyEvent) {
         val input = getPlayerInput(e)
         input?.let {
-            game.turnController.playerController.playerInputPressed(input)
+            game?.turnController?.playerController?.playerInputPressed(input)
         }
     }
 
@@ -43,7 +45,7 @@ class KeyInputHandler(val game: Game) {
      * @param e Enthält Informationen über die Taste
      */
     fun onKeyRelease(e: KeyEvent) {
-        game.turnController.playerController.playerInputReleased()
+        game?.turnController?.playerController?.playerInputReleased()
     }
 
     /**

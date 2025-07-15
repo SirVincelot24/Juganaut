@@ -143,7 +143,7 @@ class PlayerController(val game: Game) {
         if (game.diamondCount >= game.diamondsInGame) {
             game.win(AllDiamondsCollected(game.diamondCount))
         }
-        getPlatform().audioPlayer.playSfx(AudioSample.CollectDiamond)
+        getPlatform().audioPlayer?.playSfx(AudioSample.CollectDiamond)
     }
 
     fun tryMoveRock(rockCoord: Coord, direction: Direction, playerCoord: Coord, rock: Rock) {
@@ -182,7 +182,7 @@ class PlayerController(val game: Game) {
         val crispSounds: Array<AudioSample> =
             arrayOf( AudioSample.Crisp1, AudioSample.Crisp2, AudioSample.Crisp3, AudioSample.Crisp4 )
         val sample = crispSounds[Random.nextInt(0..3)]
-        getPlatform().audioPlayer.playSfx(sample, 0.65f)
+        getPlatform().audioPlayer?.playSfx(sample, 0.65f)
     }
 
     private fun processAction(action: Action) {

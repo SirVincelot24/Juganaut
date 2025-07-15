@@ -2,64 +2,35 @@ package de.glueckstobi.juganaut.ui.compose.settings
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
 import androidx.compose.material.Slider
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.mutableFloatStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
-import de.glueckstobi.juganaut.getPlatform
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.unit.dp
+import de.glueckstobi.juganaut.ui.compose.states.AudioConfigHolder
 
-/**
- * Enthält die Daten für die Audio-Einstellungen.
- */
-class AudioSettingsData() {
-
-    /**
-     * Interner State für die Musik-Lautstärke
-     */
-    private var musicVolumeState = mutableFloatStateOf(getPlatform().audioPlayer.musicVolume.toFloat())
-
-    /**
-     * Interner State für die Effekt-Lautstärke
-     */
-    private var sfxVolumeState = mutableFloatStateOf(getPlatform().audioPlayer.sfxVolume.toFloat())
-
-    /**
-     * Musik-Lautstärke.
-     */
-    var musicVolume: Float
-        get() = musicVolumeState.value
-        set(value) {
-            musicVolumeState.value = value
-            getPlatform().audioPlayer.musicVolume = value
-        }
-
-    /**
-     * Effekt-Lautstärke.
-     */
-    var sfxVolume
-        get() = sfxVolumeState.value
-        set(value) {
-            sfxVolumeState.value = value
-            getPlatform().audioPlayer.sfxVolume = value
-        }
-}
 
 @Composable
 fun AudioSettings() {
-    val audioData = remember { AudioSettingsData() }
+    val audioData = remember { AudioConfigHolder() }
 
+    if (!audioData.hasAudio()){
+        return
+    }
     Column(
         modifier = Modifier.fillMaxWidth()
     ) {
+        Text("Audio", color = Color.Blue, modifier = Modifier.padding(top = 30.dp))
         MusicVolumeSetting(audioData)
         SFXVolumeSetting(audioData)
     }
 }
 
 @Composable
-private fun MusicVolumeSetting(audioData: AudioSettingsData) {
+private fun MusicVolumeSetting(audioData: AudioConfigHolder) {
     Text("Musik Lautstärke")
     Slider(
         modifier = Modifier.fillMaxWidth(),
@@ -72,7 +43,7 @@ private fun MusicVolumeSetting(audioData: AudioSettingsData) {
 }
 
 @Composable
-private fun SFXVolumeSetting(audioData: AudioSettingsData) {
+private fun SFXVolumeSetting(audioData: AudioConfigHolder) {
     Text("Effekt Lautstärke")
     Slider(
         modifier = Modifier.fillMaxWidth(),
