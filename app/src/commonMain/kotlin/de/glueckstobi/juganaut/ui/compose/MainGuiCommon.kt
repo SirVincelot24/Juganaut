@@ -5,9 +5,9 @@ import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.asPaddingValues
 import androidx.compose.foundation.layout.calculateEndPadding
 import androidx.compose.foundation.layout.calculateStartPadding
-import androidx.compose.foundation.layout.displayCutout
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.systemBars
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -40,13 +40,13 @@ fun MainGuiCommon(gameState: GameState, touchInputHandler: TouchInputHandler?) {
             onClickQuit = { System.exit(0) }
         )
 
-        CurrentScreen.Settings -> WithInsetPadding() {
+        CurrentScreen.Settings -> WithSystemBarsPadding() {
             SettingsScreen(
                 onClickBack = { currentScreen.value = CurrentScreen.Init },
             )
         }
 
-        CurrentScreen.Game -> WithInsetPadding() {
+        CurrentScreen.Game -> WithSystemBarsPadding() {
             GameScreen(
                 gameState, touchInputHandler,
                 onClickBack = {
@@ -60,13 +60,13 @@ fun MainGuiCommon(gameState: GameState, touchInputHandler: TouchInputHandler?) {
 }
 
 @Composable
-fun WithInsetPadding(content: @Composable () -> Unit) {
+fun WithSystemBarsPadding(content: @Composable () -> Unit) {
     val layoutDirection = LocalLayoutDirection.current
-    val displayCutout = WindowInsets.displayCutout.asPaddingValues()
-    val topPadding = displayCutout.calculateTopPadding()
-    val bottomPadding = displayCutout.calculateBottomPadding()
-    val startPadding = displayCutout.calculateStartPadding(layoutDirection)
-    val endPadding = displayCutout.calculateEndPadding(layoutDirection)
+    val systemBarPaddings = WindowInsets.systemBars.asPaddingValues()
+    val topPadding = systemBarPaddings.calculateTopPadding()
+    val bottomPadding = systemBarPaddings.calculateBottomPadding()
+    val startPadding = systemBarPaddings.calculateStartPadding(layoutDirection)
+    val endPadding = systemBarPaddings.calculateEndPadding(layoutDirection)
 
     Box(
         modifier = Modifier
