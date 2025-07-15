@@ -54,6 +54,8 @@ fun MainGuiCommon(
 
         CurrentScreen.Settings -> WithSystemBarsPadding() {
             SettingsScreen(
+                worldRendererConfig,
+                worldBuilderConfig,
                 onClickBack = { currentScreen.value = CurrentScreen.Init },
             )
         }

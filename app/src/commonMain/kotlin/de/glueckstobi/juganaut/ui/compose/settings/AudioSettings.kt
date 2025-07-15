@@ -23,7 +23,7 @@ fun AudioSettings() {
     Column(
         modifier = Modifier.fillMaxWidth()
     ) {
-        Text("Audio", color = Color.Blue, modifier = Modifier.padding(top = 30.dp))
+        SettingsHeadline("Audio")
         MusicVolumeSetting(audioData)
         SFXVolumeSetting(audioData)
     }

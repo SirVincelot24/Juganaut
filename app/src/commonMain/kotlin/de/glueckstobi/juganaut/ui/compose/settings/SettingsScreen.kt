@@ -10,16 +10,25 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import de.glueckstobi.juganaut.ui.compose.states.WorldBuilderConfigHolder
+import de.glueckstobi.juganaut.ui.compose.states.WorldRendererConfigHolder
 
 @Composable
-fun SettingsScreen(onClickBack: () -> Unit) {
+fun SettingsScreen(
+    worldRendererConfigHolder: WorldRendererConfigHolder,
+    worldBuilderConfigHolder: WorldBuilderConfigHolder,
+    onClickBack: () -> Unit
+) {
     Column(modifier = Modifier.fillMaxSize()) {
         TitleBar(onClickBack)
+        WorldRendererSettings(worldRendererConfigHolder)
+        WorldBuilderSettings(worldBuilderConfigHolder)
         AudioSettings()
 
     }
@@ -28,6 +37,7 @@ fun SettingsScreen(onClickBack: () -> Unit) {
 @Composable
 fun TitleBar(onClickBack: () -> Unit) {
     Row(
+        verticalAlignment = Alignment.CenterVertically,
         modifier = Modifier
             .fillMaxWidth()
             .padding(bottom = 10.dp)
