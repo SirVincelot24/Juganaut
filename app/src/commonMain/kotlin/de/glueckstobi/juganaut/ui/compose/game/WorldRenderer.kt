@@ -7,6 +7,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableIntState
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clipToBounds
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.Color
@@ -110,7 +111,7 @@ fun WorldRenderer(world: World, tickCount: MutableIntState) {
 
     var translation = remember { Offset(0f, 0f) }
 
-    Canvas(modifier = Modifier.fillMaxSize().background(Color.Black)) {
+    Canvas(modifier = Modifier.fillMaxSize().clipToBounds().background(Color.Black)) {
         val scaleFactor = 2f //calculateScaleFactor(size, world.size)
         scale(scaleFactor, pivot = Offset(0f, 0f)) {
             val newTranslation = calculateTranslation(size, world, scaleFactor, translation)
