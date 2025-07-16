@@ -5,11 +5,13 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
@@ -49,6 +51,10 @@ fun GameScreen(
     gameOverReason.value = gameState.game?.gameOverReason
     val winReason = remember { mutableStateOf<WinningReason?>(null) }
     winReason.value = gameState.game?.winningReason
+    val diamondsCollected = remember { mutableIntStateOf(0) }
+    diamondsCollected.value = gameState.game?.diamondCount ?: 0
+    val diamondsTotal = remember { mutableIntStateOf(0) }
+    diamondsTotal.value = gameState.game?.diamondsInGame ?: 0
 
     Box(
         modifier = Modifier
@@ -57,7 +63,7 @@ fun GameScreen(
     ) {
         Column(modifier = Modifier.fillMaxSize()) {
             Row(modifier = Modifier.fillMaxWidth()) {
-                TitleBar(onClickBack)
+                TitleBar(diamondsCollected.value, diamondsTotal.value, onClickBack)
             }
 
             gameState.game?.let { game ->
@@ -94,17 +100,27 @@ private fun Modifier.configureTouchInput(touchInputHandler: TouchInputHandler?):
 }
 
 @Composable
-fun TitleBar(onClickBack: () -> Unit) {
-    Box(
-        modifier = Modifier
-            .clickable(onClick = onClickBack)
-            .background(Color.LightGray)
-            .padding(5.dp)
+fun TitleBar(diamondsCollected: Int, diamondsTotal: Int, onClickBack: () -> Unit) {
+    Row(
+        modifier = Modifier.padding(end = 10.dp),
+        verticalAlignment = Alignment.CenterVertically
     ) {
+        Box(
+            modifier = Modifier
+                .clickable(onClick = onClickBack)
+                .background(Color.LightGray)
+                .padding(5.dp)
+        ) {
+            Text(
+                "Stop",
+                color = Color.Black,
+                fontSize = 20.sp,
+            )
+        }
+        Spacer(modifier = Modifier.weight(1f))
         Text(
-            "Stop",
-            color = Color.Black,
-            fontSize = 20.sp,
+            "Diamanten: $diamondsCollected / $diamondsTotal",
+            color = Color.Blue
         )
     }
 }
