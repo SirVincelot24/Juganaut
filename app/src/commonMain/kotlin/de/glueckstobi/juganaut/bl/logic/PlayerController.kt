@@ -80,7 +80,6 @@ class PlayerController(val game: Game) {
         playerInputProcessed = true
         when (currentInput) {
             is PlayerMovement -> tryMovePlayer(currentInput.direction)
-            is PlayerActions -> return
         }
     }
     fun applyPlayerActions() {
@@ -96,7 +95,6 @@ class PlayerController(val game: Game) {
         playerInputProcessed = true
         when (currentInput) {
             is PlayerMovement -> return
-            is PlayerActions -> processAction(currentInput.action)
         }
     }
 
@@ -183,13 +181,6 @@ class PlayerController(val game: Game) {
             arrayOf( AudioSample.Crisp1, AudioSample.Crisp2, AudioSample.Crisp3, AudioSample.Crisp4 )
         val sample = crispSounds[Random.nextInt(0..3)]
         getPlatform().audioPlayer?.playSfx(sample, 0.65f)
-    }
-
-    private fun processAction(action: Action) {
-        when (action) {
-            Action.Quit -> game.quit()
-            Action.Restart -> game.restart()
-        }
     }
 
     /**

@@ -12,22 +12,3 @@ sealed interface PlayerInput
  * @param direction die Richtung, in die sich der Spieler bewegen will.
  */
 data class  PlayerMovement(val direction: Direction) : PlayerInput
-/**
- * Steuer-Kommando des Spielers für die Aktionen
- * @param action die Aktion, die der Spieler ausführen will.
- */
-data class PlayerActions(val action: Action): PlayerInput
-
-/**
- * Die möglichen Aktionen.
- */
-enum class Action {
-    /**
-     * Verlassen
-     */
-    Quit,
-    /**
-     * Neustart
-     */
-    Restart
-}
