@@ -73,35 +73,19 @@ class WorldBuilder() {
 
     /**
      * findet eine gültige Y-Koordinate, wo Items spawnen können
-     * (gültig heißt: nicht neben dem Spieler)
      * @param world die Welt, wo eine gültige Koordinate gesucht wird
      * @param playerY Die Y-Koordinate wo der Spieler steht
      */
     private fun getValidYCoordinate(world: World, playerY: Int): Int {
-        while (true) {
-            val y = Random.nextInt(world.validYRange)
-            if (y in playerY-1..playerY+1) {
-                continue
-            } else {
-                return y
-            }
-        }
+        return Random.nextInt(world.validYRange)
     }
 
     /**
      * findet eine gültige X-Koordinate, wo Items spawnen können
-     * (gültig heißt: nicht neben dem Spieler)
      * @param world die Welt, wo eine gültige Koordinate gesucht wird
      * @param playerX Die X-Koordinate wo der Spieler steht
      */
     private fun getValidXCoordinate(world: World, playerX: Int): Int {
-        while (true) {
-            val x = Random.nextInt(world.validXRange)
-            if (x in playerX-1..playerX+1) {
-                continue
-            } else {
-                return x
-            }
-        }
+        return Random.nextInt(world.validXRange)
     }
 }
