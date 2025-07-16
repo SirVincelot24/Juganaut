@@ -8,4 +8,4 @@ sealed interface WinningReason
 /**
  * Alle Diamanten sind eingesammelt
  */
-class AllDiamondsCollected(diamondsCollected: Int) : WinningReason
+class AllDiamondsCollected(val diamondsCollected: Int) : WinningReason

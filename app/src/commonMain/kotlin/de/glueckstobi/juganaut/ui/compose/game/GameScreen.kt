@@ -10,15 +10,26 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.drawBehind
+import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.platform.LocalWindowInfo
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import de.glueckstobi.juganaut.bl.logic.AllDiamondsCollected
+import de.glueckstobi.juganaut.bl.logic.Explosion
+import de.glueckstobi.juganaut.bl.logic.GameOverReason
+import de.glueckstobi.juganaut.bl.logic.MonsterCatchesPlayer
+import de.glueckstobi.juganaut.bl.logic.PlayerWalksIntoMonster
+import de.glueckstobi.juganaut.bl.logic.RockHitsPlayer
+import de.glueckstobi.juganaut.bl.logic.WinningReason
 import de.glueckstobi.juganaut.ui.compose.states.GameStateHolder
 import de.glueckstobi.juganaut.ui.compose.states.WorldRendererConfigHolder
 
@@ -32,6 +43,12 @@ fun GameScreen(
     val touchInputHandler = remember(gameState.game) {
         createTouchInputHandler(supportTouchInput, gameState)
     }
+
+    gameState.accessTickCount().intValue
+    val gameOverReason = remember { mutableStateOf<GameOverReason?>(null) }
+    gameOverReason.value = gameState.game?.gameOverReason
+    val winReason = remember { mutableStateOf<WinningReason?>(null) }
+    winReason.value = gameState.game?.winningReason
 
     Box(
         modifier = Modifier
@@ -48,6 +65,7 @@ fun GameScreen(
             }
         }
         TouchHandlerCross(touchInputHandler)
+        GameEnd(gameOverReason.value, winReason.value)
     }
 }
 
@@ -114,4 +132,61 @@ private fun TouchHandlerCross(touchInputHandler: TouchInputHandler?) {
                 drawLine(color, start = touchCenter, end = touchCenter + Offset(-crossLength, crossLength))
             }
     )
+}
+
+@Composable
+private fun GameEnd(gameOver: GameOverReason?, won: WinningReason?) {
+    if (gameOver != null) {
+        Box(
+            modifier = Modifier.fillMaxSize(),
+            contentAlignment = Alignment.Center
+        ) {
+            Column(modifier = Modifier.rotate(30f)) {
+                Text(
+                    "Game Over",
+                    color = Color.Red,
+                    fontSize = 50.sp,
+                    fontWeight = FontWeight.ExtraBold
+                )
+                Text(
+                    formatGameOverReason(gameOver),
+                    color = Color.White
+                )
+            }
+        }
+    }
+    if (won != null) {
+        Box(
+            modifier = Modifier.fillMaxSize(),
+            contentAlignment = Alignment.Center
+        ) {
+            Column(modifier = Modifier.rotate(-30f)) {
+                Text(
+                    "Gewonnen",
+                    color = Color.Green,
+                    fontSize = 50.sp,
+                    fontWeight = FontWeight.ExtraBold
+                )
+                Text(
+                    formatGameOverReason(won),
+                    color = Color.White
+                )
+            }
+        }
+    }
+}
+
+private fun formatGameOverReason(reason: GameOverReason): String {
+    return when (reason) {
+        is MonsterCatchesPlayer -> "Spieler wurde gefressen"
+        is PlayerWalksIntoMonster -> "Spieler hat Streit gesucht"
+        is RockHitsPlayer -> "Spieler wurde erschlagen"
+        is Explosion -> "Spieler ist explodiert"
+    }
+}
+
+private fun formatGameOverReason(reason: WinningReason): String {
+    return when (reason) {
+        is AllDiamondsCollected -> "Alle ${reason.diamondsCollected} Diamanten gesammelt"
+    }
 }
