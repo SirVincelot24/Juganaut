@@ -11,8 +11,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.mutableIntStateOf
-import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -46,15 +45,10 @@ fun GameScreen(
         createTouchInputHandler(supportTouchInput, gameState)
     }
 
-    gameState.accessTickCount().intValue
-    val gameOverReason = remember { mutableStateOf<GameOverReason?>(null) }
-    gameOverReason.value = gameState.game?.gameOverReason
-    val winReason = remember { mutableStateOf<WinningReason?>(null) }
-    winReason.value = gameState.game?.winningReason
-    val diamondsCollected = remember { mutableIntStateOf(0) }
-    diamondsCollected.value = gameState.game?.diamondCount ?: 0
-    val diamondsTotal = remember { mutableIntStateOf(0) }
-    diamondsTotal.value = gameState.game?.diamondsInGame ?: 0
+    val gameOverReason = remember { derivedStateOf { gameState.game?.gameOverReason } }
+    val winReason = remember { derivedStateOf { gameState.game?.winningReason } }
+    val diamondsCollected = remember { derivedStateOf { gameState.game?.diamondCount ?: 0 } }
+    val diamondsTotal = remember { derivedStateOf { gameState.game?.diamondsInGame ?: 0 } }
 
     Box(
         modifier = Modifier
@@ -66,9 +60,8 @@ fun GameScreen(
                 TitleBar(diamondsCollected.value, diamondsTotal.value, onClickBack)
             }
 
-            gameState.game?.let { game ->
-                WorldRenderer(game.world, worldRendererConfig, gameState.accessTickCount())
-            }
+
+            WorldRenderer(gameState, worldRendererConfig)
         }
         TouchHandlerCross(touchInputHandler)
         GameEnd(gameOverReason.value, winReason.value)
@@ -92,7 +85,7 @@ private fun Modifier.configureTouchInput(touchInputHandler: TouchInputHandler?):
             awaitPointerEventScope {
                 while (true) {
                     val event = awaitPointerEvent()
-                    touchInputHandler?.onTouchEvent(event)
+                    touchInputHandler.onTouchEvent(event)
                 }
             }
         }
