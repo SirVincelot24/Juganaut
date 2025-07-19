@@ -3,18 +3,14 @@ package de.glueckstobi.juganaut.ui.compose.settings
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.padding
+import androidx.compose.material.ExperimentalMaterialApi
+import androidx.compose.material.RangeSlider
 import androidx.compose.material.Slider
-import androidx.compose.material.Switch
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.unit.dp
-import de.glueckstobi.juganaut.ui.compose.states.AudioConfigHolder
 import de.glueckstobi.juganaut.ui.compose.states.WorldBuilderConfigHolder
-import de.glueckstobi.juganaut.ui.compose.states.WorldRendererConfigHolder
 import kotlin.math.roundToInt
 
 
@@ -25,7 +21,7 @@ fun WorldBuilderSettings(worldBuilderConfig: WorldBuilderConfigHolder) {
     ) {
         SettingsHeadline("Spielwelt")
         SizeSettings(worldBuilderConfig)
-//        ItemCountSettings(worldBuilderConfig)
+        ItemCountSettings(worldBuilderConfig)
     }
 }
 
@@ -64,6 +60,82 @@ private fun SizeSettings(holder: WorldBuilderConfigHolder) {
                 holder.worldBuilderConfig.value = holder.worldBuilderConfig.value.copy(
                     worldSize = size.copy(height = height),
                     playerCoord = player.copy(y = height / 2)
+                )
+            },
+        )
+    }
+}
+
+
+@OptIn(ExperimentalMaterialApi::class)
+@Composable
+private fun ItemCountSettings(holder: WorldBuilderConfigHolder) {
+    val diamonds = holder.worldBuilderConfig.value.diamondsCountRange
+    Row(verticalAlignment = Alignment.CenterVertically) {
+        Text("Diamanten: ${diamonds.start}-${diamonds.endInclusive}")
+        val range = 1f..200f
+        RangeSlider(
+            modifier = Modifier.fillMaxWidth(),
+            value = diamonds.start.toFloat()..diamonds.endInclusive.toFloat(),
+            valueRange = range,
+            steps = (range.endInclusive - range.start - 1).toInt(),
+            onValueChange = { newValue ->
+                val newRange = newValue.start.roundToInt()..newValue.endInclusive.roundToInt()
+                holder.worldBuilderConfig.value = holder.worldBuilderConfig.value.copy(
+                    diamondsCountRange = newRange,
+                )
+            },
+        )
+    }
+
+    val monsters = holder.worldBuilderConfig.value.monsterCountRange
+    Row(verticalAlignment = Alignment.CenterVertically) {
+        Text("Monster: ${monsters.start}-${monsters.endInclusive}")
+        val range = 0f..200f
+        RangeSlider(
+            modifier = Modifier.fillMaxWidth(),
+            value = monsters.start.toFloat()..monsters.endInclusive.toFloat(),
+            valueRange = range,
+            steps = (range.endInclusive - range.start - 1).toInt(),
+            onValueChange = { newValue ->
+                val newRange = newValue.start.roundToInt()..newValue.endInclusive.roundToInt()
+                holder.worldBuilderConfig.value = holder.worldBuilderConfig.value.copy(
+                    monsterCountRange = newRange,
+                )
+            },
+        )
+    }
+
+    val bombs = holder.worldBuilderConfig.value.bombsCountRange
+    Row(verticalAlignment = Alignment.CenterVertically) {
+        Text("Bomben: ${bombs.start}-${bombs.endInclusive}")
+        val range = 0f..200f
+        RangeSlider(
+            modifier = Modifier.fillMaxWidth(),
+            value = bombs.start.toFloat()..bombs.endInclusive.toFloat(),
+            valueRange = range,
+            steps = (range.endInclusive - range.start - 1).toInt(),
+            onValueChange = { newValue ->
+                val newRange = newValue.start.roundToInt()..newValue.endInclusive.roundToInt()
+                holder.worldBuilderConfig.value = holder.worldBuilderConfig.value.copy(
+                    bombsCountRange = newRange,
+                )
+            },
+        )
+    }
+    val rocks = holder.worldBuilderConfig.value.rockCountRange
+    Row(verticalAlignment = Alignment.CenterVertically) {
+        Text("Steine: ${rocks.start}-${rocks.endInclusive}")
+        val range = 0f..200f
+        RangeSlider(
+            modifier = Modifier.fillMaxWidth(),
+            value = rocks.start.toFloat()..rocks.endInclusive.toFloat(),
+            valueRange = range,
+            steps = (range.endInclusive - range.start - 1).toInt(),
+            onValueChange = { newValue ->
+                val newRange = newValue.start.roundToInt()..newValue.endInclusive.roundToInt()
+                holder.worldBuilderConfig.value = holder.worldBuilderConfig.value.copy(
+                    rockCountRange = newRange,
                 )
             },
         )
