@@ -76,6 +76,7 @@ android {
 }
 
 dependencies {
+    implementation(files("/home/vincent/Android/Sdk/platforms/android-35/android.jar"))
     debugImplementation(compose.uiTooling)
 }
 

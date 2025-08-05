@@ -1,9 +1,9 @@
 package de.glueckstobi.juganaut.ui.audio
 
-import com.adonax.audiocue.AudioCue
 import juganaut.app.generated.resources.Res
 import org.jetbrains.compose.resources.ExperimentalResourceApi
 import java.net.URL
+import android.media.MediaPlayer
 
 /**
  * Audio-Player.
@@ -13,7 +13,8 @@ object AudioPlayerAudioCue : AudioPlayer {
     override var sfxVolume = 1f
     override var musicVolume = 0.5f
 
-    private var musicAudioCue: AudioCue? = null
+    //private var musicAudioCue: AudioCue? = null
+    private var musicMediaPlayer: MediaPlayer = MediaPlayer()
 
     /**
      * Startet die Spiel-Musik.
@@ -25,6 +26,8 @@ object AudioPlayerAudioCue : AudioPlayer {
         audioCue.setLooping(audioCue.obtainInstance(), -1)
         musicAudioCue = audioCue
     }
+
+
 
     /**
      * Spielt einen einzelnen Audio-Effekt ab.
