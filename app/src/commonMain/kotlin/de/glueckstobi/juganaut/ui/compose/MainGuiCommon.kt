@@ -16,10 +16,9 @@ import androidx.compose.ui.platform.LocalLayoutDirection
 import de.glueckstobi.juganaut.bl.Game
 import de.glueckstobi.juganaut.getPlatform
 import de.glueckstobi.juganaut.ui.compose.game.GameScreen
-import de.glueckstobi.juganaut.ui.compose.states.GameStateHolder
 import de.glueckstobi.juganaut.ui.compose.settings.SettingsScreen
+import de.glueckstobi.juganaut.ui.compose.states.GameStateHolder
 import de.glueckstobi.juganaut.ui.compose.states.WorldBuilderConfigHolder
-import de.glueckstobi.juganaut.ui.compose.states.WorldRendererConfigHolder
 
 enum class CurrentScreen {
     Init,
@@ -37,7 +36,7 @@ fun MainGuiCommon(
 
     val gameState = remember { GameStateHolder() }
     val worldBuilderConfig = remember { WorldBuilderConfigHolder() }
-    val worldRendererConfig = remember { WorldRendererConfigHolder() }
+    val worldRendererConfig = remember { getPlatform().rendererConfigHolder }
 
     when (currentScreen.value) {
 

@@ -10,8 +10,8 @@ import java.net.URL
  */
 object AudioPlayerAudioCue : AudioPlayer {
 
-    override var sfxVolume = 1f
-    override var musicVolume = 0.5f
+    override var sfxVolume = 0.75f
+    override var musicVolume = 1f
 
     private var musicAudioCue: AudioCue? = null
 

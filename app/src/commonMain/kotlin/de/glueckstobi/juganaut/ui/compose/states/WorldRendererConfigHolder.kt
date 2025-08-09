@@ -1,14 +1,14 @@
 package de.glueckstobi.juganaut.ui.compose.states
 
-import androidx.compose.runtime.mutableFloatStateOf
-import androidx.compose.runtime.mutableIntStateOf
-import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.MutableFloatState
+import androidx.compose.runtime.MutableIntState
+import androidx.compose.runtime.MutableState
 
-class WorldRendererConfigHolder {
+interface WorldRendererConfigHolder {
 
-    val autoScale = mutableStateOf(false)
+    val autoScale : MutableState<Boolean>
 
-    val scaleFactor = mutableFloatStateOf(1f)
+    val scaleFactor : MutableFloatState
 
-    val edgeDistanceForScroll = mutableIntStateOf(3)
+    val edgeDistanceForScroll : MutableIntState
 }
