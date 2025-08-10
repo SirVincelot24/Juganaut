@@ -41,6 +41,7 @@ class GameStateHolder() {
         val renderCycle = RenderCycle()
         renderCycle.startRenderCycle(::tick)
         this.renderCycle = renderCycle
+
     }
 
     fun stopGame() {

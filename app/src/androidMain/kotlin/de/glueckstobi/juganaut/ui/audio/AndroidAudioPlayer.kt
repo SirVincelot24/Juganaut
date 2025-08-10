@@ -1,34 +1,21 @@
 package de.glueckstobi.juganaut.ui.audio
 
-import android.os.Bundle
-import androidx.activity.ComponentActivity
+import android.util.Log
 import androidx.media3.common.MediaItem
 import androidx.media3.exoplayer.ExoPlayer
+import de.glueckstobi.juganaut.MainActivity
+import juganaut.app.generated.resources.Res
 
-object AndroidAudioPlayer : AudioPlayer, ComponentActivity() {
+object AndroidAudioPlayer : AudioPlayer {
     override var sfxVolume = 1f
     override var musicVolume = 0.5f
 
-    private var musicPlayer: ExoPlayer? = null
-    private var sfxPlayer: ExoPlayer? = null
+    var musicPlayer: ExoPlayer? = null
+    var sfxPlayer: ExoPlayer? = null
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        musicPlayer = ExoPlayer.Builder(this).build()
-        sfxPlayer = ExoPlayer.Builder(this).build()
-    }
-
-    override fun onDestroy() {
-        musicPlayer?.release()
-        sfxPlayer?.release()
-        super.onDestroy()
-    }
 
     override fun startMusic() {
-        musicPlayer?.setMediaItem(MediaItem.fromUri(AudioSample.MainLoop.path))
-        musicPlayer?.volume = musicVolume
-        musicPlayer?.repeatMode = androidx.media3.common.Player.REPEAT_MODE_ONE
-        musicPlayer?.prepare()
+        Log.d("Juganaut", "Started music")
         musicPlayer?.play()
     }
 
@@ -36,19 +23,21 @@ object AndroidAudioPlayer : AudioPlayer, ComponentActivity() {
         sample: AudioSample,
         volume: Float
     ) {
-        sfxPlayer?.addMediaItem(MediaItem.fromUri(sample.path))
+        sfxPlayer?.addMediaItem(MediaItem.fromUri(Res.getUri(sample.path)))
         sfxPlayer?.volume = volume * sfxVolume
-        sfxPlayer?.repeatMode = androidx.media3.common.Player.REPEAT_MODE_OFF
         sfxPlayer?.prepare()
         sfxPlayer?.play()
     }
 
     override fun stopMusic() {
         musicPlayer?.stop()
+        musicPlayer?.removeListener(MainActivity().playbackStateListener)
+        musicPlayer?.release()
     }
 
     override fun stopAll() {
         musicPlayer?.stop()
         sfxPlayer?.stop()
+        MainActivity().releasePlayer()
     }
 }
