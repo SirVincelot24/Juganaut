@@ -1,11 +1,9 @@
 package de.glueckstobi.juganaut.ui.compose
 
-import androidx.compose.runtime.remember
 import androidx.compose.ui.window.Window
 import androidx.compose.ui.window.application
-import de.glueckstobi.juganaut.bl.setup.WorldBuilderConfiguration
-import de.glueckstobi.juganaut.ui.compose.states.GameStateHolder
 import de.glueckstobi.juganaut.ui.compose.game.KeyInputHandler
+import kotlin.system.exitProcess
 
 
 object MainGuiDesktopCompose {
@@ -17,7 +15,7 @@ object MainGuiDesktopCompose {
             Window(
                 title = "Juganaut",
                 onCloseRequest = {
-                    System.exit(0)
+                    exitProcess(0)
                 },
                 onKeyEvent = { event ->
                     keyInputHandler.onKeyEvent(event)

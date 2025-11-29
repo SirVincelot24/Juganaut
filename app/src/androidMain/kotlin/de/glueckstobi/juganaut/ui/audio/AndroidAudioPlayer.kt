@@ -27,6 +27,7 @@ object AndroidAudioPlayer : AudioPlayer {
         sfxPlayer?.volume = volume * sfxVolume
         sfxPlayer?.prepare()
         sfxPlayer?.play()
+        sfxPlayer?.release()
     }
 
     override fun stopMusic() {

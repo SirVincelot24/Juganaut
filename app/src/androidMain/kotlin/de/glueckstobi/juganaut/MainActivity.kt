@@ -89,7 +89,7 @@ class MainActivity : ComponentActivity() {
             player.release()
         }
         sfxPlayer?.let { player ->
-//            player.removeListener(playbackStateListener)
+            player.removeListener(playbackStateListener)
             player.release()
         }
         musicPlayer = null
