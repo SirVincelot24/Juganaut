@@ -28,6 +28,8 @@ Voraussetzung ist nur ein installiertes JDK (Java Development Kit).
 
 Ich empfehle zum Programmieren IntelliJ IDEA Community Edition: https://www.jetbrains.com/idea/download
 
+Für diesen Branch ist aber Android Studio besser: https://developer.android.com/studio
+
 Um eine Programmier-Umgebung mit diesem Spiel einzurichten:
 * Clonen dieses Repositories: `git clone https://github.com/tobrup/Juganaut.git`
     * Dadurch sollte das Repository, d.h. der Programm-Code des Spiels, auf der Festplatte gespeichert werden.
@@ -51,9 +53,5 @@ Das Spiel könnte ein paar neue Features vertragen:
 
 * Wäre gut, wenn der Spieler einen Stein verschieben könnte (falls im Feld dahinter Platz ist).
 Das ist reiner Teil der Spiel-Logik, kann also vollständig in der BL programmiert werden.
-
-* Geräusche bzw. Musik wären noch nett
-
-* Für das Menü (definiert in `MenuGui` in der UI) könnte man noch ein schönes Hintergrundbild malen und einfügen
 
 * Wie wär's mit Bomben, die der Benutzer anzünden kann (z.B. mit `Enter`) und die dann nach 3 Runden explodieren?
