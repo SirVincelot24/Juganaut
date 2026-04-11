@@ -18,7 +18,7 @@ interface AudioPlayer {
      * @param sample der Audio-Effekt
      * @param volume die Lautstärke, zwischen 0 und 1
      */
-    fun playSfx(sample: AudioSample, volume: Float = 1f)
+    fun playSfx(sample: SFXAudioSample, volume: Float = 1f)
 
     /**
      * Stoppt die Spiel-Musik

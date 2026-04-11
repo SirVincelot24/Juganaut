@@ -1,6 +1,8 @@
 package de.glueckstobi.juganaut
 
 import android.annotation.SuppressLint
+import android.media.AudioAttributes
+import android.media.SoundPool
 import android.os.Build
 import android.os.Bundle
 import android.util.Log
@@ -13,9 +15,11 @@ import androidx.core.view.WindowInsetsControllerCompat
 import androidx.media3.common.MediaItem
 import androidx.media3.common.Player
 import androidx.media3.exoplayer.ExoPlayer
+import de.glueckstobi.juganaut.ui.audio.AndroidAudioPlayer.initSfx
 import de.glueckstobi.juganaut.ui.audio.AndroidAudioPlayer.musicPlayer
 import de.glueckstobi.juganaut.ui.audio.AndroidAudioPlayer.musicVolume
 import de.glueckstobi.juganaut.ui.audio.AndroidAudioPlayer.sfxPlayer
+import de.glueckstobi.juganaut.ui.audio.AndroidAudioPlayer.sfxSoundPool
 import de.glueckstobi.juganaut.ui.audio.AudioSample
 import de.glueckstobi.juganaut.ui.compose.MainGuiAndroidCompose
 import juganaut.app.generated.resources.Res
@@ -56,6 +60,11 @@ class MainActivity : ComponentActivity() {
         releasePlayer()
     }
 
+    override fun onDestroy() {
+        super.onDestroy()
+
+    }
+
     @SuppressLint("InlinedApi")
     private fun hideSystemUi() {
         WindowCompat.setDecorFitsSystemWindows(window, false)
@@ -78,22 +87,27 @@ class MainActivity : ComponentActivity() {
         sfxPlayer = ExoPlayer.Builder(this).build().also { exoPlayer ->
             exoPlayer.repeatMode = Player.REPEAT_MODE_OFF
         }
+
+        sfxSoundPool = SoundPool.Builder().setMaxStreams(5).setAudioAttributes(
+            AudioAttributes.Builder().setContentType(AudioAttributes.CONTENT_TYPE_SONIFICATION).setUsage(AudioAttributes.USAGE_GAME).build()
+        ).build()
+
+        initSfx()
     }
 
     fun releasePlayer() {
-        musicPlayer?.let { player ->
+        musicPlayer.let { player ->
             playbackPosition = player.currentPosition
             mediaItemIndex = player.currentMediaItemIndex
             playWhenReady = player.playWhenReady
             player.removeListener(playbackStateListener)
             player.release()
         }
-        sfxPlayer?.let { player ->
+        sfxPlayer.let { player ->
             player.removeListener(playbackStateListener)
             player.release()
         }
-        musicPlayer = null
-        sfxPlayer = null
+        sfxSoundPool.release()
     }
 
     private fun playbackStateListener() = object : Player.Listener {

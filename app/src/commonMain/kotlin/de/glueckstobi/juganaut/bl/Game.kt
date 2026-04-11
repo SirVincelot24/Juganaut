@@ -1,13 +1,10 @@
 package de.glueckstobi.juganaut.bl
 
-import de.glueckstobi.juganaut.Platform
 import de.glueckstobi.juganaut.bl.logic.GameOverReason
 import de.glueckstobi.juganaut.bl.logic.TurnController
 import de.glueckstobi.juganaut.bl.logic.WinningReason
 import de.glueckstobi.juganaut.getPlatform
-import de.glueckstobi.juganaut.ui.audio.AudioPlayer
-import de.glueckstobi.juganaut.ui.audio.AudioSample
-import kotlin.system.exitProcess
+import de.glueckstobi.juganaut.ui.audio.SFXAudioSample
 
 /**
  * Beschreibt das Spiel mit allen Daten und der Spiel-Logik.
@@ -39,7 +36,7 @@ class Game(val world: World, val diamondsInGame : Int) {
      * @param reason der Grund für das GameOver
      */
     fun gameOver(reason: GameOverReason) {
-        getPlatform().audioPlayer?.playSfx(AudioSample.Lose)
+        getPlatform().audioPlayer?.playSfx(SFXAudioSample.Lose)
         getPlatform().audioPlayer?.stopMusic()
         gameOverReason = reason
     }
@@ -49,7 +46,7 @@ class Game(val world: World, val diamondsInGame : Int) {
      * @param reason der Grund für den Gewinn
      */
     fun win(reason: WinningReason) {
-        getPlatform().audioPlayer?.playSfx(AudioSample.Win)
+        getPlatform().audioPlayer?.playSfx(SFXAudioSample.Win)
         getPlatform().audioPlayer?.stopMusic()
         winningReason = reason
 

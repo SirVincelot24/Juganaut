@@ -3,10 +3,15 @@ package de.glueckstobi.juganaut.bl.logic
 import de.glueckstobi.juganaut.bl.Game
 import de.glueckstobi.juganaut.bl.space.Coord
 import de.glueckstobi.juganaut.bl.space.Direction
-import de.glueckstobi.juganaut.bl.worlditems.*
+import de.glueckstobi.juganaut.bl.worlditems.Bomb
+import de.glueckstobi.juganaut.bl.worlditems.Diamond
+import de.glueckstobi.juganaut.bl.worlditems.Dirt
+import de.glueckstobi.juganaut.bl.worlditems.EmptyField
+import de.glueckstobi.juganaut.bl.worlditems.Monster
+import de.glueckstobi.juganaut.bl.worlditems.Player
+import de.glueckstobi.juganaut.bl.worlditems.Rock
 import de.glueckstobi.juganaut.getPlatform
-import de.glueckstobi.juganaut.ui.audio.AudioPlayer
-import de.glueckstobi.juganaut.ui.audio.AudioSample
+import de.glueckstobi.juganaut.ui.audio.SFXAudioSample
 import kotlin.random.Random
 import kotlin.random.nextInt
 
@@ -141,7 +146,7 @@ class PlayerController(val game: Game) {
         if (game.diamondCount >= game.diamondsInGame) {
             game.win(AllDiamondsCollected(game.diamondCount))
         }
-        getPlatform().audioPlayer?.playSfx(AudioSample.CollectDiamond)
+        getPlatform().audioPlayer?.playSfx(SFXAudioSample.CollectDiamond)
     }
 
     fun tryMoveRock(rockCoord: Coord, direction: Direction, playerCoord: Coord, rock: Rock) {
@@ -177,8 +182,8 @@ class PlayerController(val game: Game) {
 
     private fun movePlayerIntoDirt(source: Coord, destination: Coord) {
         movePlayer(source, destination)
-        val crispSounds: Array<AudioSample> =
-            arrayOf( AudioSample.Crisp1, AudioSample.Crisp2, AudioSample.Crisp3, AudioSample.Crisp4 )
+        val crispSounds: Array<SFXAudioSample> =
+            arrayOf( SFXAudioSample.Crisp1, SFXAudioSample.Crisp2, SFXAudioSample.Crisp3, SFXAudioSample.Crisp4 )
         val sample = crispSounds[Random.nextInt(0..3)]
         getPlatform().audioPlayer?.playSfx(sample, 0.65f)
     }

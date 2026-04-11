@@ -6,7 +6,7 @@ import org.jetbrains.compose.resources.ExperimentalResourceApi
 import java.net.URL
 
 /**
- * Audio-Player.
+ * Audio-Player
  */
 object AudioPlayerAudioCue : AudioPlayer {
 
@@ -16,7 +16,7 @@ object AudioPlayerAudioCue : AudioPlayer {
     private var musicAudioCue: AudioCue? = null
 
     /**
-     * Startet die Spiel-Musik.
+     * Startet die Spiel-Musik
      */
     override fun startMusic() {
         val audioCue = makeStereoCue(AudioSample.MainLoop)
@@ -27,11 +27,11 @@ object AudioPlayerAudioCue : AudioPlayer {
     }
 
     /**
-     * Spielt einen einzelnen Audio-Effekt ab.
-     * @param sample der Audio-Effekt
+     * Spielt einen einzelnen Soundeffekt ab.
+     * @param sample der Soundeffekt
      * @param volume die Lautstärke, zwischen 0 und 1
      */
-    override fun playSfx(sample: AudioSample, volume: Float) {
+    override fun playSfx(sample: SFXAudioSample, volume: Float) {
         val sfxAudioCue = makeStereoCue(sample)
         sfxAudioCue.open()
         sfxAudioCue.play((volume * sfxVolume).toDouble())
@@ -53,18 +53,23 @@ object AudioPlayerAudioCue : AudioPlayer {
     }
 
     /**
-     * Stoppt alle Töne.
+     * Stoppt alle Töne
      */
     override fun stopAll() {
         try {
             musicAudioCue?.close()
-        } catch (e: IllegalStateException) {
+        } catch (_: IllegalStateException) {
             System.err.println("Already closed AudioCue!")
         }
     }
 
     @OptIn(ExperimentalResourceApi::class)
     private fun makeStereoCue(sample: AudioSample): AudioCue {
+        val url = URL(Res.getUri(sample.path))
+        return AudioCue.makeStereoCue(url, 4)
+    }
+    @OptIn(ExperimentalResourceApi::class)
+    private fun makeStereoCue(sample: SFXAudioSample): AudioCue {
         val url = URL(Res.getUri(sample.path))
         return AudioCue.makeStereoCue(url, 4)
     }
