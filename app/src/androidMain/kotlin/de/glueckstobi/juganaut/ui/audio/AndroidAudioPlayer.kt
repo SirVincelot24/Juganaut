@@ -1,11 +1,10 @@
 package de.glueckstobi.juganaut.ui.audio
 
+import android.content.Context
 import android.media.SoundPool
 import android.util.Log
 import androidx.media3.exoplayer.ExoPlayer
 import de.glueckstobi.juganaut.MainActivity
-import juganaut.app.generated.resources.Res
-import org.jetbrains.compose.resources.ExperimentalResourceApi
 
 object AndroidAudioPlayer : AudioPlayer {
     override var sfxVolume = 1f
@@ -17,12 +16,19 @@ object AndroidAudioPlayer : AudioPlayer {
 
     private val soundIDs = mutableMapOf<SFXAudioSample, Int>()
 
-    @OptIn(ExperimentalResourceApi::class)
-    fun initSfx() {
+
+    fun initSfx(context: Context) {
         for (sfx in SFXAudioSample.entries) {
-            soundIDs[sfx] = sfxSoundPool.load(Res.getUri(sfx.path), 1)
-//            ContentResolver(MainActivity()).openFileDescriptor(Uri.Builder().path(Res.getUri(sfx.path)).build(), "r")
-//            soundIDs[sfx] = sfxSoundPool.load(fd.fileDescriptor, 0, file.length(), 1)
+//            Funktioniert nicht
+//            val url = URL(Res.getUri(sfx.path)).path
+//            soundIDs[sfx] = sfxSoundPool.load(url, 1)
+//            Funktioniert auch nicht
+//            val fd = resolver.openFileDescriptor(Res.getUri(sfx.path).toUri(), "r")
+//            val afd = AssetFileDescriptor(fd, 0, AssetFileDescriptor.UNKNOWN_LENGTH)
+//            soundIDs[sfx] = sfxSoundPool.load(afd, 1)
+
+            val soundID = context.resources.getIdentifier(sfx.path.removePrefix("files/").removeSuffix(".wav"), "raw", context.packageName)
+            soundIDs[sfx] = sfxSoundPool.load(context, soundID, 1)
         }
     }
 

@@ -18,7 +18,6 @@ import androidx.media3.exoplayer.ExoPlayer
 import de.glueckstobi.juganaut.ui.audio.AndroidAudioPlayer.initSfx
 import de.glueckstobi.juganaut.ui.audio.AndroidAudioPlayer.musicPlayer
 import de.glueckstobi.juganaut.ui.audio.AndroidAudioPlayer.musicVolume
-import de.glueckstobi.juganaut.ui.audio.AndroidAudioPlayer.sfxPlayer
 import de.glueckstobi.juganaut.ui.audio.AndroidAudioPlayer.sfxSoundPool
 import de.glueckstobi.juganaut.ui.audio.AudioSample
 import de.glueckstobi.juganaut.ui.compose.MainGuiAndroidCompose
@@ -56,8 +55,8 @@ class MainActivity : ComponentActivity() {
     }
 
     override fun onStop() {
-        super.onStop()
         releasePlayer()
+        super.onStop()
     }
 
     override fun onDestroy() {
@@ -84,15 +83,13 @@ class MainActivity : ComponentActivity() {
             exoPlayer.prepare()
             exoPlayer.addListener(playbackStateListener)
         }
-        sfxPlayer = ExoPlayer.Builder(this).build().also { exoPlayer ->
-            exoPlayer.repeatMode = Player.REPEAT_MODE_OFF
-        }
 
         sfxSoundPool = SoundPool.Builder().setMaxStreams(5).setAudioAttributes(
             AudioAttributes.Builder().setContentType(AudioAttributes.CONTENT_TYPE_SONIFICATION).setUsage(AudioAttributes.USAGE_GAME).build()
         ).build()
 
-        initSfx()
+
+        initSfx(this)
     }
 
     fun releasePlayer() {
@@ -100,10 +97,6 @@ class MainActivity : ComponentActivity() {
             playbackPosition = player.currentPosition
             mediaItemIndex = player.currentMediaItemIndex
             playWhenReady = player.playWhenReady
-            player.removeListener(playbackStateListener)
-            player.release()
-        }
-        sfxPlayer.let { player ->
             player.removeListener(playbackStateListener)
             player.release()
         }
