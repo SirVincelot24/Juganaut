@@ -15,12 +15,12 @@ object AudioPlayerAudioCue : AudioPlayer {
 
     private var musicAudioCue: AudioCue? = null
 
+    lateinit var audioCue: AudioCue
+
     /**
      * Startet die Spiel-Musik
      */
     override fun startMusic() {
-        val audioCue = makeStereoCue(AudioSample.MainLoop)
-        audioCue.open()
         audioCue.play(musicVolume.toDouble())
         audioCue.setLooping(audioCue.obtainInstance(), -1)
         musicAudioCue = audioCue
@@ -61,6 +61,11 @@ object AudioPlayerAudioCue : AudioPlayer {
         } catch (_: IllegalStateException) {
             System.err.println("Already closed AudioCue!")
         }
+    }
+
+    override fun initMusicPlayers() {
+        audioCue = makeStereoCue(AudioSample.MainLoop)
+        audioCue.open()
     }
 
     @OptIn(ExperimentalResourceApi::class)

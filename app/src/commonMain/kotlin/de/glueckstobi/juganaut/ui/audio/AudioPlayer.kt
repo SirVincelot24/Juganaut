@@ -29,4 +29,5 @@ interface AudioPlayer {
      * Stoppt alle Töne.
      */
     fun stopAll()
+    fun initMusicPlayers()
 }

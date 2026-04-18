@@ -19,6 +19,7 @@ import de.glueckstobi.juganaut.ui.compose.game.GameScreen
 import de.glueckstobi.juganaut.ui.compose.settings.SettingsScreen
 import de.glueckstobi.juganaut.ui.compose.states.GameStateHolder
 import de.glueckstobi.juganaut.ui.compose.states.WorldBuilderConfigHolder
+import kotlin.system.exitProcess
 
 enum class CurrentScreen {
     Init,
@@ -43,12 +44,13 @@ fun MainGuiCommon(
         CurrentScreen.Init -> InitScreen(
             onClickStart = {
                 gameState.startNewGame(worldBuilderConfig.worldBuilderConfig.value)
+                getPlatform().audioPlayer?.initMusicPlayers()
                 getPlatform().audioPlayer?.startMusic()
                 onGameStart(gameState.game!!)
                 currentScreen.value = CurrentScreen.Game
             },
             onClickSettings = { currentScreen.value = CurrentScreen.Settings },
-            onClickQuit = { System.exit(0) }
+            onClickQuit = { exitProcess(0) }
         )
 
         CurrentScreen.Settings -> WithSystemBarsPadding() {
@@ -67,7 +69,7 @@ fun MainGuiCommon(
                 onClickBack = {
                     onGameStop()
                     gameState.stopGame()
-                    getPlatform().audioPlayer?.stopMusic()
+                    getPlatform().audioPlayer?.stopAll()
                     currentScreen.value = CurrentScreen.Init
                 }
             )

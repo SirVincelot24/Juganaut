@@ -17,6 +17,10 @@ object AndroidAudioPlayer : AudioPlayer {
     private val soundIDs = mutableMapOf<SFXAudioSample, Int>()
 
 
+    override fun initMusicPlayers() {
+        MainActivity().initPlayer()
+    }
+
     fun initSfx(context: Context) {
         for (sfx in SFXAudioSample.entries) {
 //            Funktioniert nicht
