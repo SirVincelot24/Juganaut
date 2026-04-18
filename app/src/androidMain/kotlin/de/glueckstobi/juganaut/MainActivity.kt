@@ -1,6 +1,7 @@
 package de.glueckstobi.juganaut
 
 import android.annotation.SuppressLint
+import android.content.Context
 import android.media.AudioAttributes
 import android.media.SoundPool
 import android.os.Build
@@ -38,13 +39,13 @@ class MainActivity : ComponentActivity() {
     private var playbackPosition = 0L
 
     override fun onStart() {
-        initPlayer()
+        initPlayer(this)
         super.onStart()
     }
 
 
     override fun onResume() {
-        initPlayer()
+        initPlayer(this)
         hideSystemUi()
         super.onResume()
     }
@@ -75,8 +76,8 @@ class MainActivity : ComponentActivity() {
     }
 
 
-    fun initPlayer() {
-        musicPlayer = ExoPlayer.Builder(this).build().also { exoPlayer ->
+    fun initPlayer(context: Context) {
+        musicPlayer = ExoPlayer.Builder(context).build().also { exoPlayer ->
             exoPlayer.setMediaItem(MediaItem.fromUri(Res.getUri(AudioSample.MainLoop.path)))
             exoPlayer.volume = musicVolume
             exoPlayer.repeatMode = Player.REPEAT_MODE_ONE
@@ -89,7 +90,7 @@ class MainActivity : ComponentActivity() {
         ).build()
 
 
-        initSfx(this)
+        initSfx(context)
     }
 
     fun releasePlayer() {

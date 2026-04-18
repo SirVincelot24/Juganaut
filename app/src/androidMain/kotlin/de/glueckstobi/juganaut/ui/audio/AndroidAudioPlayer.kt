@@ -11,14 +11,13 @@ object AndroidAudioPlayer : AudioPlayer {
     override var musicVolume = 0.5f
 
     lateinit var musicPlayer: ExoPlayer
-    lateinit var sfxPlayer: ExoPlayer
     lateinit var sfxSoundPool: SoundPool
 
     private val soundIDs = mutableMapOf<SFXAudioSample, Int>()
 
 
     override fun initMusicPlayers() {
-        MainActivity().initPlayer()
+        MainActivity().initPlayer(MainActivity().applicationContext)
     }
 
     fun initSfx(context: Context) {
@@ -46,11 +45,6 @@ object AndroidAudioPlayer : AudioPlayer {
         sample: SFXAudioSample,
         volume: Float
     ) {
-//        sfxPlayer.addMediaItem(MediaItem.fromUri(Res.getUri(sample.path)))
-//        sfxPlayer.volume = volume * sfxVolume
-//        sfxPlayer.prepare()
-//        sfxPlayer.play()
-//        sfxPlayer.release()
         soundIDs[sample]?.let { soundID ->
             sfxSoundPool.play(soundID, volume, volume, 1, 0, 1f)
         } ?: Log.e("SoundPool", "Sound '$sample' not found")
@@ -65,7 +59,6 @@ object AndroidAudioPlayer : AudioPlayer {
 
     override fun stopAll() {
         musicPlayer.stop()
-        sfxPlayer.stop()
         MainActivity().releasePlayer()
     }
 }
