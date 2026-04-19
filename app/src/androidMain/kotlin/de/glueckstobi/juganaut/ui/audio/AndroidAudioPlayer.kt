@@ -3,8 +3,10 @@ package de.glueckstobi.juganaut.ui.audio
 import android.content.Context
 import android.media.SoundPool
 import android.util.Log
+import androidx.media3.common.MediaItem
 import androidx.media3.exoplayer.ExoPlayer
 import de.glueckstobi.juganaut.MainActivity
+import juganaut.app.generated.resources.Res
 
 object AndroidAudioPlayer : AudioPlayer {
     override var sfxVolume = 1f
@@ -35,10 +37,12 @@ object AndroidAudioPlayer : AudioPlayer {
         }
     }
 
-    override fun startMusic() {
-        Log.d("Juganaut", "Started music")
+    override fun startGameMusic() {
+        musicPlayer.setMediaItem(MediaItem.fromUri(Res.getUri(AudioSample.MainLoop.path)))
         musicPlayer.volume = musicVolume
+        musicPlayer.prepare()
         musicPlayer.play()
+        Log.d("Juganaut", "Started Game music")
     }
 
     override fun playSfx(
@@ -53,8 +57,6 @@ object AndroidAudioPlayer : AudioPlayer {
 
     override fun stopMusic() {
         musicPlayer.stop()
-        musicPlayer.removeListener(MainActivity().playbackStateListener)
-        musicPlayer.release()
     }
 
     override fun stopAll() {

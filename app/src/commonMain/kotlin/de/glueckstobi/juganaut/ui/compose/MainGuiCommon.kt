@@ -44,8 +44,8 @@ fun MainGuiCommon(
         CurrentScreen.Init -> InitScreen(
             onClickStart = {
                 gameState.startNewGame(worldBuilderConfig.worldBuilderConfig.value)
-                getPlatform().audioPlayer?.initMusicPlayers()
-                getPlatform().audioPlayer?.startMusic()
+//                getPlatform().audioPlayer?.initMusicPlayers()
+                getPlatform().audioPlayer?.startGameMusic()
                 onGameStart(gameState.game!!)
                 currentScreen.value = CurrentScreen.Game
             },
@@ -69,7 +69,7 @@ fun MainGuiCommon(
                 onClickBack = {
                     onGameStop()
                     gameState.stopGame()
-                    getPlatform().audioPlayer?.stopAll()
+                    getPlatform().audioPlayer?.stopMusic()
                     currentScreen.value = CurrentScreen.Init
                 }
             )

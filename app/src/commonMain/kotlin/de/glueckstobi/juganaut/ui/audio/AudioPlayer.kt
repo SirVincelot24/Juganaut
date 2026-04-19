@@ -11,7 +11,7 @@ interface AudioPlayer {
     /**
      * Startet die Spiel-Musik.
      */
-    fun startMusic()
+    fun startGameMusic()
 
     /**
      * Spielt einen einzelnen Audio-Effekt ab.

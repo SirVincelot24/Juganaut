@@ -20,7 +20,7 @@ object AudioPlayerAudioCue : AudioPlayer {
     /**
      * Startet die Spiel-Musik
      */
-    override fun startMusic() {
+    override fun startGameMusic() {
         audioCue.play(musicVolume.toDouble())
         audioCue.setLooping(audioCue.obtainInstance(), -1)
         musicAudioCue = audioCue
