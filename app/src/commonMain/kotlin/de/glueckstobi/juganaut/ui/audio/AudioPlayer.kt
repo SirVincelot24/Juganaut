@@ -14,8 +14,8 @@ interface AudioPlayer {
     fun startGameMusic()
 
     /**
-     * Spielt einen einzelnen Audio-Effekt ab.
-     * @param sample der Audio-Effekt
+     * Spielt einen einzelnen Soundeffekt ab.
+     * @param sample der Soundeffekt
      * @param volume die Lautstärke, zwischen 0 und 1
      */
     fun playSfx(sample: SFXAudioSample, volume: Float = 1f)

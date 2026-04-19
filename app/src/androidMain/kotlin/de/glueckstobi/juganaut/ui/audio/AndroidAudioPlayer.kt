@@ -10,7 +10,7 @@ import juganaut.app.generated.resources.Res
 
 object AndroidAudioPlayer : AudioPlayer {
     override var sfxVolume = 1f
-    override var musicVolume = 0.5f
+    override var musicVolume = 1f
 
     lateinit var musicPlayer: ExoPlayer
     lateinit var sfxSoundPool: SoundPool
