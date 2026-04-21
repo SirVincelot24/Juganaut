@@ -51,7 +51,4 @@ Der Programm-Code ist ganz grob in zwei Teile aufgeteilt:
 
 Das Spiel könnte ein paar neue Features vertragen:
 
-* Wäre gut, wenn der Spieler einen Stein verschieben könnte (falls im Feld dahinter Platz ist).
-Das ist reiner Teil der Spiel-Logik, kann also vollständig in der BL programmiert werden.
-
 * Wie wär's mit Bomben, die der Benutzer anzünden kann (z.B. mit `Enter`) und die dann nach 3 Runden explodieren?
