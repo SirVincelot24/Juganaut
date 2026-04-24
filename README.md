@@ -14,7 +14,7 @@ Juganaut ist ein sehr einfaches 2D-Spiel.
 So einfach, dass der Code ohne viel Programmier-Erfahrung verstanden, verändert und erweitert werden kann.
 
 Gedacht ist das Spiel für Programmier-Anfänger, um erste Erfahrungen zu sammeln, ohne ein Projekt komplett von
-vorn beginnen zu müssen. Stattdessen gibt es ein Spiel, das bereits fertig spielbar ist, so dass eigene
+vorn beginnen zu müssen. Stattdessen gibt es ein Spiel, das bereits fertig spielbar ist, sodass eigene
 Erweiterungen und Änderungen direkt erlebbar sind.
 
 Das Spiel ist in Kotlin programmiert (das recht ähnlich zu Java ist).
@@ -26,29 +26,38 @@ Viel Spaß beim Hacken :-)
 
 Voraussetzung ist nur ein installiertes JDK (Java Development Kit).
 
-Ich empfehle zum Programmieren IntelliJ IDEA Community Edition: https://www.jetbrains.com/idea/download
-
-Für diesen Branch ist aber Android Studio besser: https://developer.android.com/studio
+Ich empfehle zum Programmieren Android Studio: https://developer.android.com/studio
 
 Um eine Programmier-Umgebung mit diesem Spiel einzurichten:
-* Clonen dieses Repositories: `git clone https://github.com/tobrup/Juganaut.git`
+* Klonen dieses Repositories: `git clone https://github.com/tobrup/Juganaut.git`
     * Dadurch sollte das Repository, d.h. der Programm-Code des Spiels, auf der Festplatte gespeichert werden.
-* Importieren in IntelliJ über: File -> Open -> Verzeichnis mit dem lokalen Repository auswählen
-* Starten des Spiels in IntelliJ: Run -> Run "MainKt" oder einfach über den entsprechenden Button in der Toolbar
+* Importieren in Android Studio über: File -> Open -> Verzeichnis mit dem lokalen Repository auswählen
+* Um die Musik in Android zu hören, noch das Python-Skript `copy_music.py` ausführen mit `python3 copy_music.py`
+* Starten des Spiels in Android Studio: Run -> Run "MainKt" oder einfach über den entsprechenden Button in der Toolbar
 
 ## Aufbau des Projekts
 
-Der Programm-Code ist ganz grob in zwei Teile aufgeteilt:
+Der Programm-Code ist in drei Teile aufgeteilt, jeweils ein Ordner für jede Plattform (Android und Desktop) und ein Ordner für den geteilten Code:
 
-* BL (in `src/main/kotlin/de/glueckstobi/juganaut/bl`): Business Logic
-  * Enthält die gesamte Logik des Spiels mit allen Regeln, möglichen Spiel-Elementen mit ihren Bewegungen etc. 
-* UI (in `src/main/kotlin/de/glueckstobi/juganaut/ui/swing`): User Interface
-  * Enthält die gesamte graphische Benutzer-Oberfläche. Hier wird alles gerendert, d.h. auf den Bilschirm angezeigt.
-* Resourcen (in `src/main/resources`)
-  * Enthält Bilder, die für die Anzeige im Spiel benutzt werden 
+* `app/src/androidMain`: Plattformspezifischer Android-Code
+* `app/src/desktopMain`: Plattformspezifischer Desktop-Code
+  * Enthalten beide nur jeweils den UI und Audio-Code
+* `app/src/commonMain`: Plattformübergreifender Code
+  * BL (in `app/src/commonMain/kotlin/de/glueckstobi/juganaut/bl`): Business Logic
+    * Enthält die gesamte Logik des Spiels mit allen Regeln, möglichen Spiel-Elementen mit ihren Bewegungen etc. 
+  * UI (in `app/src/commonMain/kotlin/de/glueckstobi/juganaut/ui/compose`): User Interface
+    * Enthält fast die gesamte grafische Benutzer-Oberfläche. Hier wird alles gerendert, d.h. auf den Bildschirm angezeigt.
+  * geteilte Ressourcen (in `app/src/commonMain/composeResources`)
+    * Enthält Bilder und Audiodateien, die für die Anzeige und den Sound im Spiel benutzt werden 
 
-## Wie gehts weiter?
+## Wie geht's weiter?
 
 Das Spiel könnte ein paar neue Features vertragen:
 
 * Wie wär's mit Bomben, die der Benutzer anzünden kann (z.B. mit `Enter`) und die dann nach 3 Runden explodieren?
+
+
+## Lizenzierung
+Die gesamte Musik im Ordner `app/src/commonMain/composeResources/files` ist lizenziert unter <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0</a><img src="https://mirrors.creativecommons.org/presskit/icons/cc.svg" alt="" style="max-width: 1em;max-height:1em;margin-left: .2em;"><img src="https://mirrors.creativecommons.org/presskit/icons/by.svg" alt="" style="max-width: 1em;max-height:1em;margin-left: .2em;"><img src="https://mirrors.creativecommons.org/presskit/icons/nc.svg" alt="" style="max-width: 1em;max-height:1em;margin-left: .2em;"><img src="https://mirrors.creativecommons.org/presskit/icons/sa.svg" alt="" style="max-width: 1em;max-height:1em;margin-left: .2em;">
+
+Der gesamte Code ist lizenziert unter der "MIT License" (siehe `LICENSE`) 

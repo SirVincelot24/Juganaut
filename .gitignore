@@ -52,3 +52,6 @@ captures
 !*.xcworkspace/contents.xcworkspacedata
 **/xcshareddata/WorkspaceSettings.xcsettings
 /.idea/
+
+### Own ###
+app/src/androidMain/res/raw/*
