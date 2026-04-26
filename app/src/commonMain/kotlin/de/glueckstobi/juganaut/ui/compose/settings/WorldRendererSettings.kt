@@ -10,6 +10,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import de.glueckstobi.juganaut.ui.compose.states.WorldRendererConfigHolder
+import kotlin.math.roundToInt
 
 
 @Composable
@@ -58,7 +59,7 @@ private fun ScrollSettings(worldRendererConfig: WorldRendererConfigHolder) {
         valueRange = 0f..5f,
         steps = 4,
         onValueChange = { newValue ->
-            worldRendererConfig.edgeDistanceForScroll.intValue = newValue.toInt()
+            worldRendererConfig.edgeDistanceForScroll.intValue = newValue.roundToInt()
         }
     )
 }

@@ -4,7 +4,6 @@ import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.MutableIntState
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clipToBounds
@@ -27,6 +26,7 @@ import de.glueckstobi.juganaut.bl.worlditems.Monster
 import de.glueckstobi.juganaut.bl.worlditems.Player
 import de.glueckstobi.juganaut.bl.worlditems.Rock
 import de.glueckstobi.juganaut.bl.worlditems.WorldItem
+import de.glueckstobi.juganaut.ui.compose.states.GameStateHolder
 import de.glueckstobi.juganaut.ui.compose.states.WorldRendererConfigHolder
 import juganaut.app.generated.resources.Res
 import juganaut.app.generated.resources.bombe
@@ -96,7 +96,7 @@ fun getImageForItem(item: WorldItem, images: Images): ImageBitmap? {
  * Malt das ganze Spielfeld auf den Bildschirm.
  */
 @Composable
-fun WorldRenderer(world: World, worldRendererConfig: WorldRendererConfigHolder, tickCount: MutableIntState) {
+fun WorldRenderer(gameStateHolder: GameStateHolder, worldRendererConfig: WorldRendererConfigHolder) {
     val images = Images(
         player = imageResource(Res.drawable.cat),
         dirt = imageResource(Res.drawable.dirt),
@@ -111,21 +111,24 @@ fun WorldRenderer(world: World, worldRendererConfig: WorldRendererConfigHolder, 
     var translation = remember { Offset(0f, 0f) }
 
     Canvas(modifier = Modifier.fillMaxSize().clipToBounds().background(Color.Black)) {
-        val scaleFactor = if (worldRendererConfig.autoScale.value) {
-            calculateScaleFactor(size, world.size)
-        } else {
-            worldRendererConfig.scaleFactor.floatValue
-        }
-        scale(scaleFactor, pivot = Offset(0f, 0f)) {
-            translation = calculateTranslation(
-                canvasSize = size,
-                world = world,
-                scaleFactor = scaleFactor,
-                minVisibleEdgeFields = worldRendererConfig.edgeDistanceForScroll.intValue,
-                currentTranslation = translation
-            )
-            translate(left = translation.x, top = translation.y) {
-                drawWorld(world, images, tickCount)
+        val world = gameStateHolder.game?.world
+        if (world != null) {
+            val scaleFactor = if (worldRendererConfig.autoScale.value) {
+                calculateScaleFactor(size, world.size)
+            } else {
+                worldRendererConfig.scaleFactor.floatValue
+            }
+            scale(scaleFactor, pivot = Offset(0f, 0f)) {
+                translation = calculateTranslation(
+                    canvasSize = size,
+                    world = world,
+                    scaleFactor = scaleFactor,
+                    minVisibleEdgeFields = worldRendererConfig.edgeDistanceForScroll.intValue,
+                    currentTranslation = translation
+                )
+                translate(left = translation.x, top = translation.y) {
+                    drawWorld(world, images)
+                }
             }
         }
     }
@@ -133,10 +136,8 @@ fun WorldRenderer(world: World, worldRendererConfig: WorldRendererConfigHolder, 
 
 private fun DrawScope.drawWorld(
     world: World,
-    images: Images,
-    tickCount: MutableIntState
+    images: Images
 ) {
-    tickCount.value // tickCount triggers a repaint
     world.validYRange.forEach { y ->
         world.validXRange.forEach { x ->
             val item = world.getField(Coord(x, y))
