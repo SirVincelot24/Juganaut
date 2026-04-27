@@ -22,7 +22,6 @@ object AudioPlayerAudioCue : AudioPlayer {
      */
     override fun startGameMusic() {
         audioCue.play(musicVolume.toDouble())
-        audioCue.setLooping(audioCue.obtainInstance(), -1)
         musicAudioCue = audioCue
     }
 
@@ -66,6 +65,7 @@ object AudioPlayerAudioCue : AudioPlayer {
     override fun initMusicPlayers() {
         audioCue = makeStereoCue(AudioSample.MainLoop)
         audioCue.open()
+        audioCue.setLooping(audioCue.obtainInstance(), -1)
     }
 
     @OptIn(ExperimentalResourceApi::class)
