@@ -66,78 +66,57 @@ private fun SizeSettings(holder: WorldBuilderConfigHolder) {
     }
 }
 
-
 @OptIn(ExperimentalMaterialApi::class)
 @Composable
-private fun ItemCountSettings(holder: WorldBuilderConfigHolder) {
-    val diamonds = holder.worldBuilderConfig.value.diamondsCountRange
+private fun SettingsSlider(
+    itemCountRange: IntRange,
+    range: ClosedFloatingPointRange<Float>,
+    holder: WorldBuilderConfigHolder,
+    title: String,
+    updateHolder: (IntRange) -> Unit
+) {
     Row(verticalAlignment = Alignment.CenterVertically) {
-        Text("Diamanten: ${diamonds.start}-${diamonds.endInclusive}")
-        val range = 1f..200f
+        Text("$title: ${itemCountRange.start}-${itemCountRange.endInclusive}")
         RangeSlider(
             modifier = Modifier.fillMaxWidth(),
-            value = diamonds.start.toFloat()..diamonds.endInclusive.toFloat(),
+            value = itemCountRange.start.toFloat()..itemCountRange.endInclusive.toFloat(),
             valueRange = range,
             steps = (range.endInclusive - range.start - 1).toInt(),
             onValueChange = { newValue ->
                 val newRange = newValue.start.roundToInt()..newValue.endInclusive.roundToInt()
+                updateHolder(newRange)
                 holder.worldBuilderConfig.value = holder.worldBuilderConfig.value.copy(
                     diamondsCountRange = newRange,
                 )
             },
         )
     }
+}
+
+@OptIn(ExperimentalMaterialApi::class)
+@Composable
+private fun ItemCountSettings(holder: WorldBuilderConfigHolder) {
+    val diamonds = holder.worldBuilderConfig.value.diamondsCountRange
+    SettingsSlider(diamonds, 1f..200f, holder, "Diamanten") { newRange ->
+        holder.worldBuilderConfig.value =
+            holder.worldBuilderConfig.value.copy(diamondsCountRange = newRange)
+    }
 
     val monsters = holder.worldBuilderConfig.value.monsterCountRange
-    Row(verticalAlignment = Alignment.CenterVertically) {
-        Text("Monster: ${monsters.start}-${monsters.endInclusive}")
-        val range = 0f..200f
-        RangeSlider(
-            modifier = Modifier.fillMaxWidth(),
-            value = monsters.start.toFloat()..monsters.endInclusive.toFloat(),
-            valueRange = range,
-            steps = (range.endInclusive - range.start - 1).toInt(),
-            onValueChange = { newValue ->
-                val newRange = newValue.start.roundToInt()..newValue.endInclusive.roundToInt()
-                holder.worldBuilderConfig.value = holder.worldBuilderConfig.value.copy(
-                    monsterCountRange = newRange,
-                )
-            },
-        )
+    SettingsSlider(monsters, 0f..200f, holder, "Monster") { newRange ->
+        holder.worldBuilderConfig.value =
+            holder.worldBuilderConfig.value.copy(monsterCountRange = newRange)
     }
 
     val bombs = holder.worldBuilderConfig.value.bombsCountRange
-    Row(verticalAlignment = Alignment.CenterVertically) {
-        Text("Bomben: ${bombs.start}-${bombs.endInclusive}")
-        val range = 0f..200f
-        RangeSlider(
-            modifier = Modifier.fillMaxWidth(),
-            value = bombs.start.toFloat()..bombs.endInclusive.toFloat(),
-            valueRange = range,
-            steps = (range.endInclusive - range.start - 1).toInt(),
-            onValueChange = { newValue ->
-                val newRange = newValue.start.roundToInt()..newValue.endInclusive.roundToInt()
-                holder.worldBuilderConfig.value = holder.worldBuilderConfig.value.copy(
-                    bombsCountRange = newRange,
-                )
-            },
-        )
+    SettingsSlider(bombs, 0f..200f, holder, "Bomben"){ newRange ->
+        holder.worldBuilderConfig.value =
+            holder.worldBuilderConfig.value.copy(bombsCountRange = newRange)
     }
+
     val rocks = holder.worldBuilderConfig.value.rockCountRange
-    Row(verticalAlignment = Alignment.CenterVertically) {
-        Text("Steine: ${rocks.start}-${rocks.endInclusive}")
-        val range = 0f..200f
-        RangeSlider(
-            modifier = Modifier.fillMaxWidth(),
-            value = rocks.start.toFloat()..rocks.endInclusive.toFloat(),
-            valueRange = range,
-            steps = (range.endInclusive - range.start - 1).toInt(),
-            onValueChange = { newValue ->
-                val newRange = newValue.start.roundToInt()..newValue.endInclusive.roundToInt()
-                holder.worldBuilderConfig.value = holder.worldBuilderConfig.value.copy(
-                    rockCountRange = newRange,
-                )
-            },
-        )
+    SettingsSlider(rocks, 0f..200f, holder, "Steine") {newRange ->
+        holder.worldBuilderConfig.value =
+            holder.worldBuilderConfig.value.copy(rockCountRange = newRange)
     }
 }
