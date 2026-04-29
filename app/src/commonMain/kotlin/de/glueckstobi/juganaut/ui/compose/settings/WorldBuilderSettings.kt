@@ -71,7 +71,6 @@ private fun SizeSettings(holder: WorldBuilderConfigHolder) {
 private fun SettingsSlider(
     itemCountRange: IntRange,
     range: ClosedFloatingPointRange<Float>,
-    holder: WorldBuilderConfigHolder,
     title: String,
     updateHolder: (IntRange) -> Unit
 ) {
@@ -85,9 +84,6 @@ private fun SettingsSlider(
             onValueChange = { newValue ->
                 val newRange = newValue.start.roundToInt()..newValue.endInclusive.roundToInt()
                 updateHolder(newRange)
-                holder.worldBuilderConfig.value = holder.worldBuilderConfig.value.copy(
-                    diamondsCountRange = newRange,
-                )
             },
         )
     }
@@ -97,25 +93,25 @@ private fun SettingsSlider(
 @Composable
 private fun ItemCountSettings(holder: WorldBuilderConfigHolder) {
     val diamonds = holder.worldBuilderConfig.value.diamondsCountRange
-    SettingsSlider(diamonds, 1f..200f, holder, "Diamanten") { newRange ->
+    SettingsSlider(diamonds, 1f..200f, "Diamanten") { newRange ->
         holder.worldBuilderConfig.value =
             holder.worldBuilderConfig.value.copy(diamondsCountRange = newRange)
     }
 
     val monsters = holder.worldBuilderConfig.value.monsterCountRange
-    SettingsSlider(monsters, 0f..200f, holder, "Monster") { newRange ->
+    SettingsSlider(monsters, 0f..200f, "Monster") { newRange ->
         holder.worldBuilderConfig.value =
             holder.worldBuilderConfig.value.copy(monsterCountRange = newRange)
     }
 
     val bombs = holder.worldBuilderConfig.value.bombsCountRange
-    SettingsSlider(bombs, 0f..200f, holder, "Bomben"){ newRange ->
+    SettingsSlider(bombs, 0f..200f, "Bomben"){ newRange ->
         holder.worldBuilderConfig.value =
             holder.worldBuilderConfig.value.copy(bombsCountRange = newRange)
     }
 
     val rocks = holder.worldBuilderConfig.value.rockCountRange
-    SettingsSlider(rocks, 0f..200f, holder, "Steine") {newRange ->
+    SettingsSlider(rocks, 0f..200f, "Steine") { newRange ->
         holder.worldBuilderConfig.value =
             holder.worldBuilderConfig.value.copy(rockCountRange = newRange)
     }
