@@ -26,7 +26,7 @@ class MonsterController(val game: Game) {
     }
 
     /**
-     * Bewegt das Feld an der angegeben Koordinate weiter.
+     * Bewegt das Feld an der angegebenen Koordinate weiter.
      * @param source Coordinate an der ein Monster ist.
      */
     private fun tryMove(source: Coord) {
@@ -71,7 +71,7 @@ class MonsterController(val game: Game) {
     /**
      * Das Monster fängt den Spieler.
      * @param monster das Monster
-     * @param source die Koordinaten des Monster
+     * @param source die Koordinaten des Monsters
      * @param destination die Koordinaten des Spielers
      */
     private fun catchPlayer(monster: Monster, source: Coord, destination: Coord) {
@@ -96,18 +96,17 @@ class MonsterController(val game: Game) {
      * @param c the Koordinate des Monsters
      */
     private fun turn(monster: Monster, c: Coord) {
-        monster.direction = getNewDirection(monster, c)
+        monster.direction = getNewDirection(c)
     }
 
     /**
      * Berechnet die neue Richtung, wenn das Monster sich dreht.
-     * @param monster das Monster
      * @param source die Koordinate des Monsters
      * @return Gibt die neue Richtung des Monsters zurück.
      */
-    private fun getNewDirection(monster: Monster, source: Coord): Direction {
+    private fun getNewDirection(source: Coord): Direction {
         var nextDirection = Direction.random()
-        (0..4).forEach {
+        (0..4).forEach { _ ->
             val destination = source.move(nextDirection)
             if (canMove(destination)) {
                 return nextDirection

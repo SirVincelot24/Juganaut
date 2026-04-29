@@ -34,6 +34,6 @@ enum class Direction {
         /**
          * Gibt eine zufällige Richtung zurück.
          */
-        fun random(): Direction = Direction.entries[Random.nextInt(0 until Direction.entries.size)]
+        fun random(): Direction = Direction.entries[Random.nextInt(0..<Direction.entries.size)]
     }
 }

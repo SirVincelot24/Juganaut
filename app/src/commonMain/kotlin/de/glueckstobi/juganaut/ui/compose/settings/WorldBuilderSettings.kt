@@ -75,10 +75,10 @@ private fun SettingsSlider(
     updateHolder: (IntRange) -> Unit
 ) {
     Row(verticalAlignment = Alignment.CenterVertically) {
-        Text("$title: ${itemCountRange.start}-${itemCountRange.endInclusive}")
+        Text("$title: ${itemCountRange.first}-${itemCountRange.last}")
         RangeSlider(
             modifier = Modifier.fillMaxWidth(),
-            value = itemCountRange.start.toFloat()..itemCountRange.endInclusive.toFloat(),
+            value = itemCountRange.first.toFloat()..itemCountRange.last.toFloat(),
             valueRange = range,
             steps = (range.endInclusive - range.start - 1).toInt(),
             onValueChange = { newValue ->

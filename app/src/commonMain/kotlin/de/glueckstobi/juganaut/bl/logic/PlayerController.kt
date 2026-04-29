@@ -73,10 +73,7 @@ class PlayerController(val game: Game) {
      * Wird einmal pro Runde aufgerufen.
      */
     fun applyPlayerInput() {
-        val currentInput = playerInput
-        if (currentInput == null) {
-            return
-        }
+        val currentInput = playerInput ?: return
         if (!playerInputPressed) {
             // key is not pressed and the input is pressed at least once (or the last time),
             // so reset the input to null
@@ -88,10 +85,7 @@ class PlayerController(val game: Game) {
         }
     }
     fun applyPlayerActions() {
-        val currentInput = playerInput
-        if (currentInput == null) {
-            return
-        }
+        val currentInput = playerInput ?: return
         if (!playerInputPressed) {
             // key is not pressed and the input is pressed at least once (or the last time),
             // so reset the input to null
@@ -118,8 +112,7 @@ class PlayerController(val game: Game) {
         if (!game.world.isValid(destination)) {
             return
         }
-        val destinationItem = game.world.getField(destination)
-        when (destinationItem) {
+        when (val destinationItem = game.world.getField(destination)) {
             EmptyField -> movePlayer(source, destination)
             is Dirt -> movePlayerIntoDirt(source, destination)
             is Monster -> moveIntoMonster(source, destination)
@@ -200,11 +193,12 @@ class PlayerController(val game: Game) {
     }
 
     /**
-     * Bewegt den Spieler auf das Feld eines Monster
+     * Bewegt den Spieler auf das Feld eines Monsters
      * @param source Ursprungs-Koordinate
      * @param destination Ziel-Koordinate
      */
     private fun moveIntoMonster(source: Coord, destination: Coord) {
+        game.world.setField(source, EmptyField)
         game.gameOver(PlayerWalksIntoMonster(source, destination))
     }
 
