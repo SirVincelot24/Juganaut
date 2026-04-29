@@ -13,22 +13,22 @@ data class WorldBuilderConfiguration(
     val worldSize: Size = Size(20, 20),
 
     /**
-     * Zahlenbereich, wieviele Steine es geben kann.
+     * Zahlenbereich, wie viele Steine es geben kann.
      */
     val rockCountRange: IntRange = (20..50),
 
     /**
-     * Zahlenbereich, wieviele Monster es geben kann.
+     * Zahlenbereich, wie viele Monster es geben kann.
      */
     val monsterCountRange: IntRange = (20..50),
 
     /**
-     * Zahlenbereich, wieviele Bombs es geben kann.
+     * Zahlenbereich, wie viele Bombs es geben kann.
      */
     val bombsCountRange: IntRange = (10..20),
 
     /**
-     * Zahlenbereich, wieviele Diamanten es geben kann.
+     * Zahlenbereich, wie viele Diamanten es geben kann.
      */
     val diamondsCountRange: IntRange = (10..30),
 
