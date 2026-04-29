@@ -1,0 +1,11 @@
+package de.sirvincelot.juganaut.bl.logic
+
+/**
+ * Die verschiedenen Gründe für einen Gewinn
+ */
+sealed interface WinningReason
+
+/**
+ * Alle Diamanten sind eingesammelt
+ */
+class AllDiamondsCollected(val diamondsCollected: Int) : WinningReason

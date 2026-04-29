@@ -49,11 +49,11 @@ kotlin {
 }
 
 android {
-    namespace = "de.glueckstobi.juganaut"
+    namespace = "de.sirvincelot.juganaut"
     compileSdk = libs.versions.android.compileSdk.get().toInt()
 
     defaultConfig {
-        applicationId = "de.glueckstobi.juganaut"
+        applicationId = "de.sirvincelot.juganaut"
         minSdk = libs.versions.android.minSdk.get().toInt()
         targetSdk = libs.versions.android.targetSdk.get().toInt()
         versionCode = 1
@@ -85,11 +85,11 @@ dependencies {
 
 compose.desktop {
     application {
-        mainClass = "de.glueckstobi.juganaut.MainKt"
+        mainClass = "de.sirvincelot.juganaut.MainKt"
 
         nativeDistributions {
             targetFormats(TargetFormat.Dmg, TargetFormat.Msi, TargetFormat.Deb)
-            packageName = "de.glueckstobi.juganaut"
+            packageName = "de.sirvincelot.juganaut"
             packageVersion = "1.0.0"
         }
     }
