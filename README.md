@@ -31,9 +31,9 @@ Ich empfehle zum Programmieren Android Studio: https://developer.android.com/stu
 Um eine Programmier-Umgebung mit diesem Spiel einzurichten:
 * Klonen dieses Repositories: `git clone https://github.com/tobrup/Juganaut.git`
     * Dadurch sollte das Repository, d.h. der Programm-Code des Spiels, auf der Festplatte gespeichert werden.
-* Importieren in Android Studio über: File -> Open -> Verzeichnis mit dem lokalen Repository auswählen
+* Importieren in Android Studio über: File → Open → Verzeichnis mit dem lokalen Repository auswählen
 * Um die Musik in Android zu hören, noch das Python-Skript `copy_music.py` ausführen mit `python3 copy_music.py`
-* Starten des Spiels in Android Studio: Run -> Run "MainKt" oder einfach über den entsprechenden Button in der Toolbar
+* Starten des Spiels in Android Studio: Run → Run "MainKt" oder einfach über den entsprechenden Button in der Toolbar
 
 ## Aufbau des Projekts
 
