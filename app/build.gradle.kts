@@ -81,6 +81,7 @@ dependencies {
     implementation(libs.androidx.media3.ui)
     implementation(libs.androidx.media3.ui.compose)
     debugImplementation(compose.uiTooling)
+    implementation(compose.desktop.currentOs)
 }
 
 compose.desktop {
@@ -88,7 +89,7 @@ compose.desktop {
         mainClass = "de.sirvincelot.juganaut.MainKt"
 
         nativeDistributions {
-            targetFormats(TargetFormat.Dmg, TargetFormat.Msi, TargetFormat.Deb)
+            targetFormats(TargetFormat.Dmg, TargetFormat.Exe, TargetFormat.Deb)
             packageName = "de.sirvincelot.juganaut"
             packageVersion = "1.0.0"
         }
