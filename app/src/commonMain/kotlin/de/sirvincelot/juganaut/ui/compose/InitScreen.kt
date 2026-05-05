@@ -18,8 +18,10 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import de.sirvincelot.juganaut.getPlatform
 import juganaut.app.generated.resources.Res
 import juganaut.app.generated.resources.menu_background
+import juganaut.app.generated.resources.menu_background_phone
 import org.jetbrains.compose.resources.painterResource
 
 @Composable
@@ -115,10 +117,20 @@ private fun SettingsButton(onClickSettings: () -> Unit) {
 
 @Composable
 private fun Background() {
-    Image(
-        painter = painterResource(Res.drawable.menu_background),
-        contentDescription = "Menu Background",
-        modifier = Modifier.fillMaxSize(),
-        contentScale = ContentScale.FillBounds
-    )
+    if (getPlatform().name.contains("Android")) {
+        Image(
+            painter = painterResource(Res.drawable.menu_background_phone),
+            contentDescription = "Menu Background",
+            modifier = Modifier.fillMaxSize(),
+            contentScale = ContentScale.FillBounds
+        )
+    } else {
+        Image(
+            painter = painterResource(Res.drawable.menu_background),
+            contentDescription = "Menu Background",
+            modifier = Modifier.fillMaxSize(),
+            contentScale = ContentScale.FillBounds
+        )
+    }
+
 }
