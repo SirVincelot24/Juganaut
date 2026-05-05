@@ -3,10 +3,9 @@ package de.sirvincelot.juganaut.ui.compose.settings
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.material.ExperimentalMaterialApi
-import androidx.compose.material.RangeSlider
-import androidx.compose.material.Slider
-import androidx.compose.material.Text
+import androidx.compose.material3.RangeSlider
+import androidx.compose.material3.Slider
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -66,7 +65,6 @@ private fun SizeSettings(holder: WorldBuilderConfigHolder) {
     }
 }
 
-@OptIn(ExperimentalMaterialApi::class)
 @Composable
 private fun SettingsSlider(
     itemCountRange: IntRange,
@@ -89,29 +87,28 @@ private fun SettingsSlider(
     }
 }
 
-@OptIn(ExperimentalMaterialApi::class)
 @Composable
 private fun ItemCountSettings(holder: WorldBuilderConfigHolder) {
     val diamonds = holder.worldBuilderConfig.value.diamondsCountRange
-    SettingsSlider(diamonds, 1f..200f, "Diamanten") { newRange ->
+    SettingsSlider(diamonds, 1f..100f, "Diamanten") { newRange ->
         holder.worldBuilderConfig.value =
             holder.worldBuilderConfig.value.copy(diamondsCountRange = newRange)
     }
 
     val monsters = holder.worldBuilderConfig.value.monsterCountRange
-    SettingsSlider(monsters, 0f..200f, "Monster") { newRange ->
+    SettingsSlider(monsters, 0f..100f, "Monster") { newRange ->
         holder.worldBuilderConfig.value =
             holder.worldBuilderConfig.value.copy(monsterCountRange = newRange)
     }
 
     val bombs = holder.worldBuilderConfig.value.bombsCountRange
-    SettingsSlider(bombs, 0f..200f, "Bomben"){ newRange ->
+    SettingsSlider(bombs, 0f..100f, "Bomben"){ newRange ->
         holder.worldBuilderConfig.value =
             holder.worldBuilderConfig.value.copy(bombsCountRange = newRange)
     }
 
     val rocks = holder.worldBuilderConfig.value.rockCountRange
-    SettingsSlider(rocks, 0f..200f, "Steine") { newRange ->
+    SettingsSlider(rocks, 0f..100f, "Steine") { newRange ->
         holder.worldBuilderConfig.value =
             holder.worldBuilderConfig.value.copy(rockCountRange = newRange)
     }
