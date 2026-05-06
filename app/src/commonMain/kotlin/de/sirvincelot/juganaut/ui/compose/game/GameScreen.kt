@@ -178,7 +178,7 @@ private fun GameEnd(gameOver: GameOverReason?, won: WinningReason?) {
                 )
                 Text(
                     formatGameOverReason(gameOver),
-                    color = Color.White
+                    color = MaterialTheme.colorScheme.onSurface
                 )
             }
         }
@@ -197,7 +197,7 @@ private fun GameEnd(gameOver: GameOverReason?, won: WinningReason?) {
                 )
                 Text(
                     formatGameOverReason(won),
-                    color = Color.White
+                    color = MaterialTheme.colorScheme.onSurface
                 )
             }
         }
