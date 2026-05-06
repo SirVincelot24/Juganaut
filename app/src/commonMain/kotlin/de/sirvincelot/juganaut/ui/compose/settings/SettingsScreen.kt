@@ -29,7 +29,8 @@ fun SettingsScreen(
 ) {
     Column(modifier = Modifier.fillMaxSize()) {
         TitleBar(onClickBack)
-        Column(modifier = Modifier.verticalScroll(rememberScrollState())) {
+        Column(modifier = Modifier.verticalScroll(rememberScrollState())
+            .padding(5.dp)) {
             WorldRendererSettings(worldRendererConfigHolder)
             WorldBuilderSettings(worldBuilderConfigHolder)
             AudioSettings()
