@@ -6,9 +6,12 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.WindowInsets
+import androidx.compose.foundation.layout.displayCutout
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.derivedStateOf
@@ -95,7 +98,7 @@ private fun Modifier.configureTouchInput(touchInputHandler: TouchInputHandler?):
 @Composable
 fun TitleBar(diamondsCollected: Int, diamondsTotal: Int, onClickBack: () -> Unit) {
     Row(
-        modifier = Modifier.padding(end = 10.dp),
+        modifier = Modifier.padding(end = 10.dp).windowInsetsPadding(WindowInsets.displayCutout),
         verticalAlignment = Alignment.CenterVertically
     ) {
         Box(
