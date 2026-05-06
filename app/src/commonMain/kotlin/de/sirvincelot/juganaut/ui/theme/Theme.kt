@@ -306,6 +306,10 @@ val unspecified_scheme = ColorFamily(
     Color.Unspecified, Color.Unspecified, Color.Unspecified, Color.Unspecified
 )
 
+/**
+ * Diese Funktion muss den Aufruf der MainGui umrunden, damit das Theme richtig geladen wird.
+ * Theme-Adresse: `http://material-foundation.github.io/material-theme-builder/?primary=%2380E680&colorMatch=false`
+ */
 @Composable
 fun AppTheme(
     darkTheme: Boolean = isSystemInDarkTheme(),
