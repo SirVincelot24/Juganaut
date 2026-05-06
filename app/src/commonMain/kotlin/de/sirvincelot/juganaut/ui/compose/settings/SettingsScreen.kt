@@ -4,10 +4,12 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.WindowInsets
+import androidx.compose.foundation.layout.displayCutout
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Text
@@ -40,17 +42,17 @@ fun SettingsScreen(
 
 @Composable
 fun TitleBar(onClickBack: () -> Unit) {
-    Row(
-        verticalAlignment = Alignment.CenterVertically,
+    Box(
         modifier = Modifier
             .fillMaxWidth()
             .padding(bottom = 10.dp)
             .background(color = Color(0.5f, 0.9f, 0.5f))
+            .windowInsetsPadding(WindowInsets.displayCutout)
     ) {
         BackButton(onClickBack)
         Text(
             "Settings",
-            modifier = Modifier.weight(1f),
+            modifier = Modifier.align(Alignment.Center),
             textAlign = TextAlign.Center,
             color = Color.Black,
             fontSize = 20.sp,
