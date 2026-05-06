@@ -6,6 +6,7 @@ import androidx.compose.ui.window.application
 import androidx.compose.ui.window.rememberWindowState
 import de.sirvincelot.juganaut.ui.audio.AudioPlayerAudioCue
 import de.sirvincelot.juganaut.ui.compose.game.KeyInputHandler
+import de.sirvincelot.juganaut.ui.theme.AppTheme
 import kotlin.system.exitProcess
 
 
@@ -25,9 +26,11 @@ object MainGuiDesktopCompose {
                     keyInputHandler.onKeyEvent(event)
                 }
             ) {
-                MainGuiCommon(false, { game ->
-                    keyInputHandler.game = game
-                })
+                AppTheme {
+                    MainGuiCommon(false, { game ->
+                        keyInputHandler.game = game
+                    })
+                }
             }
         }
     }

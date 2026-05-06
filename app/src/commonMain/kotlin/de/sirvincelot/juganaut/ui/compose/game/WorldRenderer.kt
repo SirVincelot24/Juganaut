@@ -3,13 +3,13 @@ package de.sirvincelot.juganaut.ui.compose.game
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clipToBounds
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.geometry.Size
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ImageBitmap
 import androidx.compose.ui.graphics.drawscope.DrawScope
 import androidx.compose.ui.graphics.drawscope.scale
@@ -110,7 +110,7 @@ fun WorldRenderer(gameStateHolder: GameStateHolder, worldRendererConfig: WorldRe
 
     var translation = remember { Offset(0f, 0f) }
 
-    Canvas(modifier = Modifier.fillMaxSize().clipToBounds().background(Color.Black)) {
+    Canvas(modifier = Modifier.fillMaxSize().clipToBounds().background(MaterialTheme.colorScheme.surfaceDim)) {
         val world = gameStateHolder.game?.world
         if (world != null) {
             val scaleFactor = if (worldRendererConfig.autoScale.value) {
@@ -150,7 +150,7 @@ private fun DrawScope.drawWorld(
 }
 
 /**
- * Berechnet den Skalierungsfaktor, so dass das gesamte Spielfeld auf dem Bildschirm passt.
+ * Berechnet den Skalierungsfaktor, sodass das gesamte Spielfeld auf dem Bildschirm passt.
  * @param canvasSize Größe des Render-Bereichs in Pixel
  * @param worldSize Größe der Spielwelt in Anzahl der Felder
  * @return Gibt den Skalierungsfaktor zurück.
@@ -164,7 +164,7 @@ private fun calculateScaleFactor(canvasSize: Size, worldSize: de.sirvincelot.jug
 }
 
 /**
- * Berechnet die Translation (Verschiebung), so dass der Spieler immer im sichtbaren Bereich ist.
+ * Berechnet die Translation (Verschiebung), sodass der Spieler immer im sichtbaren Bereich ist.
  * @param canvasSize Größe des Render-Bereichs in Pixel
  * @param world die Spiel-Welt
  * @param scaleFactor Skalierungs-Faktor beim Rendern
@@ -208,7 +208,7 @@ private fun calculateTranslation(
  * @param canvasSize Größe des Render-Bereichs in Pixel
  * @param worldSize Größe der Welt in Anzahl der Felder
  * @param playerPos Position des Spielers (als Feld-Index)
- * @param scaleFactor Skalierungsfaktor beim rendern
+ * @param scaleFactor Skalierungsfaktor beim Rendern
  * @param currentTranslation die bisherige Translation
  * @return Gibt die neue Translation zurück
  */

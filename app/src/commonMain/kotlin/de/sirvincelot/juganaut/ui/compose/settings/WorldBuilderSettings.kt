@@ -3,6 +3,7 @@ package de.sirvincelot.juganaut.ui.compose.settings
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.RangeSlider
 import androidx.compose.material3.Slider
 import androidx.compose.material3.Text
@@ -28,7 +29,7 @@ fun WorldBuilderSettings(worldBuilderConfig: WorldBuilderConfigHolder) {
 private fun SizeSettings(holder: WorldBuilderConfigHolder) {
     val size = holder.worldBuilderConfig.value.worldSize
     Row(verticalAlignment = Alignment.CenterVertically) {
-        Text("Breite: ${size.width}")
+        Text("Breite: ${size.width}", color = MaterialTheme.colorScheme.onBackground)
         val range = 5f..50f
         Slider(
             modifier = Modifier.fillMaxWidth(),
@@ -46,7 +47,7 @@ private fun SizeSettings(holder: WorldBuilderConfigHolder) {
         )
     }
     Row(verticalAlignment = Alignment.CenterVertically) {
-        Text("Höhe: ${size.height}")
+        Text("Höhe: ${size.height}", color = MaterialTheme.colorScheme.onBackground)
         val range = 5f..50f
         Slider(
             modifier = Modifier.fillMaxWidth(),
@@ -73,7 +74,7 @@ private fun SettingsSlider(
     updateHolder: (IntRange) -> Unit
 ) {
     Row(verticalAlignment = Alignment.CenterVertically) {
-        Text("$title: ${itemCountRange.first}-${itemCountRange.last}")
+        Text("$title: ${itemCountRange.first}-${itemCountRange.last}", color = MaterialTheme.colorScheme.onBackground)
         RangeSlider(
             modifier = Modifier.fillMaxWidth(),
             value = itemCountRange.first.toFloat()..itemCountRange.last.toFloat(),

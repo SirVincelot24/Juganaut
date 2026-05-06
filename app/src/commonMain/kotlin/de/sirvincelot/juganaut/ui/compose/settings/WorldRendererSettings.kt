@@ -3,6 +3,7 @@ package de.sirvincelot.juganaut.ui.compose.settings
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Slider
 import androidx.compose.material3.Switch
 import androidx.compose.material3.Text
@@ -26,7 +27,7 @@ fun WorldRendererSettings(worldRendererConfig: WorldRendererConfigHolder) {
 
 @Composable
 private fun ScaleSettings(worldRendererConfig: WorldRendererConfigHolder) {
-    Text("Skalierung")
+    Text("Skalierung", color = MaterialTheme.colorScheme.onBackground)
     Row(verticalAlignment = Alignment.CenterVertically) {
         Switch(
             checked = worldRendererConfig.autoScale.value,
@@ -34,11 +35,11 @@ private fun ScaleSettings(worldRendererConfig: WorldRendererConfigHolder) {
                 worldRendererConfig.autoScale.value = checked
             }
         )
-        Text("Automatisch")
+        Text("Automatisch", color = MaterialTheme.colorScheme.onBackground)
     }
 
 
-    Text("Skalierungs-Faktor:")
+    Text("Skalierungs-Faktor:", color = MaterialTheme.colorScheme.onBackground)
     Slider(
         modifier = Modifier.fillMaxWidth(),
         value = worldRendererConfig.scaleFactor.floatValue,
@@ -52,7 +53,7 @@ private fun ScaleSettings(worldRendererConfig: WorldRendererConfigHolder) {
 
 @Composable
 private fun ScrollSettings(worldRendererConfig: WorldRendererConfigHolder) {
-    Text("Min Abstand zum Rand für scrollen")
+    Text("Min Abstand zum Rand für scrollen", color = MaterialTheme.colorScheme.onBackground)
     Slider(
         modifier = Modifier.fillMaxWidth(),
         value = worldRendererConfig.edgeDistanceForScroll.intValue.toFloat(),

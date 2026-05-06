@@ -12,16 +12,29 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.tooling.preview.AndroidUiModes.UI_MODE_NIGHT_YES
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import de.sirvincelot.juganaut.getPlatform
 import de.sirvincelot.juganaut.ui.compose.states.WorldBuilderConfigHolder
 import de.sirvincelot.juganaut.ui.compose.states.WorldRendererConfigHolder
+import de.sirvincelot.juganaut.ui.theme.AppTheme
+
+@Preview(showBackground = true,
+    uiMode = UI_MODE_NIGHT_YES)
+@Composable
+fun SettingsPreview() {
+    AppTheme {
+    SettingsScreen(getPlatform().rendererConfigHolder, WorldBuilderConfigHolder()) {}
+    }
+}
 
 @Composable
 fun SettingsScreen(
@@ -29,7 +42,7 @@ fun SettingsScreen(
     worldBuilderConfigHolder: WorldBuilderConfigHolder,
     onClickBack: () -> Unit
 ) {
-    Column(modifier = Modifier.fillMaxSize()) {
+    Column(modifier = Modifier.fillMaxSize().background(MaterialTheme.colorScheme.surfaceContainer)) {
         TitleBar(onClickBack)
         Column(modifier = Modifier.verticalScroll(rememberScrollState())
             .padding(5.dp)) {
@@ -46,7 +59,7 @@ fun TitleBar(onClickBack: () -> Unit) {
         modifier = Modifier
             .fillMaxWidth()
             .padding(bottom = 10.dp)
-            .background(color = Color(0.5f, 0.9f, 0.5f))
+            .background(/*color = Color(0.5f, 0.9f, 0.5f)*/MaterialTheme.colorScheme.primary)
             .windowInsetsPadding(WindowInsets.displayCutout)
     ) {
         BackButton(onClickBack)
@@ -54,7 +67,7 @@ fun TitleBar(onClickBack: () -> Unit) {
             "Settings",
             modifier = Modifier.align(Alignment.Center),
             textAlign = TextAlign.Center,
-            color = Color.Black,
+            color = MaterialTheme.colorScheme.onPrimary,
             fontSize = 20.sp,
         )
     }
@@ -65,12 +78,12 @@ fun BackButton(onClickBack: () -> Unit) {
     Box(
         modifier = Modifier
             .clickable(onClick = onClickBack)
-            .background(Color.LightGray)
+            .background(MaterialTheme.colorScheme.tertiaryContainer)
             .padding(10.dp)
     ) {
         Text(
             "Back",
-            color = Color.Black,
+            color = MaterialTheme.colorScheme.onTertiaryContainer,
             fontSize = 20.sp,
         )
     }

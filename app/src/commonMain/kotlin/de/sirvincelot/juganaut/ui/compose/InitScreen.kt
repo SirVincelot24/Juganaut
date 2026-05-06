@@ -9,6 +9,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -16,13 +17,25 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.tooling.preview.AndroidUiModes.UI_MODE_NIGHT_YES
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import de.sirvincelot.juganaut.getPlatform
+import de.sirvincelot.juganaut.ui.theme.AppTheme
 import juganaut.app.generated.resources.Res
 import juganaut.app.generated.resources.menu_background
 import juganaut.app.generated.resources.menu_background_phone
 import org.jetbrains.compose.resources.painterResource
+
+@Preview(showBackground = true,
+    uiMode = UI_MODE_NIGHT_YES)
+@Composable
+fun InitPreview() {
+    AppTheme {
+        InitScreen({}, {}, {})
+    }
+}
 
 @Composable
 fun InitScreen(
@@ -69,14 +82,14 @@ private fun StartGameButton(onClickStart: () -> Unit) {
         modifier = Modifier
             .padding(20.dp)
             .clickable(onClick = onClickStart)
-            .background(Color.White)
-            .border(5.dp, Color.White)
-            .border(10.dp, Color.Green)
+            .background(MaterialTheme.colorScheme.primaryContainer)
+            .border(5.dp, MaterialTheme.colorScheme.primaryContainer)
+            .border(10.dp, MaterialTheme.colorScheme.onPrimaryContainer)
             .padding(30.dp)
     ) {
         Text(
             "Start Game",
-            color = Color(0f, 0.7f, 0f),
+            color = /*Color(0f, 0.7f, 0f)*/MaterialTheme.colorScheme.onPrimaryContainer,
             fontSize = 30.sp,
         )
     }
@@ -87,12 +100,12 @@ private fun QuitButton(onClickQuit: () -> Unit) {
     Box(
         modifier = Modifier
             .clickable(onClick = onClickQuit)
-            .background(Color.Red)
+            .background(MaterialTheme.colorScheme.errorContainer)
             .padding(10.dp)
     ) {
         Text(
             "Quit",
-            color = Color.White,
+            color = MaterialTheme.colorScheme.onErrorContainer,
             fontSize = 30.sp,
         )
     }
@@ -104,12 +117,12 @@ private fun SettingsButton(onClickSettings: () -> Unit) {
         modifier = Modifier
             .padding(10.dp)
             .clickable(onClick = onClickSettings)
-            .background(Color.Yellow)
+            .background(MaterialTheme.colorScheme.tertiaryContainer)
             .padding(10.dp)
     ) {
         Text(
             "Settings",
-            color = Color.Black,
+            color = MaterialTheme.colorScheme.onTertiaryContainer,
             fontSize = 30.sp,
         )
     }

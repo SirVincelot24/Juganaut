@@ -2,6 +2,7 @@ package de.sirvincelot.juganaut.ui.compose.settings
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Slider
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -28,7 +29,7 @@ fun AudioSettings() {
 
 @Composable
 private fun MusicVolumeSetting(audioData: AudioConfigHolder) {
-    Text("Musik Lautstärke")
+    Text("Musik Lautstärke", color = MaterialTheme.colorScheme.onBackground)
     Slider(
         modifier = Modifier.fillMaxWidth(),
         value = audioData.musicVolume,
@@ -41,7 +42,7 @@ private fun MusicVolumeSetting(audioData: AudioConfigHolder) {
 
 @Composable
 private fun SFXVolumeSetting(audioData: AudioConfigHolder) {
-    Text("Effekt Lautstärke")
+    Text("Effekt Lautstärke", color = MaterialTheme.colorScheme.onBackground)
     Slider(
         modifier = Modifier.fillMaxWidth(),
         value = audioData.sfxVolume,

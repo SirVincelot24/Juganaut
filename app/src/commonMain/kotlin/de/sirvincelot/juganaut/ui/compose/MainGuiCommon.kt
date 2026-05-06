@@ -13,12 +13,15 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalLayoutDirection
+import androidx.compose.ui.tooling.preview.AndroidUiModes.UI_MODE_NIGHT_YES
+import androidx.compose.ui.tooling.preview.Preview
 import de.sirvincelot.juganaut.bl.Game
 import de.sirvincelot.juganaut.getPlatform
 import de.sirvincelot.juganaut.ui.compose.game.GameScreen
 import de.sirvincelot.juganaut.ui.compose.settings.SettingsScreen
 import de.sirvincelot.juganaut.ui.compose.states.GameStateHolder
 import de.sirvincelot.juganaut.ui.compose.states.WorldBuilderConfigHolder
+import de.sirvincelot.juganaut.ui.theme.AppTheme
 import kotlin.system.exitProcess
 
 enum class CurrentScreen {
@@ -27,6 +30,14 @@ enum class CurrentScreen {
     Settings
 }
 
+@Preview(showBackground = true,
+    uiMode = UI_MODE_NIGHT_YES)
+@Composable
+fun SettingsPreview() {
+    AppTheme {
+        MainGuiCommon(false, {}, {})
+    }
+}
 @Composable
 fun MainGuiCommon(
     supportTouchInput: Boolean,
@@ -53,7 +64,7 @@ fun MainGuiCommon(
             onClickQuit = { exitProcess(0) }
         )
 
-        CurrentScreen.Settings -> WithSystemBarsPadding() {
+        CurrentScreen.Settings -> WithSystemBarsPadding {
             SettingsScreen(
                 worldRendererConfig,
                 worldBuilderConfig,

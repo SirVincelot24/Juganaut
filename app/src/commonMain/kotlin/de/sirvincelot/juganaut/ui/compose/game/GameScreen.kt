@@ -12,6 +12,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.windowInsetsPadding
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.derivedStateOf
@@ -25,6 +26,8 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.platform.LocalWindowInfo
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.tooling.preview.AndroidUiModes.UI_MODE_NIGHT_YES
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import de.sirvincelot.juganaut.bl.logic.AllDiamondsCollected
@@ -34,8 +37,20 @@ import de.sirvincelot.juganaut.bl.logic.MonsterCatchesPlayer
 import de.sirvincelot.juganaut.bl.logic.PlayerWalksIntoMonster
 import de.sirvincelot.juganaut.bl.logic.RockHitsPlayer
 import de.sirvincelot.juganaut.bl.logic.WinningReason
+import de.sirvincelot.juganaut.getPlatform
 import de.sirvincelot.juganaut.ui.compose.states.GameStateHolder
 import de.sirvincelot.juganaut.ui.compose.states.WorldRendererConfigHolder
+import de.sirvincelot.juganaut.ui.theme.AppTheme
+
+
+@Preview(showBackground = true,
+    uiMode = UI_MODE_NIGHT_YES)
+@Composable
+fun SettingsPreview() {
+    AppTheme {
+        GameScreen(GameStateHolder(), getPlatform().rendererConfigHolder, false){}
+    }
+}
 
 @Composable
 fun GameScreen(
@@ -59,7 +74,8 @@ fun GameScreen(
             .configureTouchInput(touchInputHandler)
     ) {
         Column(modifier = Modifier.fillMaxSize()) {
-            Row(modifier = Modifier.fillMaxWidth()) {
+            Row(modifier = Modifier.fillMaxWidth()
+                .background(MaterialTheme.colorScheme.surfaceContainer)) {
                 TitleBar(diamondsCollected.value, diamondsTotal.value, onClickBack)
             }
 
@@ -104,19 +120,19 @@ fun TitleBar(diamondsCollected: Int, diamondsTotal: Int, onClickBack: () -> Unit
         Box(
             modifier = Modifier
                 .clickable(onClick = onClickBack)
-                .background(Color.LightGray)
+                .background(MaterialTheme.colorScheme.secondary)
                 .padding(5.dp)
         ) {
             Text(
                 "Stop",
-                color = Color.Black,
+                color = MaterialTheme.colorScheme.onSecondary,
                 fontSize = 20.sp,
             )
         }
         Spacer(modifier = Modifier.weight(1f))
         Text(
             "Diamanten: $diamondsCollected / $diamondsTotal",
-            color = Color.Blue
+            color = MaterialTheme.colorScheme.onTertiaryContainer
         )
     }
 }
