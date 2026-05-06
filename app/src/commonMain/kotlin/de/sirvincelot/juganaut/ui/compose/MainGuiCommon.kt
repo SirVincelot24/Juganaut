@@ -69,7 +69,7 @@ fun MainGuiCommon(
                 onClickBack = {
                     onGameStop()
                     gameState.stopGame()
-                    getPlatform().audioPlayer?.stopMusic()
+                    getPlatform().audioPlayer?.stopAll()
                     currentScreen.value = CurrentScreen.Init
                 }
             )

@@ -10,18 +10,18 @@ class TurnController(val game: Game) {
     val playerController = PlayerController(game)
     val rockController = RockController(game)
     val monsterController = MonsterController(game)
-    val bombcontroller = BombController(game)
+    val bombController = BombController(game)
 
     /**
      * Wird einmal pro Runde aufgerufen, wenn die nächste Runde ausgeführt werden soll.
      */
     fun tick() {
-        if (game.winningReason == null) {
+        if (game.isRunning) {
             playerController.applyPlayerInput()
             rockController.rocksFall()
             monsterController.monstersMove()
-            bombcontroller.bombsFall()
-            bombcontroller.bombsTick()
+            bombController.bombsFall()
+            bombController.bombsTick()
         }
         playerController.applyPlayerActions()
     }

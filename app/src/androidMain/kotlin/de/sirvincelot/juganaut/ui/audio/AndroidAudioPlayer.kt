@@ -61,6 +61,6 @@ object AndroidAudioPlayer : AudioPlayer {
 
     override fun stopAll() {
         musicPlayer.stop()
-        MainActivity().releasePlayer()
+        sfxSoundPool.autoPause()
     }
 }

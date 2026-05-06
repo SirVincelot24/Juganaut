@@ -19,6 +19,11 @@ class Game(val world: World, val diamondsInGame : Int) {
     var gameOverReason: GameOverReason? = null
 
     /**
+     * Wenn das Spiel nicht mehr laufen soll, wird diese Variable auf `false` gesetzt
+     */
+    var isRunning: Boolean = true
+
+    /**
      * Hier wird gespeichert, ob der Spieler gewonnen hat
      */
     var winningReason: WinningReason? = null
@@ -49,6 +54,6 @@ class Game(val world: World, val diamondsInGame : Int) {
         getPlatform().audioPlayer?.playSfx(SFXAudioSample.Win)
         getPlatform().audioPlayer?.stopMusic()
         winningReason = reason
-
+        isRunning = false
     }
 }
