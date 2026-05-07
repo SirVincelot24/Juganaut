@@ -38,9 +38,6 @@ object AndroidAudioPlayer : AudioPlayer {
     }
 
     override fun startGameMusic() {
-        if (musicPlayer.isPlaying) {
-            return
-        }
         musicPlayer.setMediaItem(MediaItem.fromUri(Res.getUri(AudioSample.MainLoop.path)))
         musicPlayer.volume = musicVolume
         musicPlayer.prepare()
@@ -49,6 +46,9 @@ object AndroidAudioPlayer : AudioPlayer {
     }
 
     override fun startMenuMusic() {
+        if (musicPlayer.isPlaying) {
+            return
+        }
         musicPlayer.setMediaItem(MediaItem.fromUri(Res.getUri(AudioSample.MenuLoop.path)))
         musicPlayer.volume = musicVolume
         musicPlayer.prepare()
