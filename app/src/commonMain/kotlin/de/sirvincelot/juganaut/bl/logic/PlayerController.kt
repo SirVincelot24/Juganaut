@@ -181,7 +181,7 @@ class PlayerController(val game: Game) {
         val crispSounds: Array<SFXAudioSample> =
             arrayOf( SFXAudioSample.Crisp1, SFXAudioSample.Crisp2, SFXAudioSample.Crisp3, SFXAudioSample.Crisp4 )
         val sample = crispSounds[Random.nextInt(0..3)]
-        getPlatform().audioPlayer?.playSfx(sample, getPlatform().audioPlayer?.sfxVolume ?: 1f)
+        getPlatform().audioPlayer?.playSfx(sample, 0.75f)
     }
 
     /**

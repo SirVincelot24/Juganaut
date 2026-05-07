@@ -11,6 +11,8 @@ enum class SFXAudioSample(val path: String) {
 
     CollectDiamond("files/collect_diamond.wav"),
 
+    BombExplode("files/bomb_explode.wav"),
+
     Lose("files/lose_game1.wav"),
     Win("files/win_game.wav"),
 }

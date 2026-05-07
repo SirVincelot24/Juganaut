@@ -42,7 +42,7 @@ object AndroidAudioPlayer : AudioPlayer {
         musicPlayer.volume = musicVolume
         musicPlayer.prepare()
         musicPlayer.play()
-        Log.d("Juganaut", "Started Game music")
+        Log.d("Juganaut_Sound", "Started Game music")
     }
 
     override fun startMenuMusic() {
@@ -53,17 +53,18 @@ object AndroidAudioPlayer : AudioPlayer {
         musicPlayer.volume = musicVolume
         musicPlayer.prepare()
         musicPlayer.play()
-        Log.d("Juganaut", "Started Menu music")
+        Log.d("Juganaut_Sound", "Started Menu music")
     }
 
     override fun playSfx(
         sample: SFXAudioSample,
         volume: Float
     ) {
+        val newVolume = sfxVolume * volume
         soundIDs[sample]?.let { soundID ->
-            sfxSoundPool.play(soundID, volume, volume, 1, 0, 1f)
-        } ?: Log.e("SoundPool", "Sound '$sample' not found")
-        Log.d("SoundPool", "SFX $sample started with volume $volume")
+            sfxSoundPool.play(soundID, newVolume, newVolume, 1, 0, 1f)
+        } ?: Log.e("Juganaut_Sound", "Sound '$sample' not found")
+        Log.d("Juganaut_Sound", "SFX $sample started with volume $newVolume")
     }
 
     override fun stopMusic() {

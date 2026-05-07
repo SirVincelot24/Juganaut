@@ -4,6 +4,8 @@ import de.sirvincelot.juganaut.bl.Game
 import de.sirvincelot.juganaut.bl.space.Coord
 import de.sirvincelot.juganaut.bl.space.Direction
 import de.sirvincelot.juganaut.bl.worlditems.*
+import de.sirvincelot.juganaut.getPlatform
+import de.sirvincelot.juganaut.ui.audio.SFXAudioSample
 
 /**
  * Steuert das Verhalten der Bomben
@@ -12,8 +14,8 @@ class BombController(val game: Game) {
 
 
     fun bombsTick() {
-        val bomblist = game.world.findAll { it is Bomb }
-        bomblist.forEach {
+        val bombList = game.world.findAll { it is Bomb }
+        bombList.forEach {
             tick(it)
         }
     }
@@ -62,6 +64,7 @@ class BombController(val game: Game) {
             }
 
         }
+        getPlatform().audioPlayer?.playSfx(SFXAudioSample.BombExplode)
     }
 
     private fun clearField(c: Coord) {
