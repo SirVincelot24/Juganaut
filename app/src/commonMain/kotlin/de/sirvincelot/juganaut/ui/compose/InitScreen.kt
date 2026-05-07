@@ -43,6 +43,9 @@ fun InitScreen(
     onClickSettings: () -> Unit,
     onClickQuit: () -> Unit,
 ) {
+
+    getPlatform().audioPlayer?.startMenuMusic()
+
     Box(
         modifier = Modifier.fillMaxSize()
     ) {

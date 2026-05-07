@@ -5,4 +5,5 @@ package de.sirvincelot.juganaut.ui.audio
  */
 enum class AudioSample(val path: String) {
     MainLoop("files/main_loop.wav"),
+    MenuLoop("files/menu_loop.wav")
 }

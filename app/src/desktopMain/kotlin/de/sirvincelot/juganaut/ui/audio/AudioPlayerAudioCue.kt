@@ -21,6 +21,17 @@ object AudioPlayerAudioCue : AudioPlayer {
      * Startet die Spiel-Musik
      */
     override fun startGameMusic() {
+        audioCue = makeStereoCue(AudioSample.MainLoop)
+        audioCue.open()
+        audioCue.setLooping(audioCue.obtainInstance(), -1)
+        audioCue.play(musicVolume.toDouble())
+        musicAudioCue = audioCue
+    }
+
+    override fun startMenuMusic() {
+        audioCue = makeStereoCue(AudioSample.MenuLoop)
+        audioCue.open()
+        audioCue.setLooping(audioCue.obtainInstance(), -1)
         audioCue.play(musicVolume.toDouble())
         musicAudioCue = audioCue
     }

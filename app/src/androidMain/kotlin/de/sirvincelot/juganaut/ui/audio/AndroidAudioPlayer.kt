@@ -38,11 +38,22 @@ object AndroidAudioPlayer : AudioPlayer {
     }
 
     override fun startGameMusic() {
+        if (musicPlayer.isPlaying) {
+            return
+        }
         musicPlayer.setMediaItem(MediaItem.fromUri(Res.getUri(AudioSample.MainLoop.path)))
         musicPlayer.volume = musicVolume
         musicPlayer.prepare()
         musicPlayer.play()
         Log.d("Juganaut", "Started Game music")
+    }
+
+    override fun startMenuMusic() {
+        musicPlayer.setMediaItem(MediaItem.fromUri(Res.getUri(AudioSample.MenuLoop.path)))
+        musicPlayer.volume = musicVolume
+        musicPlayer.prepare()
+        musicPlayer.play()
+        Log.d("Juganaut", "Started Menu music")
     }
 
     override fun playSfx(

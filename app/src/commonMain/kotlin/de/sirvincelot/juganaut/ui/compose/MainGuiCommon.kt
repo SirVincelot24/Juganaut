@@ -56,6 +56,7 @@ fun MainGuiCommon(
             onClickStart = {
                 gameState.startNewGame(worldBuilderConfig.worldBuilderConfig.value)
 //                getPlatform().audioPlayer?.initMusicPlayers()
+                getPlatform().audioPlayer?.stopMusic()
                 getPlatform().audioPlayer?.startGameMusic()
                 onGameStart(gameState.game!!)
                 currentScreen.value = CurrentScreen.Game

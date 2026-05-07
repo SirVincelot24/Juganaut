@@ -14,6 +14,11 @@ interface AudioPlayer {
     fun startGameMusic()
 
     /**
+     * Startet die Menü-Musik.
+     */
+    fun startMenuMusic()
+
+    /**
      * Spielt einen einzelnen Soundeffekt ab.
      * @param sample der Soundeffekt
      * @param volume die Lautstärke, zwischen 0 und 1
