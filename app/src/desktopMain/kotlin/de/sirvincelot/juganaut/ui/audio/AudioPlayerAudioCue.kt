@@ -24,16 +24,19 @@ object AudioPlayerAudioCue : AudioPlayer {
         audioCue = makeStereoCue(AudioSample.MainLoop)
         audioCue.open()
         audioCue.setLooping(audioCue.obtainInstance(), -1)
-        audioCue.play(musicVolume.toDouble())
         musicAudioCue = audioCue
+        musicAudioCue?.play(musicVolume.toDouble())
     }
 
     override fun startMenuMusic() {
+        if (musicAudioCue?.getIsPlaying(musicAudioCue?.obtainInstance() ?: 1) == true) {
+            return
+        }
         audioCue = makeStereoCue(AudioSample.MenuLoop)
         audioCue.open()
         audioCue.setLooping(audioCue.obtainInstance(), -1)
-        audioCue.play(musicVolume.toDouble())
         musicAudioCue = audioCue
+        musicAudioCue?.play(musicVolume.toDouble())
     }
 
     /**
