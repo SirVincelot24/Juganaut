@@ -27,8 +27,8 @@
     <string name="won">Won Game!</string>
     <!--Game Over Messages-->
     <string name="death_monster_catches_player">Player was eaten</string>
-    <string name="death_player_walks_into_monster">Player </string>
-    <string name="death_rock_hits_player">Player was </string>
+    <string name="death_player_walks_into_monster">Player ran into trouble</string>
+    <string name="death_rock_hits_player">Player was squashed by a rock</string>
     <string name="death_explosion">Player exploded</string>
     <!--Winning Messages-->
     <string name="all_diamonds_collected">All %1$s diamonds collected!</string>
