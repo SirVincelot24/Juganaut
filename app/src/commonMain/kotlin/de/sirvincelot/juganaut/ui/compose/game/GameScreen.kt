@@ -60,6 +60,7 @@ import org.jetbrains.compose.resources.stringResource
 fun SettingsPreview() {
     AppTheme {
         GameScreen(GameStateHolder(), getPlatform().rendererConfigHolder, false){}
+//        GameEnd(null, AllDiamondsCollected(2))
     }
 }
 
