@@ -26,7 +26,11 @@ import de.sirvincelot.juganaut.ui.theme.AppTheme
 import juganaut.app.generated.resources.Res
 import juganaut.app.generated.resources.menu_background
 import juganaut.app.generated.resources.menu_background_phone
+import juganaut.app.generated.resources.quit
+import juganaut.app.generated.resources.settings
+import juganaut.app.generated.resources.start_game
 import org.jetbrains.compose.resources.painterResource
+import org.jetbrains.compose.resources.stringResource
 
 @Preview(showBackground = true,
     uiMode = UI_MODE_NIGHT_YES)
@@ -91,7 +95,7 @@ private fun StartGameButton(onClickStart: () -> Unit) {
             .padding(30.dp)
     ) {
         Text(
-            "Start Game",
+            stringResource(Res.string.start_game),
             color = /*Color(0f, 0.7f, 0f)*/MaterialTheme.colorScheme.onPrimaryContainer,
             fontSize = 30.sp,
         )
@@ -107,7 +111,7 @@ private fun QuitButton(onClickQuit: () -> Unit) {
             .padding(10.dp)
     ) {
         Text(
-            "Quit",
+            stringResource(Res.string.quit),
             color = MaterialTheme.colorScheme.onErrorContainer,
             fontSize = 30.sp,
         )
@@ -124,7 +128,7 @@ private fun SettingsButton(onClickSettings: () -> Unit) {
             .padding(10.dp)
     ) {
         Text(
-            "Settings",
+            stringResource(Res.string.settings),
             color = MaterialTheme.colorScheme.onTertiaryContainer,
             fontSize = 30.sp,
         )
