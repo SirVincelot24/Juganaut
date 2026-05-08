@@ -11,6 +11,15 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import de.sirvincelot.juganaut.ui.compose.states.WorldBuilderConfigHolder
+import juganaut.app.generated.resources.Res
+import juganaut.app.generated.resources.bombs
+import juganaut.app.generated.resources.diamonds
+import juganaut.app.generated.resources.height
+import juganaut.app.generated.resources.monster
+import juganaut.app.generated.resources.rocks
+import juganaut.app.generated.resources.width
+import juganaut.app.generated.resources.world
+import org.jetbrains.compose.resources.stringResource
 import kotlin.math.roundToInt
 
 
@@ -19,7 +28,7 @@ fun WorldBuilderSettings(worldBuilderConfig: WorldBuilderConfigHolder) {
     Column(
         modifier = Modifier.fillMaxWidth()
     ) {
-        SettingsHeadline("Spielwelt")
+        SettingsHeadline(stringResource(Res.string.world))
         SizeSettings(worldBuilderConfig)
         ItemCountSettings(worldBuilderConfig)
     }
@@ -29,7 +38,7 @@ fun WorldBuilderSettings(worldBuilderConfig: WorldBuilderConfigHolder) {
 private fun SizeSettings(holder: WorldBuilderConfigHolder) {
     val size = holder.worldBuilderConfig.value.worldSize
     Row(verticalAlignment = Alignment.CenterVertically) {
-        Text("Breite: ${size.width}", color = MaterialTheme.colorScheme.onBackground)
+        Text(stringResource(Res.string.width) + ": ${size.width}", color = MaterialTheme.colorScheme.onBackground)
         val range = 5f..50f
         Slider(
             modifier = Modifier.fillMaxWidth(),
@@ -47,7 +56,7 @@ private fun SizeSettings(holder: WorldBuilderConfigHolder) {
         )
     }
     Row(verticalAlignment = Alignment.CenterVertically) {
-        Text("Höhe: ${size.height}", color = MaterialTheme.colorScheme.onBackground)
+        Text(stringResource(Res.string.height) + ": ${size.height}", color = MaterialTheme.colorScheme.onBackground)
         val range = 5f..50f
         Slider(
             modifier = Modifier.fillMaxWidth(),
@@ -91,25 +100,25 @@ private fun SettingsSlider(
 @Composable
 private fun ItemCountSettings(holder: WorldBuilderConfigHolder) {
     val diamonds = holder.worldBuilderConfig.value.diamondsCountRange
-    SettingsSlider(diamonds, 1f..100f, "Diamanten") { newRange ->
+    SettingsSlider(diamonds, 1f..100f, stringResource(Res.string.diamonds)) { newRange ->
         holder.worldBuilderConfig.value =
             holder.worldBuilderConfig.value.copy(diamondsCountRange = newRange)
     }
 
     val monsters = holder.worldBuilderConfig.value.monsterCountRange
-    SettingsSlider(monsters, 0f..100f, "Monster") { newRange ->
+    SettingsSlider(monsters, 0f..100f, stringResource(Res.string.monster)) { newRange ->
         holder.worldBuilderConfig.value =
             holder.worldBuilderConfig.value.copy(monsterCountRange = newRange)
     }
 
     val bombs = holder.worldBuilderConfig.value.bombsCountRange
-    SettingsSlider(bombs, 0f..100f, "Bomben"){ newRange ->
+    SettingsSlider(bombs, 0f..100f, stringResource(Res.string.bombs)){ newRange ->
         holder.worldBuilderConfig.value =
             holder.worldBuilderConfig.value.copy(bombsCountRange = newRange)
     }
 
     val rocks = holder.worldBuilderConfig.value.rockCountRange
-    SettingsSlider(rocks, 0f..100f, "Steine") { newRange ->
+    SettingsSlider(rocks, 0f..100f, stringResource(Res.string.rocks)) { newRange ->
         holder.worldBuilderConfig.value =
             holder.worldBuilderConfig.value.copy(rockCountRange = newRange)
     }

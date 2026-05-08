@@ -41,6 +41,17 @@ import de.sirvincelot.juganaut.getPlatform
 import de.sirvincelot.juganaut.ui.compose.states.GameStateHolder
 import de.sirvincelot.juganaut.ui.compose.states.WorldRendererConfigHolder
 import de.sirvincelot.juganaut.ui.theme.AppTheme
+import juganaut.app.generated.resources.Res
+import juganaut.app.generated.resources.all_diamonds_collected
+import juganaut.app.generated.resources.death_explosion
+import juganaut.app.generated.resources.death_monster_catches_player
+import juganaut.app.generated.resources.death_player_walks_into_monster
+import juganaut.app.generated.resources.death_rock_hits_player
+import juganaut.app.generated.resources.diamonds
+import juganaut.app.generated.resources.game_over
+import juganaut.app.generated.resources.stop
+import juganaut.app.generated.resources.won
+import org.jetbrains.compose.resources.stringResource
 
 
 @Preview(showBackground = true,
@@ -124,14 +135,14 @@ fun TitleBar(diamondsCollected: Int, diamondsTotal: Int, onClickBack: () -> Unit
                 .padding(5.dp)
         ) {
             Text(
-                "Stop",
+                stringResource(Res.string.stop),
                 color = MaterialTheme.colorScheme.onSecondary,
                 fontSize = 20.sp,
             )
         }
         Spacer(modifier = Modifier.weight(1f))
         Text(
-            "Diamanten: $diamondsCollected / $diamondsTotal",
+            stringResource(Res.string.diamonds) + ": $diamondsCollected / $diamondsTotal",
             color = MaterialTheme.colorScheme.onTertiaryContainer
         )
     }
@@ -171,7 +182,7 @@ private fun GameEnd(gameOver: GameOverReason?, won: WinningReason?) {
         ) {
             Column(modifier = Modifier.rotate(30f)) {
                 Text(
-                    "Game Over",
+                    stringResource(Res.string.game_over),
                     color = Color.Red,
                     fontSize = 50.sp,
                     fontWeight = FontWeight.ExtraBold
@@ -190,7 +201,7 @@ private fun GameEnd(gameOver: GameOverReason?, won: WinningReason?) {
         ) {
             Column(modifier = Modifier.rotate(-30f)) {
                 Text(
-                    "Gewonnen",
+                    stringResource(Res.string.won),
                     color = Color.Green,
                     fontSize = 50.sp,
                     fontWeight = FontWeight.ExtraBold
@@ -204,17 +215,19 @@ private fun GameEnd(gameOver: GameOverReason?, won: WinningReason?) {
     }
 }
 
+@Composable
 private fun formatGameOverReason(reason: GameOverReason): String {
     return when (reason) {
-        is MonsterCatchesPlayer -> "Spieler wurde gefressen"
-        is PlayerWalksIntoMonster -> "Spieler hat Streit gesucht"
-        is RockHitsPlayer -> "Spieler wurde erschlagen"
-        is Explosion -> "Spieler ist explodiert"
+        is MonsterCatchesPlayer -> stringResource(Res.string.death_monster_catches_player)
+        is PlayerWalksIntoMonster -> stringResource(Res.string.death_player_walks_into_monster)
+        is RockHitsPlayer -> stringResource(Res.string.death_rock_hits_player)
+        is Explosion -> stringResource(Res.string.death_explosion)
     }
 }
 
+@Composable
 private fun formatGameOverReason(reason: WinningReason): String {
     return when (reason) {
-        is AllDiamondsCollected -> "Alle ${reason.diamondsCollected} Diamanten gesammelt"
+        is AllDiamondsCollected -> stringResource(Res.string.all_diamonds_collected, reason.diamondsCollected)
     }
 }

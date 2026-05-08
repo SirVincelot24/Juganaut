@@ -26,6 +26,10 @@ import de.sirvincelot.juganaut.getPlatform
 import de.sirvincelot.juganaut.ui.compose.states.WorldBuilderConfigHolder
 import de.sirvincelot.juganaut.ui.compose.states.WorldRendererConfigHolder
 import de.sirvincelot.juganaut.ui.theme.AppTheme
+import juganaut.app.generated.resources.Res
+import juganaut.app.generated.resources.back
+import juganaut.app.generated.resources.settings
+import org.jetbrains.compose.resources.stringResource
 
 @Preview(showBackground = true,
     uiMode = UI_MODE_NIGHT_YES)
@@ -64,7 +68,7 @@ fun TitleBar(onClickBack: () -> Unit) {
     ) {
         BackButton(onClickBack)
         Text(
-            "Settings",
+            stringResource(Res.string.settings),
             modifier = Modifier.align(Alignment.Center),
             textAlign = TextAlign.Center,
             color = MaterialTheme.colorScheme.onPrimary,
@@ -82,7 +86,7 @@ fun BackButton(onClickBack: () -> Unit) {
             .padding(10.dp)
     ) {
         Text(
-            "Back",
+            stringResource(Res.string.back),
             color = MaterialTheme.colorScheme.onTertiaryContainer,
             fontSize = 20.sp,
         )

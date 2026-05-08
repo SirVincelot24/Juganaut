@@ -1,0 +1,35 @@
+<resources>
+    <string name="app_name">Juganaut</string>
+    <!--Title Screen-->
+    <string name="start_game">Spiel starten</string>
+    <string name="quit">Beenden</string>
+    <!--Settings-->
+    <string name="settings">Einstellungen</string>
+    <string name="back">Zurück</string>
+    <string name="game_renderer">Spiel-Renderer</string>
+    <string name="scale">Skalierung</string>
+    <string name="automatic">Automatisch</string>
+    <string name="scale_factor">Skalierungs-Faktor</string>
+    <string name="min_edge_distance">Min. Abstand zum Rand</string>
+    <string name="world">Spielwelt</string>
+    <string name="width">Breite</string>
+    <string name="height">Höhe</string>
+    <string name="diamonds">Diamanten</string>
+    <string name="monster">Monster</string>
+    <string name="bombs">Bomben</string>
+    <string name="rocks">Steine</string>
+    <string name="audio">Audio</string>
+    <string name="music_volume">Musik-Lautstärke</string>
+    <string name="sfx_volume">SFX-Lautstärke</string>
+    <!--Game-->
+    <string name="stop">Stopp</string>
+    <string name="game_over">Game Over</string>
+    <string name="won">Gewonnen!</string>
+    <!--Game Over Messages-->
+    <string name="death_monster_catches_player">Spieler wurde gefressen</string>
+    <string name="death_player_walks_into_monster">Spieler hat Streit gesucht</string>
+    <string name="death_rock_hits_player">Spieler wurde erschlagen</string>
+    <string name="death_explosion">Spieler ist explodiert</string>
+    <!--Winning Messages-->
+    <string name="all_diamonds_collected">Alle %s Diamanten gesammelt!</string>
+</resources>

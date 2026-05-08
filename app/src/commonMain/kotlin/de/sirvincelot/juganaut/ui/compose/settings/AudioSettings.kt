@@ -9,6 +9,10 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import de.sirvincelot.juganaut.ui.compose.states.AudioConfigHolder
+import juganaut.app.generated.resources.Res
+import juganaut.app.generated.resources.music_volume
+import juganaut.app.generated.resources.sfx_volume
+import org.jetbrains.compose.resources.stringResource
 
 
 @Composable
@@ -29,7 +33,7 @@ fun AudioSettings() {
 
 @Composable
 private fun MusicVolumeSetting(audioData: AudioConfigHolder) {
-    Text("Musik Lautstärke", color = MaterialTheme.colorScheme.onBackground)
+    Text(stringResource(Res.string.music_volume), color = MaterialTheme.colorScheme.onBackground)
     Slider(
         modifier = Modifier.fillMaxWidth(),
         value = audioData.musicVolume,
@@ -42,7 +46,7 @@ private fun MusicVolumeSetting(audioData: AudioConfigHolder) {
 
 @Composable
 private fun SFXVolumeSetting(audioData: AudioConfigHolder) {
-    Text("Effekt Lautstärke", color = MaterialTheme.colorScheme.onBackground)
+    Text(stringResource(Res.string.sfx_volume), color = MaterialTheme.colorScheme.onBackground)
     Slider(
         modifier = Modifier.fillMaxWidth(),
         value = audioData.sfxVolume,
