@@ -31,5 +31,5 @@
     <string name="death_rock_hits_player">Player was </string>
     <string name="death_explosion">Player exploded</string>
     <!--Winning Messages-->
-    <string name="all_diamonds_collected">All %s diamonds collected!</string>
+    <string name="all_diamonds_collected">All %1$s diamonds collected!</string>
 </resources>

@@ -31,5 +31,5 @@
     <string name="death_rock_hits_player">Spieler wurde erschlagen</string>
     <string name="death_explosion">Spieler ist explodiert</string>
     <!--Winning Messages-->
-    <string name="all_diamonds_collected">Alle %s Diamanten gesammelt!</string>
+    <string name="all_diamonds_collected">Alle %1$s Diamanten gesammelt!</string>
 </resources>
