@@ -4,6 +4,7 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.displayCutout
 import androidx.compose.foundation.layout.fillMaxSize
@@ -53,6 +54,7 @@ fun SettingsScreen(
             WorldRendererSettings(worldRendererConfigHolder)
             WorldBuilderSettings(worldBuilderConfigHolder)
             AudioSettings()
+            Spacer(modifier = Modifier.fillMaxWidth().padding(bottom = 20.dp))
         }
     }
 }

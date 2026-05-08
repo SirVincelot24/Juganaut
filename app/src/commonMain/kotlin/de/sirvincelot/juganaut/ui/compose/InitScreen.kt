@@ -5,6 +5,7 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -137,20 +138,21 @@ private fun SettingsButton(onClickSettings: () -> Unit) {
 
 @Composable
 private fun Background() {
-    if (getPlatform().name.contains("Android")) {
-        Image(
-            painter = painterResource(Res.drawable.menu_background_phone),
-            contentDescription = "Menu Background",
-            modifier = Modifier.fillMaxSize(),
-            contentScale = ContentScale.FillBounds
-        )
-    } else {
-        Image(
-            painter = painterResource(Res.drawable.menu_background),
-            contentDescription = "Menu Background",
-            modifier = Modifier.fillMaxSize(),
-            contentScale = ContentScale.FillBounds
-        )
+    BoxWithConstraints {
+        if (/*getPlatform().name.contains("Android")*/maxWidth < 500.dp) {
+            Image(
+                painter = painterResource(Res.drawable.menu_background_phone),
+                contentDescription = "Menu Background",
+                modifier = Modifier.fillMaxSize(),
+                contentScale = ContentScale.FillBounds
+            )
+        } else {
+            Image(
+                painter = painterResource(Res.drawable.menu_background),
+                contentDescription = "Menu Background",
+                modifier = Modifier.fillMaxSize(),
+                contentScale = ContentScale.FillBounds
+            )
+        }
     }
-
 }
