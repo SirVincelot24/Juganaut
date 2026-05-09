@@ -94,7 +94,10 @@ fun GameScreen(
 
             WorldRenderer(gameState, worldRendererConfig)
         }
-        TouchHandlerCross(touchInputHandler)
+        if (gameOverReason.value == null && winReason.value == null) {
+            TouchHandlerCross(touchInputHandler)
+        }
+
         GameEnd(gameOverReason.value, winReason.value)
     }
 }
