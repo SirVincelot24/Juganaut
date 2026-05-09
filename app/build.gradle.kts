@@ -95,3 +95,13 @@ compose.desktop {
         }
     }
 }
+
+tasks.register<Copy>("copyAudio"){
+    group = "build setup"
+    description = "Copies all audio files from shared resource dir to android resource dir"
+    doLast {
+        from("src/commonMain/composeResources/files")
+        into("src/androidMain/res/raw")
+        include("*_sfx.wav")
+    }
+}
