@@ -1,16 +1,25 @@
 package de.sirvincelot.juganaut.ui.compose.settings
 
+import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.IconButtonDefaults
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.OutlinedIconButton
 import androidx.compose.material3.RangeSlider
 import androidx.compose.material3.Slider
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.tooling.preview.AndroidUiModes.UI_MODE_NIGHT_YES
+import androidx.compose.ui.tooling.preview.Preview
 import de.sirvincelot.juganaut.ui.compose.states.WorldBuilderConfigHolder
+import de.sirvincelot.juganaut.ui.theme.AppTheme
 import juganaut.app.generated.resources.Res
 import juganaut.app.generated.resources.bombs
 import juganaut.app.generated.resources.diamonds
@@ -23,12 +32,32 @@ import org.jetbrains.compose.resources.stringResource
 import kotlin.math.roundToInt
 
 
+@Preview(showBackground = true,
+    uiMode = UI_MODE_NIGHT_YES)
+@Composable
+fun WorldBuilderPreview() {
+    AppTheme {
+        Box(Modifier.background(MaterialTheme.colorScheme.surfaceContainer)){
+            WorldBuilderSettings(WorldBuilderConfigHolder())
+        }
+    }
+}
+
 @Composable
 fun WorldBuilderSettings(worldBuilderConfig: WorldBuilderConfigHolder) {
     Column(
         modifier = Modifier.fillMaxWidth()
     ) {
-        SettingsHeadline(stringResource(Res.string.world))
+        SettingsHeadline(stringResource(Res.string.world)){
+            OutlinedIconButton(onClick = {
+                worldBuilderConfig.reset()
+            }, shape = ButtonDefaults.shape,
+                colors = IconButtonDefaults.outlinedIconButtonColors(contentColor = MaterialTheme.colorScheme.onBackground)
+            ){
+                Text("R", color = Color.White)
+//                Icon(vectorResource(Res.drawable.reset_settings_24px), contentDescription = stringResource(Res.string.reset))
+            }
+        }
         SizeSettings(worldBuilderConfig)
         ItemCountSettings(worldBuilderConfig)
     }

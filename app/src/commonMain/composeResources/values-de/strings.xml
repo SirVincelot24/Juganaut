@@ -1,5 +1,4 @@
 <resources>
-    <string name="app_name">Juganaut</string>
     <!--Title Screen-->
     <string name="start_game">Spiel starten</string>
     <string name="quit">Beenden</string>
@@ -12,6 +11,7 @@
     <string name="scale_factor">Skalierungs-Faktor</string>
     <string name="min_edge_distance">Min. Abstand zum Rand</string>
     <string name="world">Spielwelt</string>
+    <string name="reset">Zurücksetzen</string>
     <string name="width">Breite</string>
     <string name="height">Höhe</string>
     <string name="diamonds">Diamanten</string>

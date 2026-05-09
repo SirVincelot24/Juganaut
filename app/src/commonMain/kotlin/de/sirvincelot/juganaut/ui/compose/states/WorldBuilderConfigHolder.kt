@@ -9,4 +9,11 @@ class WorldBuilderConfigHolder {
      * Die Konfiguration, wenn ein neues Spiel gestartet wird.
      */
     val worldBuilderConfig = mutableStateOf(WorldBuilderConfiguration())
+
+    /**
+     * Setzt die Konfiguration der Welt zurück
+     */
+    fun reset() {
+        worldBuilderConfig.value = WorldBuilderConfiguration()
+    }
 }
