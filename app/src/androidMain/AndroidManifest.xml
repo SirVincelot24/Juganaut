@@ -10,6 +10,7 @@
         android:supportsRtl="true"
         android:theme="@android:style/Theme.Material.Light.NoActionBar"
         android:localeConfig="@xml/locales_config"
+        android:appCategory="game"
         tools:targetApi="33">
         <activity
             android:exported="true"
