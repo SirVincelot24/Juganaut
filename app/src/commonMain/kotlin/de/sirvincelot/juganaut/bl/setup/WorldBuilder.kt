@@ -37,19 +37,23 @@ class WorldBuilder() {
         val world = World(config.worldSize)
         createItems(world, config.rockCountRange, playerX, playerY) { Rock() }
         createItems(world, config.monsterCountRange, playerX, playerY) { Monster() }
-        createItems(world, config.diamondsCountRange, playerX, playerY) { Diamond }
         createItems(world, config.bombsCountRange, playerX, playerY) { Bomb() }
+        createItems(world, config.diamondsCountRange, playerX, playerY) { Diamond }
 
         val playerCoord = Coord(playerX, playerY)
         world.setField(playerCoord, Player())
-        val oben = playerCoord.move(Direction.Up)
-        val links = playerCoord.move(Direction.Left)
-        val unten = playerCoord.move(Direction.Down)
-        val rechts = playerCoord.move(Direction.Right)
-        world.setField(oben, Dirt)
-        world.setField(links, Dirt)
-        world.setField(unten, Dirt)
-        world.setField(rechts, Dirt)
+        val nextToPlayer = arrayOf(
+            playerCoord.move(Direction.Up),
+            playerCoord.move(Direction.Left),
+            playerCoord.move(Direction.Down),
+            playerCoord.move(Direction.Right)
+        )
+        nextToPlayer.forEach {
+            when(world.getField(it)) {
+                Diamond -> Unit
+                else -> world.setField(it, Dirt)
+            }
+        }
         return world
     }
 
@@ -77,7 +81,11 @@ class WorldBuilder() {
      * @param playerY Die Y-Koordinate wo der Spieler steht
      */
     private fun getValidYCoordinate(world: World, playerY: Int): Int {
-        return Random.nextInt(world.validYRange)
+        var coord = Random.nextInt(world.validYRange)
+        while (coord == playerY) {
+            coord = Random.nextInt(world.validYRange)
+        }
+        return coord
     }
 
     /**
@@ -86,6 +94,10 @@ class WorldBuilder() {
      * @param playerX Die X-Koordinate wo der Spieler steht
      */
     private fun getValidXCoordinate(world: World, playerX: Int): Int {
-        return Random.nextInt(world.validXRange)
+        var coord = Random.nextInt(world.validXRange)
+        while (coord == playerX) {
+            coord = Random.nextInt(world.validXRange)
+        }
+        return coord
     }
 }
