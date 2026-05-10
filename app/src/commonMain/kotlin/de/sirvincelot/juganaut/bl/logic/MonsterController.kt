@@ -125,21 +125,9 @@ class MonsterController(val game: Game) {
 
     fun canWakeUp(source: Coord): Boolean {
         val cup = source.move(Direction.Up)
-        if (canMove(cup)) {
-            return true
-        }
         val cleft = source.move(Direction.Left)
-        if (canMove(cleft)) {
-            return true
-        }
         val cright = source.move(Direction.Right)
-        if (canMove(cright)) {
-            return true
-        }
         val cdown = source.move(Direction.Down)
-        if (canMove(cdown)) {
-            return true
-        }
-        return false
+        return canMove(cup) or canMove(cleft) or canMove(cright) or canMove(cdown)
     }
 }

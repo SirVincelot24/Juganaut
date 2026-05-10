@@ -23,12 +23,12 @@ class World(val size: Size) {
     /**
      * Der gültige Bereich der X-Koordinaten
      */
-    val validXRange = 0 until width
+    val validXRange = 0..<width
 
     /**
      * Der gültige Bereich der Y-Koordinaten
      */
-    val validYRange = 0 until height
+    val validYRange = 0..<height
 
     /**
      * Die Breite der Welt.
@@ -50,7 +50,7 @@ class World(val size: Size) {
     }
 
     /**
-     * Gibt das Spiel-Element an der angegenben Koordinate zurück
+     * Gibt das Spiel-Element an der angegebenen Koordinate zurück
      */
     fun getField(c: Coord): WorldItem {
         return fields[c.y][c.x]
@@ -68,8 +68,8 @@ class World(val size: Size) {
      * und übergibt ihm dabei die jeweilige Koordinate.
      */
     inline fun forEach(block: (c: Coord) -> Unit) {
-        for (x in 0 until width) {
-            for (y in 0 until height) {
+        for (x in 0..<width) {
+            for (y in 0..<height) {
                 val c = Coord(x, y)
                 block(c)
             }

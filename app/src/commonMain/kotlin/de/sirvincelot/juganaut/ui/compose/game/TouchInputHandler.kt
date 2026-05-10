@@ -66,10 +66,7 @@ class TouchInputHandler(val game: Game) {
      * @param e Enthält Informationen über die Taste
      */
     private fun getPlayerInput(e: PointerEvent): PlayerInput? {
-        val position = e.changes.firstOrNull()?.position
-        if (position == null){
-            return null
-        }
+        val position = e.changes.firstOrNull()?.position ?: return null
         return getDirection(position)?.let { PlayerMovement(it) }
     }
 
@@ -82,8 +79,8 @@ class TouchInputHandler(val game: Game) {
         val centerX = screenWidth / 2
         val centerY = screenHeight / 2
         val distVertical = position.y - centerY
-        val distanceHoriz = position.x - centerX
-        val vertical = abs(distVertical) > abs(distanceHoriz)
+        val distHorizontal = position.x - centerX
+        val vertical = abs(distVertical) > abs(distHorizontal)
         return if (vertical) {
             if (distVertical < 0) {
                 Direction.Up
@@ -91,7 +88,7 @@ class TouchInputHandler(val game: Game) {
                 Direction.Down
             }
         }else {
-            if (distanceHoriz < 0) {
+            if (distHorizontal < 0) {
                 Direction.Left
             }else {
                 Direction.Right

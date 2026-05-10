@@ -58,7 +58,7 @@ class BombController(val game: Game) {
                     Dirt -> clearField(c)
                     EmptyField -> {}
                     is Monster -> clearField(c)
-                    is Player -> killPlayer(item, c)
+                    is Player -> killPlayer(c)
                     is Rock -> clearField(c)
                 }
             }
@@ -79,7 +79,7 @@ class BombController(val game: Game) {
         }
     }
 
-    fun killPlayer(item: Player, c: Coord) {
+    fun killPlayer(c: Coord) {
         game.gameOver(Explosion())
         clearField(c)
     }

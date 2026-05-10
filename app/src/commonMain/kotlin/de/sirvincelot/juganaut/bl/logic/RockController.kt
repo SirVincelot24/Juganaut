@@ -38,8 +38,7 @@ class RockController(val game: Game) {
         if (!game.world.isValid(destination)) {
             return
         }
-        val itemBelow = game.world.getField(destination)
-        when (itemBelow) {
+        when (val itemBelow = game.world.getField(destination)) {
             EmptyField -> fall(item, source, destination)
             is Rock, Dirt -> stopFalling(item)
             is Player, is Monster -> tryHit(item, source, destination, itemBelow)

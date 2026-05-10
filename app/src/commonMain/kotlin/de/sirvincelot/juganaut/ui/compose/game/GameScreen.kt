@@ -171,7 +171,7 @@ private fun TouchHandlerCross(touchInputHandler: TouchInputHandler?) {
     Box(
         modifier = Modifier
             .fillMaxSize()
-            .drawBehind() {
+            .drawBehind {
                 val color = Color.LightGray
                 val crossLength = 200f
                 val touchCenter = Offset(screenWidth / 2f, screenHeight / 2f)

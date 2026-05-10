@@ -9,7 +9,7 @@ import de.sirvincelot.juganaut.ui.compose.game.RenderCycle
 /**
  * Enthält den Zustand des Spiels für die Compose UI.
  */
-class GameStateHolder() {
+class GameStateHolder {
 
     // Don't use "data class", so each new instance is not equal the previous instance.
     internal class GameHolder(val game: Game)

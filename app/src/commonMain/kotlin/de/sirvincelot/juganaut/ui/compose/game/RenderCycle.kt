@@ -3,13 +3,13 @@ package de.sirvincelot.juganaut.ui.compose.game
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.asExecutor
 
-class RenderCycle() : Runnable {
+class RenderCycle : Runnable {
 
     companion object {
         /**
          * Die Zeit einer Spiel-Runde (in Millisekunden)
          */
-        val tickDurationMs = 500.toLong()
+        const val tickDurationMs = 500.toLong()
     }
 
     /**

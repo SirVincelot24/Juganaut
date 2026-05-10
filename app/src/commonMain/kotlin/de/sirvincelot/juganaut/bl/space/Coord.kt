@@ -8,7 +8,7 @@ package de.sirvincelot.juganaut.bl.space
 data class Coord(val x: Int, val y: Int) {
 
     /**
-     * Erzeugt eine neue Koordinate, die um 1 Feld in der angegenen Richtung liegt.
+     * Erzeugt eine neue Koordinate, die um 1 Feld in der angegebenen Richtung liegt.
      * @param direction die Richtung
      * @return Gibt die neue Koordinate zurück
      */

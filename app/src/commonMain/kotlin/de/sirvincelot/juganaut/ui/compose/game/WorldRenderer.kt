@@ -167,7 +167,7 @@ private fun calculateScaleFactor(canvasSize: Size, worldSize: de.sirvincelot.jug
  * Berechnet die Translation (Verschiebung), sodass der Spieler immer im sichtbaren Bereich ist.
  * @param canvasSize Größe des Render-Bereichs in Pixel
  * @param world die Spiel-Welt
- * @param scaleFactor Skalierungs-Faktor beim Rendern
+ * @param scaleFactor Skalierungsfaktor beim Rendern
  * @param currentTranslation die bisherige Translation
  * @return Gibt die neue Translation zurück
  */

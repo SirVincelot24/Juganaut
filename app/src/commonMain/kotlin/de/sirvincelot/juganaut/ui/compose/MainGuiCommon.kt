@@ -73,7 +73,7 @@ fun MainGuiCommon(
             )
         }
 
-        CurrentScreen.Game -> WithSystemBarsPadding() {
+        CurrentScreen.Game -> WithSystemBarsPadding {
             GameScreen(
                 gameState,
                 worldRendererConfig,

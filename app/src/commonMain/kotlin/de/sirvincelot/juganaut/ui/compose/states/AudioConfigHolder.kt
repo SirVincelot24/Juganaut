@@ -6,7 +6,7 @@ import de.sirvincelot.juganaut.getPlatform
 /**
  * Enthält die Daten für die Audio-Einstellungen.
  */
-class AudioConfigHolder() {
+class AudioConfigHolder {
 
     /**
      * Interner State für die Musik-Lautstärke

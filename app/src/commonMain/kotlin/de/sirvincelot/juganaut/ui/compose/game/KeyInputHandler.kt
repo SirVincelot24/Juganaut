@@ -13,7 +13,7 @@ import de.sirvincelot.juganaut.bl.space.Direction
 /**
  * Verwaltet die Benutzer-Eingaben und leitet sie an die Spiel-Logik weiter.
  */
-class KeyInputHandler() {
+class KeyInputHandler {
 
     var game: Game? = null
 
@@ -60,7 +60,7 @@ class KeyInputHandler() {
     /**
      * Gibt die Richtung zurück, in die der Spieler laufen will,
      * wenn er die angegebene Taste drückt.
-     * Wenn es keine Bewegungs-Taste ist, wird null zurückgegeben.
+     * Wenn es keine Bewegungstaste ist, wird null zurückgegeben.
      * @param e Enthält Informationen über die Taste
      */
     private fun getDirection(e: KeyEvent): Direction? {

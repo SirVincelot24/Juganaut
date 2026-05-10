@@ -15,9 +15,9 @@ import kotlin.random.Random
 import kotlin.random.nextInt
 
 /**
- * Kann eine neue Welt oder ein Spiel erstellen.
+ * Kann eine neue Welt oder ein Spiel erstellen
  */
-class WorldBuilder() {
+class WorldBuilder {
 
     /**
      * Erstellt ein neues Spiel.
