@@ -50,6 +50,7 @@ fun SettingsScreen(
     Column(modifier = Modifier.fillMaxSize().background(MaterialTheme.colorScheme.surfaceContainer)) {
         TitleBar(onClickBack)
         Column(modifier = Modifier.verticalScroll(rememberScrollState())
+            .windowInsetsPadding(WindowInsets.displayCutout)
             .padding(5.dp)) {
             WorldRendererSettings(worldRendererConfigHolder)
             WorldBuilderSettings(worldBuilderConfigHolder)
