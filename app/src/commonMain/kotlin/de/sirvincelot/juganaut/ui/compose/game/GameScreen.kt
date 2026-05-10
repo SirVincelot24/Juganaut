@@ -27,6 +27,7 @@ import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.platform.LocalWindowInfo
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.AndroidUiModes.UI_MODE_NIGHT_YES
+import androidx.compose.ui.tooling.preview.Devices.PIXEL_9
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -37,6 +38,7 @@ import de.sirvincelot.juganaut.bl.logic.MonsterCatchesPlayer
 import de.sirvincelot.juganaut.bl.logic.PlayerWalksIntoMonster
 import de.sirvincelot.juganaut.bl.logic.RockHitsPlayer
 import de.sirvincelot.juganaut.bl.logic.WinningReason
+import de.sirvincelot.juganaut.bl.setup.WorldBuilderConfiguration
 import de.sirvincelot.juganaut.getPlatform
 import de.sirvincelot.juganaut.ui.compose.states.GameStateHolder
 import de.sirvincelot.juganaut.ui.compose.states.WorldRendererConfigHolder
@@ -53,13 +55,15 @@ import juganaut.app.generated.resources.stop
 import juganaut.app.generated.resources.won
 import org.jetbrains.compose.resources.stringResource
 
-
 @Preview(showBackground = true,
-    uiMode = UI_MODE_NIGHT_YES)
+    uiMode = UI_MODE_NIGHT_YES,
+    device = PIXEL_9)
 @Composable
 fun SettingsPreview() {
     AppTheme {
-        GameScreen(GameStateHolder(), getPlatform().rendererConfigHolder, false){}
+        val game = GameStateHolder()
+        game.startNewGame(WorldBuilderConfiguration())
+        GameScreen(game, getPlatform().rendererConfigHolder, false){}
 //        GameEnd(null, AllDiamondsCollected(2))
     }
 }
@@ -84,6 +88,8 @@ fun GameScreen(
         modifier = Modifier
             .fillMaxSize()
             .configureTouchInput(touchInputHandler)
+            .background(MaterialTheme.colorScheme.surfaceContainer)
+            .windowInsetsPadding(WindowInsets.displayCutout)
     ) {
         Column(modifier = Modifier.fillMaxSize()) {
             Row(modifier = Modifier.fillMaxWidth()
