@@ -66,7 +66,13 @@ android {
     }
     buildTypes {
         getByName("release") {
-            isMinifyEnabled = false
+            isMinifyEnabled = true
+            isShrinkResources = true
+
+            // Performance optimizations
+            isDebuggable = false
+            isJniDebuggable = false
+            renderscriptOptimLevel = 3
         }
     }
     compileOptions {
