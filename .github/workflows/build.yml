@@ -25,11 +25,20 @@ jobs:
         run: ./gradlew copyAudio
       - name: Build with Gradle
         run: ./gradlew build
-      - name: Upload build outputs (APKs)
+      - name: Upload APK artifacts
         uses: actions/upload-artifact@v7
         with:
-          name: build-outputs
-          path: app/build/outputs
+          name: apk-artifacts
+          path: |
+            app/build/outputs/apk/debug/*.apk
+            app/build/outputs/apk/release/*.apk
+          overwrite: true
+      - name: Upload Compose artifacts
+        uses: actions/upload-artifact@v7
+        with:
+          name: compose-artifacts
+          path: |
+            app/build/compose/binaries/
           overwrite: true
       - name: Upload build reports
         if: always()
