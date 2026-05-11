@@ -33,6 +33,7 @@ jobs:
             app/build/outputs/apk/debug/*.apk
             app/build/outputs/apk/release/*.apk
           overwrite: true
+          archive: false
       - name: Upload build reports
         if: always()
         uses: actions/upload-artifact@v7
@@ -56,14 +57,45 @@ jobs:
         uses: gradle/actions/setup-gradle@v6
       - name: Build with Gradle
         run: ./gradlew packageDeb
-      - run: ls -al app/build/
       - name: Upload artifacts
         uses: actions/upload-artifact@v7
         with:
-          name: compose-artifacts
+          name: linux-artifacts
           path: |
-            app/build/compose/binaries/
+            app/build/compose/binaries/main/deb/*.deb
           overwrite: true
+          archive: false
+      - name: Upload build reports
+        if: always()
+        uses: actions/upload-artifact@v7
+        with:
+          name: build-reports
+          path: app/build/reports
+          overwrite: true
+
+  build-windows:
+    runs-on: windows-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v6
+      - name: Setup Java
+        uses: actions/setup-java@v5
+        with:
+          distribution: "temurin"
+          java-version: 17
+      - name: Setup Gradle
+        uses: gradle/actions/setup-gradle@v6
+      - name: Build with Gradle
+        run: ./gradlew packageExe
+      - name: Upload artifacts
+        uses: actions/upload-artifact@v7
+        with:
+          name: windows-artifacts
+          path: |
+            app/build/compose/binaries/main/exe/*.exe
+          overwrite: true
+          archive: false
       - name: Upload build reports
         if: always()
         uses: actions/upload-artifact@v7
