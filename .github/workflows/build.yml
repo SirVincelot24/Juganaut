@@ -19,8 +19,10 @@ jobs:
           java-version: 17
       - name: Setup Gradle
         uses: gradle/actions/setup-gradle@v6
-      - name: Copy audio and assemble
-        run: ./gradlew copyAudio assembleDebug assembleRelease
+      - name: Copy Audio
+        run: ./gradlew copyAudio
+      - name: Assemble
+        run: ./gradlew assembleDebug assembleRelease
       - name: Upload APK artifacts
         uses: actions/upload-artifact@v7
         with:
