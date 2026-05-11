@@ -3,8 +3,6 @@ name: Build
 on:
   workflow_dispatch:
   push:
-    branches:
-      - add-workflow
   pull_request:
 
 jobs:
