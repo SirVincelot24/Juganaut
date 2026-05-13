@@ -3,8 +3,9 @@ name: Build
 on:
   workflow_dispatch:
   push:
+    branches: [main]
   pull_request:
-
+    branches: [main]
 jobs:
   build-apk:
     runs-on: ubuntu-latest
@@ -24,6 +25,8 @@ jobs:
         run: ./gradlew copyAudio
       - name: Assemble
         run: ./gradlew assembleDebug assembleRelease
+      - name: Rename APK
+        run: mv app/build/outputs/apk/release/*.apk app/build/outputs/apk/release/juganaut.apk
       - name: Upload APK artifacts
         uses: actions/upload-artifact@v7
         with:
