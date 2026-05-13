@@ -168,11 +168,12 @@ private fun TouchHandlerCross(touchInputHandler: TouchInputHandler?) {
     val screenHeight = LocalWindowInfo.current.containerSize.height
     touchInputHandler.setDisplaySize(screenWidth, screenHeight)
 
+    val color = MaterialTheme.colorScheme.onSurfaceVariant
+
     Box(
         modifier = Modifier
             .fillMaxSize()
             .drawBehind {
-                val color = Color.LightGray
                 val crossLength = 200f
                 val touchCenter = Offset(screenWidth / 2f, screenHeight / 2f)
                 drawLine(color, start = touchCenter, end = touchCenter - Offset(crossLength, crossLength))
