@@ -24,7 +24,7 @@ import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.input.pointer.pointerInput
-import androidx.compose.ui.platform.LocalWindowInfo
+import androidx.compose.ui.layout.onSizeChanged
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.AndroidUiModes.UI_MODE_NIGHT_YES
 import androidx.compose.ui.tooling.preview.Devices.PIXEL_9
@@ -87,9 +87,12 @@ fun GameScreen(
     Box(
         modifier = Modifier
             .fillMaxSize()
-            .configureTouchInput(touchInputHandler)
             .background(MaterialTheme.colorScheme.surfaceContainer)
             .windowInsetsPadding(WindowInsets.displayCutout)
+            .onSizeChanged { size ->
+                touchInputHandler?.setDisplaySize(size.width, size.height)
+            }
+            .configureTouchInput(touchInputHandler)
     ) {
         Column(modifier = Modifier.fillMaxSize()) {
             Row(modifier = Modifier.fillMaxWidth()
@@ -100,8 +103,8 @@ fun GameScreen(
 
             WorldRenderer(gameState, worldRendererConfig)
         }
-        if (gameOverReason.value == null && winReason.value == null) {
-            TouchHandlerCross(touchInputHandler)
+        if (gameOverReason.value == null && winReason.value == null && touchInputHandler != null) {
+            TouchHandlerCross()
         }
 
         GameEnd(gameOverReason.value, winReason.value)
@@ -159,23 +162,14 @@ fun TitleBar(diamondsCollected: Int, diamondsTotal: Int, onClickBack: () -> Unit
 }
 
 @Composable
-private fun TouchHandlerCross(touchInputHandler: TouchInputHandler?) {
-    if (touchInputHandler == null) {
-        return
-    }
-
-    val screenWidth = LocalWindowInfo.current.containerSize.width
-    val screenHeight = LocalWindowInfo.current.containerSize.height
-    touchInputHandler.setDisplaySize(screenWidth, screenHeight)
-
+private fun TouchHandlerCross() {
     val color = MaterialTheme.colorScheme.onSurfaceVariant
-
     Box(
         modifier = Modifier
             .fillMaxSize()
             .drawBehind {
                 val crossLength = 200f
-                val touchCenter = Offset(screenWidth / 2f, screenHeight / 2f)
+                val touchCenter = Offset(size.width / 2f, size.height / 2f)
                 drawLine(color, start = touchCenter, end = touchCenter - Offset(crossLength, crossLength))
                 drawLine(color, start = touchCenter, end = touchCenter + Offset(crossLength, crossLength))
                 drawLine(color, start = touchCenter, end = touchCenter - Offset(-crossLength, crossLength))
