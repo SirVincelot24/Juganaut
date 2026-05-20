@@ -1,0 +1,227 @@
+name: Release
+
+on:
+  workflow_dispatch:
+    inputs:
+      version_name:
+        description: "Version name for the release"
+        required: false
+        default: "manual-build"
+  push:
+    branches: [main]
+    tags:
+      - "v*"
+jobs:
+  publish-release:
+    runs-on: ubuntu-latest
+    needs:
+      - build-apk
+      - build-linux
+      - build-windows
+    steps:
+      - name: Create or update GitHub release
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          VERSION_NAME_OUTPUT: ${{ steps.version.outputs.version_name }}
+          IS_TAG_BUILD_OUTPUT: ${{ steps.version.outputs.is_tag_build }}
+          APK_PATH_OUTPUT: ${{ steps.artifacts_android.outputs.apk_path }}
+          DEB_PATH_OUTPUT: ${{ steps.artifacts_linux.outputs.deb_path }}
+          EXE_PATH_OUTPUT: ${{ steps.artifacts_windows.outputs.exe_path }}
+        run: |
+          VERSION_NAME="$VERSION_NAME_OUTPUT"
+          IS_TAG_BUILD="$IS_TAG_BUILD_OUTPUT"
+          APK_PATH="$APK_PATH_OUTPUT"
+          DEB_PATH="$DEB_PATH_OUTPUT"
+          EXE_PATH="$EXE_PATH_OUTPUT"
+          
+          if [[ "$IS_TAG_BUILD" == "true" ]]; then
+            # Tag build - create new release
+            TAG_NAME="v${VERSION_NAME}"
+            RELEASE_TITLE="Juganaut v${VERSION_NAME}"
+          
+            echo "Creating tag release: $TAG_NAME"
+          
+            gh release create "$TAG_NAME" \
+              --title "$RELEASE_TITLE" \
+              "$EXE_PATH" \
+              "$APK_PATH" \
+              "$DEB_PATH"
+          
+            echo "Created release: $RELEASE_TITLE"
+          else
+            # Main branch build - replace existing main release
+            RELEASE_TAG="main-latest"
+            RELEASE_TITLE="Juganaut (Latest Main)"
+          
+            echo "Creating/updating main release: $RELEASE_TAG"
+          
+            # Delete existing release if it exists
+            if gh release view "$RELEASE_TAG" > /dev/null 2>&1; then
+              echo "Deleting existing main release..."
+              gh release delete "$RELEASE_TAG" --yes
+            fi
+          
+            # Create new release
+            gh release create "$RELEASE_TAG" \
+              --title "$RELEASE_TITLE" \
+              --prerelease \
+              "$APK_PATH" \
+              "$DEB_PATH" \
+              "$EXE_PATH"
+          
+            echo "Created/updated main release: $RELEASE_TITLE"
+          fi
+  
+  
+  
+
+  build-apk:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v6
+
+      - name: Extract version and determine deployment
+        id: version
+        env:
+          GITHUB_REF: ${{ github.ref }}
+          GITHUB_REF_NAME: ${{ github.ref_name }}
+          GITHUB_RUN_NUMBER: ${{ github.run_number }}
+          VERSION_NAME_INPUT: ${{ github.event.inputs.version_name }}
+        run: |
+          if [[ "$GITHUB_REF" == refs/tags/v* ]]; then
+            VERSION_NAME="$GITHUB_REF_NAME"
+            VERSION_NAME="${VERSION_NAME#v}"  # Remove 'v' prefix
+            DEPLOY_TARGET="production"
+            IS_TAG_BUILD="true"
+            echo "Tag build detected: $VERSION_NAME -> production release"
+          elif [[ "$GITHUB_REF" == refs/heads/main ]]; then
+            VERSION_NAME="main-$GITHUB_RUN_NUMBER"
+            DEPLOY_TARGET="beta"
+            IS_TAG_BUILD="false"
+            echo "Main branch build: $VERSION_NAME -> open testing"
+          else
+            if [[ -z "$VERSION_NAME_INPUT" ]]; then
+              VERSION_NAME="manual-build"
+            else
+              VERSION_NAME="$VERSION_NAME_INPUT"
+            fi
+            DEPLOY_TARGET="internal"
+            IS_TAG_BUILD="false"
+            echo "Manual build: $VERSION_NAME -> internal testing"
+          fi
+          
+          echo "version_name=$VERSION_NAME" >> $GITHUB_OUTPUT
+          echo "deploy_target=$DEPLOY_TARGET" >> $GITHUB_OUTPUT
+          echo "is_tag_build=$IS_TAG_BUILD" >> $GITHUB_OUTPUT
+
+      - name: Set Version
+        uses: chkfung/android-version-actions@v1.2.2
+        with:
+          gradlePath: app/build.gradle.kts
+          versionCode: ${{ github.run_number }}
+          versionName: ${{ steps.version.outputs.version_name }}
+
+      - name: Setup Java
+        uses: actions/setup-java@v5
+        with:
+          distribution: "temurin"
+          java-version: 17
+          cache: gradle
+      - name: Setup Gradle
+        uses: gradle/actions/setup-gradle@v6
+      - name: Copy Audio
+        run: ./gradlew copyAudio
+      - name: Assemble
+        run: ./gradlew assembleDebug
+      - name: Rename APK
+        run: mv app/build/outputs/apk/debug/*.apk app/build/outputs/apk/debug/juganaut-debug.apk
+      - name: Prepare Android Release Artifacts
+        id: artifacts_android
+        run: |
+          # Find the generated files (Gradle handles the naming)
+          APK_PATH=$(find app/build/outputs/apk/debug -name "*.apk" | head -1)
+          # Extract the actual filenames generated by Gradle
+          APK_NAME=$(basename "$APK_PATH")
+          echo "apk_path=$APK_PATH" >> $GITHUB_OUTPUT
+      - name: Upload APK artifacts
+        uses: actions/upload-artifact@v7
+        with:
+          name: apk-artifacts
+          path: |
+            app/build/outputs/apk/debug/*.apk
+          overwrite: true
+          archive: false
+      - name: Upload build reports
+        if: always()
+        uses: actions/upload-artifact@v7
+        with:
+          name: build-reports
+          path: app/build/reports
+          overwrite: true
+
+  build-linux:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v6
+      - name: Setup Java
+        uses: actions/setup-java@v5
+        with:
+          distribution: "temurin"
+          java-version: 17
+          cache: gradle
+      - name: Setup Gradle
+        uses: gradle/actions/setup-gradle@v6
+      - name: Build with Gradle
+        run: ./gradlew packageDeb
+      - name: Prepare Linux Release Artifacts
+        id: artifacts_linux
+        run: |
+          # Find the generated files (Gradle handles the naming)
+          DEB_PATH=$(find app/build/compose/binaries/main/deb -name "*.deb" | head -1)
+          # Extract the actual filenames generated by Gradle
+          DEB_NAME=$(basename "$DEB_PATH")
+          echo "deb_path=$DEB_PATH" >> $GITHUB_OUTPUT
+      - name: Upload artifacts
+        uses: actions/upload-artifact@v7
+        with:
+          name: linux-artifacts
+          path: |
+            app/build/compose/binaries/main/deb/*.deb
+          overwrite: true
+          archive: false
+
+  build-windows:
+    runs-on: windows-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v6
+      - name: Setup Java
+        uses: actions/setup-java@v5
+        with:
+          distribution: "temurin"
+          java-version: 17
+          cache: gradle
+      - name: Setup Gradle
+        uses: gradle/actions/setup-gradle@v6
+      - name: Build with Gradle
+        run: ./gradlew packageExe
+      - name: Prepare Windows Release Artifacts
+        id: artifacts_windows
+        run: |
+          # Find the generated files (Gradle handles the naming)
+          EXE_PATH=$(find app/build/compose/binaries/main/exe -name "*.exe" | head -1)
+          # Extract the actual filenames generated by Gradle
+          EXE_NAME=$(basename "$EXE_PATH")
+          echo "exe_path=$EXE_PATH" >> $GITHUB_OUTPUT
+      - name: Upload artifacts
+        uses: actions/upload-artifact@v7
+        with:
+          name: windows-artifacts
+          path: |
+            app/build/compose/binaries/main/exe/*.exe
+          overwrite: true
+          archive: false
