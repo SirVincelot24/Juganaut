@@ -1,0 +1,99 @@
+name: Release
+
+on:
+  workflow_dispatch:
+    inputs:
+      version_name:
+        description: "Version name for the release"
+        required: false
+        default: "manual-build"
+  push:
+    branches: [main]
+    tags:
+      - "v*"
+jobs:
+  build-apk:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v6
+      - name: Setup Java
+        uses: actions/setup-java@v5
+        with:
+          distribution: "temurin"
+          java-version: 17
+          cache: gradle
+      - name: Setup Gradle
+        uses: gradle/actions/setup-gradle@v6
+      - name: Copy Audio
+        run: ./gradlew copyAudio
+      - name: Assemble
+        run: ./gradlew assembleDebug
+      - name: Rename APK
+        run: mv app/build/outputs/apk/debug/*.apk app/build/outputs/apk/debug/juganaut-debug.apk
+      - name: Upload APK artifacts
+        uses: actions/upload-artifact@v7
+        with:
+          name: apk-artifacts
+          path: |
+            app/build/outputs/apk/debug/*.apk
+          overwrite: true
+          archive: false
+      - name: Upload build reports
+        if: always()
+        uses: actions/upload-artifact@v7
+        with:
+          name: build-reports
+          path: app/build/reports
+          overwrite: true
+
+  build-linux:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v6
+      - name: Setup Java
+        uses: actions/setup-java@v5
+        with:
+          distribution: "temurin"
+          java-version: 17
+          cache: gradle
+      - name: Setup Gradle
+        uses: gradle/actions/setup-gradle@v6
+      - name: Build with Gradle
+        run: ./gradlew packageDeb
+      - name: Upload artifacts
+        uses: actions/upload-artifact@v7
+        with:
+          name: linux-artifacts
+          path: |
+            app/build/compose/binaries/main/deb/*.deb
+          overwrite: true
+          archive: false
+
+  build-windows:
+    runs-on: windows-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v6
+      - name: Setup Java
+        uses: actions/setup-java@v5
+        with:
+          distribution: "temurin"
+          java-version: 17
+          cache: gradle
+      - name: Setup Gradle
+        uses: gradle/actions/setup-gradle@v6
+      - name: Build with Gradle
+        run: ./gradlew packageExe
+      - name: Upload artifacts
+        uses: actions/upload-artifact@v7
+        with:
+          name: windows-artifacts
+          path: |
+            app/build/compose/binaries/main/exe/*.exe
+          overwrite: true
+          archive: false
