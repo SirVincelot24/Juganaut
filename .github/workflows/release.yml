@@ -18,6 +18,40 @@ jobs:
       - build-linux
       - build-windows
     steps:
+      - name: Extract version and determine deployment
+        id: version
+        env:
+         GITHUB_REF: ${{ github.ref }}
+         GITHUB_REF_NAME: ${{ github.ref_name }}
+         GITHUB_RUN_NUMBER: ${{ github.run_number }}
+         VERSION_NAME_INPUT: ${{ github.event.inputs.version_name }}
+        run: |
+         if [[ "$GITHUB_REF" == refs/tags/v* ]]; then
+           VERSION_NAME="$GITHUB_REF_NAME"
+           VERSION_NAME="${VERSION_NAME#v}"  # Remove 'v' prefix
+           DEPLOY_TARGET="production"
+           IS_TAG_BUILD="true"
+           echo "Tag build detected: $VERSION_NAME -> production release"
+         elif [[ "$GITHUB_REF" == refs/heads/main ]]; then
+           VERSION_NAME="main-$GITHUB_RUN_NUMBER"
+           DEPLOY_TARGET="beta"
+           IS_TAG_BUILD="false"
+           echo "Main branch build: $VERSION_NAME -> open testing"
+         else
+           if [[ -z "$VERSION_NAME_INPUT" ]]; then
+             VERSION_NAME="manual-build"
+           else
+             VERSION_NAME="$VERSION_NAME_INPUT"
+           fi
+           DEPLOY_TARGET="internal"
+           IS_TAG_BUILD="false"
+           echo "Manual build: $VERSION_NAME -> internal testing"
+         fi
+        
+         echo "version_name=$VERSION_NAME" >> $GITHUB_OUTPUT
+         echo "deploy_target=$DEPLOY_TARGET" >> $GITHUB_OUTPUT
+         echo "is_tag_build=$IS_TAG_BUILD" >> $GITHUB_OUTPUT
+
       - name: Create or update GitHub release
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -79,41 +113,6 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v6
-
-      - name: Extract version and determine deployment
-        id: version
-        env:
-          GITHUB_REF: ${{ github.ref }}
-          GITHUB_REF_NAME: ${{ github.ref_name }}
-          GITHUB_RUN_NUMBER: ${{ github.run_number }}
-          VERSION_NAME_INPUT: ${{ github.event.inputs.version_name }}
-        run: |
-          if [[ "$GITHUB_REF" == refs/tags/v* ]]; then
-            VERSION_NAME="$GITHUB_REF_NAME"
-            VERSION_NAME="${VERSION_NAME#v}"  # Remove 'v' prefix
-            DEPLOY_TARGET="production"
-            IS_TAG_BUILD="true"
-            echo "Tag build detected: $VERSION_NAME -> production release"
-          elif [[ "$GITHUB_REF" == refs/heads/main ]]; then
-            VERSION_NAME="main-$GITHUB_RUN_NUMBER"
-            DEPLOY_TARGET="beta"
-            IS_TAG_BUILD="false"
-            echo "Main branch build: $VERSION_NAME -> open testing"
-          else
-            if [[ -z "$VERSION_NAME_INPUT" ]]; then
-              VERSION_NAME="manual-build"
-            else
-              VERSION_NAME="$VERSION_NAME_INPUT"
-            fi
-            DEPLOY_TARGET="internal"
-            IS_TAG_BUILD="false"
-            echo "Manual build: $VERSION_NAME -> internal testing"
-          fi
-          
-          echo "version_name=$VERSION_NAME" >> $GITHUB_OUTPUT
-          echo "deploy_target=$DEPLOY_TARGET" >> $GITHUB_OUTPUT
-          echo "is_tag_build=$IS_TAG_BUILD" >> $GITHUB_OUTPUT
-
       - name: Set Version
         uses: chkfung/android-version-actions@v1.2.2
         with:
