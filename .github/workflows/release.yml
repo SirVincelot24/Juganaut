@@ -24,9 +24,9 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           VERSION_NAME_OUTPUT: ${{ steps.version.outputs.version_name }}
           IS_TAG_BUILD_OUTPUT: ${{ steps.version.outputs.is_tag_build }}
-          APK_PATH_OUTPUT: ${{ steps.artifacts_android.outputs.apk_path }}
-          DEB_PATH_OUTPUT: ${{ steps.artifacts_linux.outputs.deb_path }}
-          EXE_PATH_OUTPUT: ${{ steps.artifacts_windows.outputs.exe_path }}
+          APK_PATH_OUTPUT: ${{ needs.build-apk.outputs.apk_path }}
+          DEB_PATH_OUTPUT: ${{ needs.build-linux.outputs.deb_path }}
+          EXE_PATH_OUTPUT: ${{ needs.build-windows.outputs.exe_path }}
         run: |
           VERSION_NAME="$VERSION_NAME_OUTPUT"
           IS_TAG_BUILD="$IS_TAG_BUILD_OUTPUT"
@@ -77,6 +77,8 @@ jobs:
 
   build-apk:
     runs-on: ubuntu-latest
+    outputs:
+      apk-path: ${{ steps.artifacts_android.outputs.apk_path }}
     steps:
       - name: Checkout
         uses: actions/checkout@v6
@@ -162,7 +164,8 @@ jobs:
 
   build-linux:
     runs-on: ubuntu-latest
-
+    outputs:
+      deb-path: ${{ steps.artifacts_linux.outputs.deb_path }}
     steps:
       - name: Checkout
         uses: actions/checkout@v6
@@ -195,7 +198,8 @@ jobs:
 
   build-windows:
     runs-on: windows-latest
-
+    outputs:
+      exe-path: ${{ steps.artifacts_windows.outputs.exe_path }}
     steps:
       - name: Checkout
         uses: actions/checkout@v6
