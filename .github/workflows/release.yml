@@ -71,7 +71,7 @@ jobs:
         run: |
           VERSION_NAME="$VERSION_NAME_OUTPUT"
           IS_TAG_BUILD="$IS_TAG_BUILD_OUTPUT"
-          APK_PATH="./*.apk
+          APK_PATH="./*.apk"
           DEB_PATH="./*.deb"
           EXE_PATH="./*.exe"
           
