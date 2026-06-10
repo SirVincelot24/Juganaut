@@ -41,6 +41,9 @@ class Game(val world: World, val diamondsInGame : Int) {
      * @param reason der Grund für das GameOver
      */
     fun gameOver(reason: GameOverReason) {
+        if (!isRunning) {
+            return
+        }
         getPlatform().audioPlayer?.playSfx(SFXAudioSample.Lose)
         getPlatform().audioPlayer?.stopMusic()
         gameOverReason = reason
@@ -54,6 +57,7 @@ class Game(val world: World, val diamondsInGame : Int) {
         getPlatform().audioPlayer?.playSfx(SFXAudioSample.Win)
         getPlatform().audioPlayer?.stopMusic()
         winningReason = reason
+        gameOverReason = null
         isRunning = false
     }
 }
