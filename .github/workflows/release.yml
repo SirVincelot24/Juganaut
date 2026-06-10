@@ -18,7 +18,6 @@ on:
 jobs:
   publish-release:
     runs-on: ubuntu-latest
-    if: ${{ github.event.workflow_run.conclusion == 'success'}}
     steps:
       - name: Download workflow artifact
         uses: dawidd6/action-download-artifact@v21
