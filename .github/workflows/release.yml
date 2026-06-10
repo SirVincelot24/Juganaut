@@ -60,14 +60,15 @@ jobs:
          echo "deploy_target=$DEPLOY_TARGET" >> $GITHUB_OUTPUT
          echo "is_tag_build=$IS_TAG_BUILD" >> $GITHUB_OUTPUT
 
+      - name: Remove the .zip file extension
+        run: |
+          for file in *.zip; do mv -- "$file" "${file%.zip}"; done
+
       - name: Create or update GitHub release
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           VERSION_NAME_OUTPUT: ${{ steps.version.outputs.version_name }}
           IS_TAG_BUILD_OUTPUT: ${{ steps.version.outputs.is_tag_build }}
-          APK_PATH_OUTPUT: ${{ needs.build-apk.outputs.apk_path }}
-          DEB_PATH_OUTPUT: ${{ needs.build-linux.outputs.deb_path }}
-          EXE_PATH_OUTPUT: ${{ needs.build-windows.outputs.exe_path }}
         run: |
           VERSION_NAME="$VERSION_NAME_OUTPUT"
           IS_TAG_BUILD="$IS_TAG_BUILD_OUTPUT"
