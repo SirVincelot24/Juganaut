@@ -8,6 +8,12 @@ on:
         required: false
         default: "manual-build"
   push:
+    branches:
+      - main
+    paths-ignore:
+      - "docs/**"
+      - "*.md"
+      - ".github/**"
     tags:
       - "v*"
 jobs:
