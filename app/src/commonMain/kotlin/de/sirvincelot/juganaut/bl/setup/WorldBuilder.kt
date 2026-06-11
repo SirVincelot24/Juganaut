@@ -69,35 +69,25 @@ class WorldBuilder {
         val itemCount = Random.nextInt(itemCountRange)
         repeat((1..itemCount).count()) {
             world.setField(
-                Coord(getValidXCoordinate(world, playerX), getValidYCoordinate(world, playerY)),
+                getValidCoordinatePair(world, playerX, playerY),
                 itemFactory()
             )
         }
     }
 
     /**
-     * findet eine gültige Y-Koordinate, wo Items spawnen können
+     * findet ein gültiges Koordinatenpaar, wo Items spawnen können
      * @param world die Welt, wo eine gültige Koordinate gesucht wird
-     * @param playerY Die Y-Koordinate wo der Spieler steht
+     * @param playerX Die X-Koordinate des Spielers
+     * @param playerY Die Y-Koordinate des Spielers
      */
-    private fun getValidYCoordinate(world: World, playerY: Int): Int {
-        var coord = Random.nextInt(world.validYRange)
-        while (coord == playerY) {
-            coord = Random.nextInt(world.validYRange)
+    private fun getValidCoordinatePair(world: World, playerX: Int, playerY: Int): Coord {
+        var x = Random.nextInt(world.validXRange)
+        var y = Random.nextInt(world.validYRange)
+        while (x == playerX && y == playerY) {
+             x = Random.nextInt(world.validXRange)
+             y = Random.nextInt(world.validYRange)
         }
-        return coord
-    }
-
-    /**
-     * findet eine gültige X-Koordinate, wo Items spawnen können
-     * @param world die Welt, wo eine gültige Koordinate gesucht wird
-     * @param playerX Die X-Koordinate wo der Spieler steht
-     */
-    private fun getValidXCoordinate(world: World, playerX: Int): Int {
-        var coord = Random.nextInt(world.validXRange)
-        while (coord == playerX) {
-            coord = Random.nextInt(world.validXRange)
-        }
-        return coord
+        return Coord(x, y)
     }
 }
