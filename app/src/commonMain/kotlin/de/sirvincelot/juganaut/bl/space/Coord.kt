@@ -1,7 +1,7 @@
 package de.sirvincelot.juganaut.bl.space
 
 /**
- * Speicher eine Koordinate.
+ * Speichert eine Koordinate.
  * @param x die horizontale Position (0 ist ganz links)
  * @param y die vertikale Positon (0 is ganz oben)
  */
