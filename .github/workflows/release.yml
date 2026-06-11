@@ -13,6 +13,12 @@ on:
     types:
       - completed
   push:
+    branches:
+      - main
+    paths-ignore:
+      - "docs/**"
+      - "*.md"
+      - ".github/**"
     tags:
       - "v*"
 jobs:
