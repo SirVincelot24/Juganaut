@@ -13,12 +13,23 @@ on:
     types:
       - completed
   push:
+    branches:
+      - main
+    paths-ignore:
+      - "docs/**"
+      - "*.md"
+      - ".github/**"
     tags:
       - "v*"
 jobs:
   publish-release:
     runs-on: ubuntu-latest
     steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          persist-credentials: false
       - name: Download workflow artifact
         uses: dawidd6/action-download-artifact@v21
         with:
