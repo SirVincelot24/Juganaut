@@ -10,6 +10,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import de.sirvincelot.juganaut.ui.compose.states.AudioConfigHolder
 import juganaut.app.generated.resources.Res
+import juganaut.app.generated.resources.audio
 import juganaut.app.generated.resources.music_volume
 import juganaut.app.generated.resources.sfx_volume
 import org.jetbrains.compose.resources.stringResource
@@ -25,7 +26,7 @@ fun AudioSettings() {
     Column(
         modifier = Modifier.fillMaxWidth()
     ) {
-        SettingsHeadline("Audio")
+        SettingsHeadline(stringResource(Res.string.audio))
         MusicVolumeSetting(audioData)
         SFXVolumeSetting(audioData)
     }

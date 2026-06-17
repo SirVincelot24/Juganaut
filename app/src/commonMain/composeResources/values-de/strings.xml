@@ -5,11 +5,19 @@
     <!--Settings-->
     <string name="settings">Einstellungen</string>
     <string name="back">Zurück</string>
+
+    <string name="general">Allgemeines</string>
+    <string name="theme">Farbschema</string>
+    <string name="dark">Dunkel</string>
+    <string name="light">Hell</string>
+    <string name="system">System</string>
+
     <string name="game_renderer">Spiel-Renderer</string>
     <string name="scale">Skalierung</string>
     <string name="automatic">Automatisch</string>
     <string name="scale_factor">Skalierungs-Faktor</string>
     <string name="min_edge_distance">Min. Abstand zum Rand</string>
+
     <string name="world">Spielwelt</string>
     <string name="reset">Zurücksetzen</string>
     <string name="width">Breite</string>
@@ -18,6 +26,7 @@
     <string name="monster">Monster</string>
     <string name="bombs">Bomben</string>
     <string name="rocks">Steine</string>
+
     <string name="audio">Audio</string>
     <string name="music_volume">Musik-Lautstärke</string>
     <string name="sfx_volume">SFX-Lautstärke</string>
