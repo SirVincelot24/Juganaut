@@ -6,6 +6,7 @@ import androidx.compose.material3.lightColorScheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.Immutable
 import androidx.compose.ui.graphics.Color
+import de.sirvincelot.juganaut.ui.compose.states.GeneralConfigHolder
 
 @Immutable
 data class ExtendedColorScheme(
@@ -312,13 +313,18 @@ val unspecified_scheme = ColorFamily(
  */
 @Composable
 fun AppTheme(
-    darkTheme: Boolean = isSystemInDarkTheme(),
+    themeMode: ThemeMode = GeneralConfigHolder().themeIndex,
     content: @Composable () -> Unit
 ) {
-  val colorScheme = when {
-      darkTheme -> darkScheme
-      else -> lightScheme
-  }
+    val darkTheme = when(themeMode) {
+        ThemeMode.LIGHT -> false
+        ThemeMode.DARK -> true
+        ThemeMode.SYSTEM -> isSystemInDarkTheme()
+    }
+    val colorScheme = when {
+        darkTheme -> darkScheme
+        else -> lightScheme
+    }
 
   MaterialTheme(
     colorScheme = colorScheme,

@@ -52,6 +52,7 @@ fun SettingsScreen(
         Column(modifier = Modifier.verticalScroll(rememberScrollState())
             .windowInsetsPadding(WindowInsets.displayCutout)
             .padding(5.dp)) {
+            GeneralSettings()
             WorldRendererSettings(worldRendererConfigHolder)
             WorldBuilderSettings(worldBuilderConfigHolder)
             AudioSettings()

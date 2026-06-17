@@ -1,6 +1,7 @@
 package de.sirvincelot.juganaut.ui.compose.states
 
-import androidx.compose.runtime.mutableIntStateOf
+import androidx.compose.runtime.mutableStateOf
+import de.sirvincelot.juganaut.ui.theme.ThemeMode
 
 /**
  * Enthält die Daten für die allgemeinen Einstellungen.
@@ -10,14 +11,14 @@ class GeneralConfigHolder {
     /**
      * Interner State für den ausgewählten Index der Theme-Auswahl
      */
-    private var darkModeIndexState = mutableIntStateOf(0)
+    private var themeIndexState = mutableStateOf(ThemeMode.DARK)
 
     /**
-     * Musik-Lautstärke.
+     * Theme-Auswahl
      */
-    var darkModeIndex: Int
-        get() = darkModeIndexState.intValue
+    var themeIndex: ThemeMode
+        get() = themeIndexState.value
         set(value) {
-            darkModeIndexState.intValue = value
+            themeIndexState.value = value
         }
 }

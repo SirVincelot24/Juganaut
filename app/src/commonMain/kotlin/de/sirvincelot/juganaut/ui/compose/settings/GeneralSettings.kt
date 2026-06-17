@@ -1,6 +1,7 @@
 package de.sirvincelot.juganaut.ui.compose.settings
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -18,8 +19,10 @@ import androidx.compose.ui.tooling.preview.AndroidUiModes.UI_MODE_NIGHT_YES
 import androidx.compose.ui.tooling.preview.Preview
 import de.sirvincelot.juganaut.ui.compose.states.GeneralConfigHolder
 import de.sirvincelot.juganaut.ui.theme.AppTheme
+import de.sirvincelot.juganaut.ui.theme.ThemeMode
 import juganaut.app.generated.resources.Res
 import juganaut.app.generated.resources.dark
+import juganaut.app.generated.resources.general
 import juganaut.app.generated.resources.light
 import juganaut.app.generated.resources.system
 import juganaut.app.generated.resources.theme
@@ -43,7 +46,7 @@ fun GeneralSettings() {
     Column(
         Modifier.fillMaxWidth()
     ) {
-        SettingsHeadline("")
+        SettingsHeadline(stringResource(Res.string.general))
         DarkModeSetting(generalData)
     }
 }
@@ -51,16 +54,19 @@ fun GeneralSettings() {
 @Composable
 private fun DarkModeSetting(generalData: GeneralConfigHolder) {
     Row(
-        verticalAlignment = Alignment.CenterVertically
+        Modifier.fillMaxWidth(),
+        horizontalArrangement = Arrangement.SpaceBetween,
+        verticalAlignment = Alignment.CenterVertically,
     ) {
         Text(stringResource(Res.string.theme), color = MaterialTheme.colorScheme.onBackground)
-        SingleChoiceSegmentedButton(generalData = generalData)
+        SingleChoiceSegmentedButton(
+            generalData = generalData)
     }
 }
 
 @Composable
 fun SingleChoiceSegmentedButton(modifier: Modifier = Modifier, generalData: GeneralConfigHolder) {
-    val options = listOf(stringResource(Res.string.dark),stringResource(Res.string.light),stringResource(Res.string.system))
+    val options = listOf(stringResource(Res.string.light),stringResource(Res.string.dark),stringResource(Res.string.system))
 
     SingleChoiceSegmentedButtonRow(modifier) {
         options.forEachIndexed { index, label ->
@@ -69,8 +75,8 @@ fun SingleChoiceSegmentedButton(modifier: Modifier = Modifier, generalData: Gene
                     index = index,
                     count = options.size
                 ),
-                onClick = { generalData.darkModeIndex = index },
-                selected = index == generalData.darkModeIndex,
+                onClick = { generalData.themeIndex = ThemeMode.from(index) },
+                selected = index == generalData.themeIndex.value,
                 label = { Text(label) }
             )
         }
