@@ -75,8 +75,9 @@ fun SingleChoiceSegmentedButton(modifier: Modifier = Modifier, generalData: Gene
                     index = index,
                     count = options.size
                 ),
-                onClick = { generalData.themeIndex = ThemeMode.from(index) },
-                selected = index == generalData.themeIndex.value,
+                onClick = { generalData.themeMode = ThemeMode.from(index)
+                            },
+                selected = index == generalData.themeMode.value,
                 label = { Text(label) }
             )
         }

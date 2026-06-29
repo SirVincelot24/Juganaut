@@ -11,14 +11,14 @@ class GeneralConfigHolder {
     /**
      * Interner State für den ausgewählten Index der Theme-Auswahl
      */
-    private var themeIndexState = mutableStateOf(ThemeMode.DARK)
+    private var themeModeState = mutableStateOf(ThemeMode.SYSTEM)
 
     /**
      * Theme-Auswahl
      */
-    var themeIndex: ThemeMode
-        get() = themeIndexState.value
+    var themeMode: ThemeMode
+        get() = themeModeState.value
         set(value) {
-            themeIndexState.value = value
+            themeModeState.value = value
         }
 }

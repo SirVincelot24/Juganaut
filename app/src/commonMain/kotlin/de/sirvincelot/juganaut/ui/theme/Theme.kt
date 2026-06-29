@@ -313,7 +313,7 @@ val unspecified_scheme = ColorFamily(
  */
 @Composable
 fun AppTheme(
-    themeMode: ThemeMode = GeneralConfigHolder().themeIndex,
+    themeMode: ThemeMode = GeneralConfigHolder().themeMode,
     content: @Composable () -> Unit
 ) {
     val darkTheme = when(themeMode) {
