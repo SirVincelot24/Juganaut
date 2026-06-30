@@ -12,6 +12,7 @@ import androidx.compose.material3.SegmentedButtonDefaults
 import androidx.compose.material3.SingleChoiceSegmentedButtonRow
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -47,7 +48,7 @@ fun GeneralSettings() {
         Modifier.fillMaxWidth()
     ) {
         SettingsHeadline(stringResource(Res.string.general))
-        DarkModeSetting(generalData)
+//        DarkModeSetting(generalData)
     }
 }
 
@@ -75,9 +76,8 @@ fun SingleChoiceSegmentedButton(modifier: Modifier = Modifier, generalData: Gene
                     index = index,
                     count = options.size
                 ),
-                onClick = { generalData.themeMode = ThemeMode.from(index)
-                            },
-                selected = index == generalData.themeMode.value,
+                onClick = { generalData.setThemeMode(ThemeMode.from(index)) },
+                selected = index == generalData.themeMode.collectAsState().value.value,
                 label = { Text(label) }
             )
         }

@@ -5,6 +5,7 @@ import androidx.compose.material3.darkColorScheme
 import androidx.compose.material3.lightColorScheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.Immutable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.graphics.Color
 import de.sirvincelot.juganaut.ui.compose.states.GeneralConfigHolder
 
@@ -313,7 +314,7 @@ val unspecified_scheme = ColorFamily(
  */
 @Composable
 fun AppTheme(
-    themeMode: ThemeMode = GeneralConfigHolder().themeMode,
+    themeMode: ThemeMode = GeneralConfigHolder().themeMode.collectAsState().value,
     content: @Composable () -> Unit
 ) {
     val darkTheme = when(themeMode) {
